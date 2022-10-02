@@ -1,0 +1,227 @@
+﻿<html custom-frame=solid-with-shadow window-resizable>
+<head>
+    <title>noteCali</title>
+    <style>
+
+
+        @font-face {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 400;
+            font-stretch: 100%;
+            src: url('kvoc.otf');
+        }
+
+        @font-face {
+            font-family: inria-sans;
+            src: url('inria-sans.otf');
+        }
+
+        @font-face {
+            font-family: inria-sans-b;
+            src: url('inria-sans-bold.otf');
+        }
+
+        html {
+            var(FontSize): 18; /*without px*/
+            var(FontColor): #1F2937;
+            var(SolutionFontColor): #0E2235;
+            var(ClickColor): #2F71AF;
+            var(HowerColor): #1C456B;
+            var(BackgroundColor): #d9d9d9;
+            var(dividerLineColor): #10819A;
+        }
+
+        body, html {
+            margin: 0;
+            overflow: hidden;
+            background-color: var(BackgroundColor);
+            height: 100%;
+            font-family: inria-sans;
+        }
+
+        #header {
+            width: 100%;
+            height: 30px;
+            flow: horizontal;
+        }
+
+        #appName {
+            font-size: 19px;
+            height: 100%;
+            width: calc(100%-90px);
+            vertical-align: middle;
+            text-align: center;
+            text-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 4px 4px 0 rgba(0, 0, 0, 0.12);
+            transition: opacity 0.2s linear 0s;
+            white-space: nowrap;
+        }
+
+        button {
+            width: 30px;
+            height: 100%;
+            display: block;
+            background: none;
+            border: none;
+            padding: 0;
+            
+        }
+
+            button img {
+                width: 100%;
+                height: 100%;
+            }
+
+
+
+        #UserArea {
+            width: 100%;
+            height: calc(100vh - 30px);
+            flow: horizontal;
+        }
+
+        #inputContainer {
+            width: 70%;
+            height: 100%;
+        }
+
+        @set v-scroll-indicator { .base { width: 0; } }
+
+        #mathInput, #highlights {
+            color: var(FontColor) ;
+            display: block;
+            padding: 0;
+            margin: 0 0 0 2px;
+            border: 0;
+            position: absolute;
+            font-family: 'Arial';
+            font-size: var(FontSize)px;
+            word-break: break-all;
+            line-height: calc(100% + 2px);
+            letter-spacing: 1px;
+            word-spacing: 0;
+            top: 30px;
+            left: 1px;
+            width: calc(100% - 2px);
+            height: 100%;
+            background-color: transparent;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            vertical-scrollbar: "v-scroll-indicator";
+            font-rendering-mode: snap-pixel;
+        }
+
+        #mathInput {
+            z-index: 2;
+            text-decoration: none;
+            pointer-events: none;
+        }
+
+        #highlights {
+            z-index: 1;
+            white-space: pre-wrap;
+        }
+
+        mf { /*ADD RADIUS - NEFUNGUJE S INLINE A LE BEZ INLINE SE NEZALAMUJE A DĚLÁ BRODEL (MNOŽNÁ PRVNÍ A POSLEDNÍ PÍSMENO ZAOOKROUHLIT)*/
+            border-radius: 5px;
+            background-color: #b1d5e5;
+            white-space: pre-wrap;
+            color: transparent;
+            cursor:pointer; /* ?? try another way*/
+        }
+
+
+        ms {
+            border-radius: 5px;
+            background-color: #a3eda1;
+            color: transparent;
+            white-space: pre-wrap;
+        }
+        le {
+            width: 0;
+            height: 0;
+            background-color: darkseagreen;
+            letter-spacing: -2px;
+            font-size: 10px; /* set to 0 if you dont want debug*/
+            padding: 0;
+            margin: 0;
+        }
+
+        ph {
+            /*color:transparent;*/
+        }
+
+        #dividerLine {
+            width: 4px;
+            height: 100%;
+            background-color: var(dividerLineColor);
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        #mathOutput {
+            width: calc(30% - 4px);
+            height: 100%;
+            display: block;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            position: absolute;
+            font-family: 'Arial';
+            font-size: 18px;
+            letter-spacing: 1px;
+            top: 30px;
+            right: 0px;
+            overflow: hidden;
+        }
+
+        .mathOutputLine {
+            color: var(SolutionFontColor);
+            display: inline-block;
+            border: 0;
+            padding: 0;
+            margin: 0 1* 0 1*;
+            font-family: 'Arial';
+            font-size: var(FontSize)px;
+            font-rendering-mode: snap-pixel;
+            width: 100%;
+            height: 22px;
+            text-align: center;
+            transition: color 0.2s;
+            font-weight: bold;
+        }
+
+
+        button.mathOutputLine:hover {
+            color: var(HowerColor);
+            cursor: copy;
+        }
+
+        button.mathOutputLine:active {
+            transition: color 0s;
+            color: var(ClickColor);
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="header">
+        <button id="meuB""><img src="menu.svg"/></button>
+        <div id="appName" role="window-caption">NoteCali 📝</div>
+        <button role="window-minimize"><img src="minimalize.svg"/></button>
+        <button id="closeB"><img src="close.svg"/></button>
+    </div>
+
+    <div id="UserArea">
+        <div id="inputContainer">
+            <textarea autofocus rows="4" cols="50" wrap="soft" id="mathInput" spellcheck="false"></textarea>
+            <div id="highlights"></div>
+        </div>
+        <div id="dividerLine"></div>
+        <div id="mathOutput">
+            <span class="mathOutputLine" selectable>Ready</span>
+        </div>
+    </div>
+</body>
+</html>

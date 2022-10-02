@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Zdrojové soubory">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Hlavičkové soubory">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Soubory zdrojů">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Soubory zdrojů</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="debugConsole.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="settWin.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="calcWin.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsObject.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="calcualtionAlg.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.me" />
+    <None Include="ui\add.svg" />
+    <None Include="ui\add-variable.svg" />
+    <None Include="ui\angle-left.svg" />
+    <None Include="ui\angle-right.svg" />
+    <None Include="ui\calculator.htm" />
+    <None Include="ui\close.svg" />
+    <None Include="ui\color-palette.svg" />
+    <None Include="ui\feedback.svg" />
+    <None Include="ui\filter.svg" />
+    <None Include="ui\functions.svg" />
+    <None Include="ui\gear.svg" />
+    <None Include="ui\keyboard.svg" />
+    <None Include="ui\memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4taVIGxA.woff2" />
+    <None Include="ui\menu.svg" />
+    <None Include="ui\minimalize.svg" />
+    <None Include="ui\save.svg" />
+    <None Include="ui\settings.htm" />
+    <None Include="ui\switch.svg" />
+    <None Include="ui\trash.svg" />
+    <None Include="ui\update.svg" />
+    <None Include="ui\variable.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="ui\inria-sans.otf" />
+    <Font Include="ui\inria-sans-bold.otf" />
+    <Font Include="ui\kvoc.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="ui\sci_fi_city_cities_artwork_art_futuristic_5120x4096.jpg">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\switch.png">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\transpa.png">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
