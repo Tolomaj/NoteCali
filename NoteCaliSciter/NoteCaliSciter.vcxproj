@@ -78,8 +78,10 @@
     <IncludePath>D:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDKs\sciter-js-sdk-main\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
     <CustomBuildBeforeTargets />
+    <OutDir>$(SolutionDir)\SolutionFinal</OutDir>
+    <IntDir>$(SolutionDir)\SolutionDebug</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>D:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
@@ -133,7 +135,7 @@
       <AdditionalDependencies>uxtheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>C:\SDKs\sciter-js-sdk-main\bin\windows\packfolder.exe ui resources.cpp -v "resources"</Command>
+      <Command>C:\SDKs\sciter-js-sdk\bin\windows\packfolder.exe ui resources.cpp -v "resources"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
