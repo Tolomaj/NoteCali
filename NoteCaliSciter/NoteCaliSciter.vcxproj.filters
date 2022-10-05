@@ -62,6 +62,7 @@
     <None Include="ui\trash.svg" />
     <None Include="ui\update.svg" />
     <None Include="ui\variable.svg" />
+    <None Include="ui\settings.css" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\inria-sans.otf" />
@@ -76,6 +77,12 @@
       <Filter>Soubory zdrojů</Filter>
     </Image>
     <Image Include="ui\transpa.png">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\left-arrow.png">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\right-arrow.png">
       <Filter>Soubory zdrojů</Filter>
     </Image>
   </ItemGroup>

@@ -1,620 +1,8 @@
 ﻿<html custom-frame=solid-with-shadow window-resizable>
 <head>
     <title>noteCali settings</title>
-    <style>
-        @font-face {
-            font-family: inria-sans;
-            src: url('inria-sans.otf');
-        }
+    <link rel="stylesheet" type="text/css" href="settings.css" />
 
-        @font-face {
-            font-family: inria-sans-b;
-            src: url('inria-sans-bold.otf');
-        }
-
-        body {
-            var(mainColor): #788e9c;
-        }
-
-        body {
-            margin: 0;
-            overflow: hidden;
-            font-family: inria-sans;
-            color: white;
-        }
-
-
-        #titleBar {
-            width: 100%;
-            height: 25px;
-            background-color: #676767;
-        }
-
-        #botomSection {
-            flow: horizontal;
-            width: 100%;
-            height: calc(100vh - 25px);
-        }
-
-        #categoriMenu {
-            width: 150px;
-            height: 100%;
-            background-color: var(mainColor);
-        }
-
-        #styleIcon {
-            margin: 20px 1* 20px 1*;
-            width: 60px;
-            height: 60px;
-        }
-
-        button {
-            width: 30px;
-            height: 100%;
-            display: block;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-            button:hover {
-                background-color: #6caeeb;
-                border: 2px solid #4f82b2;
-            }
-
-            button:focus {
-                background-color: #5b92c5;
-                border: 2px solid #4f82b2;
-            }
-
-        .tabButton {
-            height: 35px;
-            width: 86%;
-            margin: 5px 7%;
-            flow: horizontal;
-            background-color: #d9d9d9;
-            border-radius: 10px;
-            border: 2px solid #cacaca;
-        }
-
-            .tabButton img {
-                display: inline-block;
-                height: 30px;
-                margin: 1* 2px 1* 2px;
-            }
-
-        .CLabel {
-            display: inline-block;
-            margin: 1* 1* 1* 1*;
-            font-family: inria-sans-b;
-            font-size: 16px;
-        }
-
-
-        #bottomMenu {
-            margin-top: 1*;
-            padding-bottom: 5px;
-        }
-
-        #closeB {
-            margin-left: 1*;
-            display: inline-block;
-            width: 25px;
-            border: none;
-        }
-
-            #closeB img {
-                width: 100%;
-                height: 100%;
-                filter: invert(100%);
-            }
-
-            #closeB:hover, #closeB:focus {
-                background-color: none;
-            }
-
-
-
-        #titleName {
-            display: inline-block;
-            width: clac(100% - 20px);
-            height: 100%;
-            font-size: 15px;
-            font-family: inria-sans-b;
-            color: white;
-            margin: 0 0 0 10px;
-        }
-
-
-
-
-
-        switch {
-            margin-left: 1*;
-            behavior: check;
-            flow: text;
-            width: 40px;
-            height: 25px;
-            overflow: hidden;
-            border: 2px solid #d9d9d9;
-            border-radius: 20px;
-            background-image: url(switch.png);
-            background-position: -15px 2px;
-            background-size: 42px 25px;
-            background-repeat: no-repeat;
-            transition: background-position 0.02s linear 0s;
-            opacity:0.7;
-        }
-
-            switch:checked {
-                background-position: 0 2px;
-                opacity:1;
-            }
-
-            switch:focus {
-                border: 2px solid #c9c9c9;
-            }
-
-        .option {
-            padding: 4px 4px;
-            margin: 4px;
-            display: inline-block;
-            background-color: #aebcc3;
-            border-radius: 15px;
-            flow: horizontal;
-            width: 220px;
-            cursor: pointer;
-        }
-
-        .oLable {
-            margin: 1* 0 1* 0;
-            font-size: 15px;
-            padding: 0px 8px;
-        }
-
-            .oLable.oLong {
-                font-size: 12px;
-            }
-
-
-        .tabArea {
-            margin-left: 1*;
-            height: 100%;
-            width: calc(100% - 150px);
-            background-color: #d9d9d9;
-        }
-
-        #tabWithToolTip {
-            width: calc(100% - 150px);
-            background-color: #d9d9d9;
-        }
-
-            #tabWithToolTip .tabArea {
-                width: 100%;
-            }
-
-        #settingsArea {
-            padding: 0;
-            width: 100%;
-            flow: horizontal-flow;
-            horizontal-align: center;
-        }
-
-        .toolTip {
-            margin: 20px 10px;
-            height: 120px;
-            width: calc(100% - 20px);
-            background-color: #aebcc3;
-            border-radius: 15px;
-            color: white;
-        }
-
-            .toolTip .header {
-                width: 100%;
-                text-align: center;
-                padding: 4px 0;
-                font-size: 18px;
-            }
-
-            .toolTip .tip {
-                width: 100%;
-                text-align: center;
-                display: inline-block;
-                font-size: 14px;
-            }
-
-        #uptudateBanner {
-            flow: horizontal;
-            min-width: 270px;
-            background-color: #92c680;
-            border-radius: 15px;
-            white-space: nowrap;
-            margin: 15px 1*;
-            font-size: 20px;
-            color: white;
-            border: 2px solid #b4c9ad;
-        }
-
-            #uptudateBanner .version {
-                margin: 1* 20px 1* 1*;
-            }
-
-            #uptudateBanner .msg {
-                margin: 1*;
-            }
-
-            #uptudateBanner img {
-                filter: invert(1);
-            }
-
-        #versionTitle {
-            flow: horizontal;
-            color: white;
-            background-color: #aebcc3;
-            margin: 0 25px;
-            width: calc(100% - 50px);
-            border-radius: 15px;
-            font-size: 20px;
-        }
-
-            #versionTitle .version {
-                margin: 0 1* 0 25px;
-            }
-
-            #versionTitle .type {
-                margin: 0 25px 0 1*;
-            }
-
-        #versionLog {
-            background-color: #aebcc3;
-            border-radius: 10px;
-            font-size: 18px;
-            margin: 5px 30px;
-            width: calc(100% - 100px);
-            padding: 5px 20px;
-            white-space: pre-wrap;
-        }
-
-        textarea:focus, input:focus {
-            outline: none;
-        }
-
-        .inputElement {
-            background-color: #aebcc3;
-            color: white;
-            border: 2px solid #7b99a9;
-            border-radius: 10px;
-            padding: 2px;
-            overflow-y: hidden;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        #TopicName {
-            margin: 25px 1* 0 1*;
-            width: calc(100% - 50px);
-        }
-
-        #TopicContent {
-            margin: 5px 35px;
-            width: calc(100% - 70px);
-            height: calc(100% - 200px);
-            text-align: left;
-        }
-
-        #TopicSendButton {
-            margin: 1* 1* 20px 1*;
-            background-color: #aebcc3;
-            color: white;
-            border-radius: 10px;
-            padding: 2px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            width: 100px;
-        }
-
-        #TopicImage {
-            margin: 2px 1*;
-            width: 150px;
-            background-color: #aebcc3;
-            color: white;
-            border-radius: 10px;
-            padding: 4px;
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            white-space: nowrap;
-        }
-
-        #Email {
-            margin: 2px 1*;
-            width: calc(100% - 50px);
-        }
-
-        .var {
-            background-color: #94a9b5;
-            border-radius: 10px;
-            flow: horizontal;
-            width: calc(100% - 20px);
-            color: white;
-            font-size: 16px;
-            margin: 5px 1*;
-        }
-
-            .var .name {
-                background-color: #678ba0;
-                border-radius: 12px;
-                padding: 1* 5px;
-                width: 80px;
-                text-align: center;
-            }
-
-            .var .inputs {
-                background-color: #678ba0;
-                border-radius: 12px;
-                padding: 1* 2px;
-                margin: 0 2px;
-                width: 15px;
-                text-align: center;
-            }
-
-            .var .value {
-                margin: 1* 1*;
-            }
-
-            .var .destroy {
-                background-color: #678ba0;
-                border-radius: 12px;
-                padding: 2px 4px;
-                width: 20px;
-            }
-
-        #varAddBTN {
-            padding: 10px;
-            background-color: #678ba0;
-            width: 40px;
-            border-radius: 20px;
-            margin: 20px 1*;
-        }
-
-
-
-
-        #pickerSelection {
-            width: 100%;
-            height: calc(100vh - 25px);
-            backdrop-filter: blur(10px);
-            position: absolute;
-            top: 25px;
-            left: 0;
-            display: none;
-        }
-
-        .colorpicker { /* element in settings box that open color picker */
-            margin-left: 1*;
-            width: 30px;
-            height: 25px;
-            border: 2px solid #d9d9d9;
-            border-radius: 10px;
-        }
-
-        .numInput {
-            margin-left: 1*;
-            border: 2px solid #d9d9d9;
-            border-radius: 10px;
-        }
-
-        #ColorPicker {
-            margin: 1*;
-            display: flex;
-            backdrop-filter: none;
-            background: #788e9c;
-            border-radius: 20px;
-            width: 300px;
-            height: 200px;
-            padding: 15px;
-        }
-
-            #ColorPicker .rSide {
-                position: relative;
-                display: inline-block;
-                border-radius: 6px;
-                width: 150px;
-                height: 150px;
-                flow: vertical;
-            }
-
-
-        .gradientPicker {
-            position: relative;
-            display: inline-block;
-            border-radius: 6px;
-            width: 150px;
-            height: 150px;
-        }
-
-            .gradientPicker * {
-                top: 0;
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                border-radius: 6px;
-            }
-
-        #sg { /*second layer*/
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 1) 100%);
-        }
-
-        .testGradi .fg { /*first layer*/
-            background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%,rgba(255, 255, 255, 0) 100%);
-        }
-
-        #bcg { /*background color layer*/
-            background-color: hsl(180,100,50);
-        }
-
-        #hueSlider {
-            border: 2px solid #505f69;
-            padding: 0;
-            margin: 7px 0;
-            height: 15px;
-            width: 300px;
-            border-radius: 6px;
-            background: linear-gradient(0deg, rgba(255, 0, 0, 1) 0%, rgba(255, 255, 0, 1) 17%, rgba(0, 255, 0, 1) 33%,rgba(0, 255, 255, 1) 50%,rgba(0, 0, 255, 1) 67%,,rgba(255, 0, 255, 1) 83%,rgba(255, 0, 0, 1) 100%);
-        }
-
-            #hueSlider > button {
-                width: 5px;
-                height: 14px;
-                background: transparent;
-                outline: 1px solid black;
-                border: 3px solid white;
-            }
-
-        #transparencitySlider {
-            padding: 0;
-            margin: 2px 0;
-            height: 10px;
-            border-radius: 6px;
-            width: 128px;
-            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
-            border: 2px solid #505f69;
-        }
-
-            #transparencitySlider > button {
-                width: 5px;
-                height: 14px;
-                background: transparent;
-                outline: 1px solid black;
-                border: 3px solid white;
-            }
-
-        #lss { /* left side of picker*/
-            flow: vertical-wrap;
-            height: 150px;
-        }
-
-        #rss { /* right side of picker*/
-            margin: 0 20px 0 0;
-        }
-
-        #colorTInput { /* show text*/
-            width: 130px;
-            height: 40px;
-            margin: 5px 0;
-            padding: 0;
-            height: 20px;
-            border-radius: 6px;
-            background-color: #d9d9d9;
-            text-align: center;
-        }
-
-        .colorPrewContainer {
-            position: relative;
-            width: 70px;
-            margin: 15px 1*;
-            height: 70px;
-        }
-
-        #colorPrew {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 6px;
-            background-color: hsl(180,100,50);
-        }
-
-        .colorPrewBackground {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 7px;
-            background-image: url(transpa.png);
-        }
-
-        #colorTop {
-            display: inline-block;
-            flow: horizontal;
-        }
-
-        #btnBottom {
-            height: 30px;
-            flow: horizontal;
-        }
-
-            #btnBottom button {
-                width: 50px;
-                height: 20px;
-                margin: 0 1*;
-                border-radius: 6px;
-                padding: 0px 5px;
-                background-color: #d9d9d9;
-                border: 2px solid #adacac;
-            }
-
-                #btnBottom button:hover {
-                    border: 2px solid #9ac2e3;
-                }
-
-        #dragDot {
-            width: 10px;
-            height: 10px;
-            border-radius: 10px;
-            border: solid black 1px;
-        }
-
-        .numInput {
-            background-color:#D9D9D9;
-            height:25px;
-        }
-
-        .numInput input > button {
-            display: none;
-            background-color:yellow;
-            height:25px;
-        }
-
-        .numInput input {
-            text-align: center;
-            display: inline;
-            padding:0;
-            margin:0;
-            border:0;
-            
-        }
-
-            .numInput input > caption {
-                border-radius: 5px;
-                padding: 0;
-                color: white;
-                font-size: 18px;
-                margin: 0;
-                line-height: 25px; /*tohle je mrdka odskakuje celí blok když je víc než 0*/
-                border: 0;
-                width: 40px;
-                height: 26px;
-                background-color: #2B6CA8;
-                position:relative;
-                bottom:5px;
-            }
-
-        .rUpB, .rDwnB  { /*not work*/
-           /*background-color: rgba(255, 0, 0, 1);*/
-        } /*not work*/
-
-
-            .rUpB img, .rDwnB img { /*not work*/
-                height: 15px;
-                padding: 5px 0;
-                filter: invert(0);
-                /*background-color: rgba(255, 0, 0, 1);*/
-            }
-        /*not work*/
-
-    </style>
 
     <script>
         var f = Window.this.SettingsWin;
@@ -625,25 +13,41 @@
         function hslToHex(h, s, l) { l /= 100; const a = s * Math.min(l, 1 - l) / 100; const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); }; return `#${f(0)}${f(8)}${f(4)}`; }
 
 
-        function hideseTs() {
-            document.getElementById("seT").style.display = "none";
-            document.getElementById("interfaceTab").style.display = "none";
-            document.getElementById("systemTab").style.display = "none";
-            document.getElementById("variablesTab").style.display = "none";
-            document.getElementById("functionsTab").style.display = "none";
-            document.getElementById("feedbackTab").style.display = "none";
-            document.getElementById("updatesTab").style.display = "none";
-            document.getElementById("tabWithToolTip").style.display = "none";
+        var selectedTab = "seT";
+
+        function selectTab(btnName, tabName, tooltipisOn) {
+
+            selectedTab = tabName;
+
+            if (tooltipisOn) {
+                document.getElementById("tabWithToolTip").style.display = "block";
+            } else {
+                document.getElementById("tabWithToolTip").style.display = "none";
+            }
+
+            var tabs = document.getElementsByClassName("tabArea");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = "none";
+            }
+
+            var tabButtons = document.getElementsByClassName("tabButton");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("selected");
+            }
+
+            document.getElementById(btnName).classList.add("selected");
+
+            document.getElementById(tabName).style.display = "block";
         }
 
 
-        document.getElementById("styleBtn").onclick = function () { hideseTs(); document.getElementById("seT").style.display = "block"; document.getElementById("tabWithToolTip").style.display = "block"; }
-        document.getElementById("interfaceBtn").onclick = function () { hideseTs(); document.getElementById("interfaceTab").style.display = "block"; document.getElementById("tabWithToolTip").style.display = "block"; }
-        document.getElementById("systemBtn").onclick = function () { hideseTs(); document.getElementById("systemTab").style.display = "block"; document.getElementById("tabWithToolTip").style.display = "block"; }
-        document.getElementById("variableBtn").onclick = function () { hideseTs(); document.getElementById("variablesTab").style.display = "block"; document.getElementById("tabWithToolTip").style.display = "block"; }
-        document.getElementById("functionBtn").onclick = function () { hideseTs(); document.getElementById("functionsTab").style.display = "block"; document.getElementById("tabWithToolTip").style.display = "block"; }
-        document.getElementById("feedbackBtn").onclick = function () { hideseTs(); document.getElementById("feedbackTab").style.display = "block"; }
-        document.getElementById("updatesBtn").onclick = function () { hideseTs(); document.getElementById("updatesTab").style.display = "block" }
+        document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn","seT",true); }
+        document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn","interfaceTab",true); }
+        document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true); }
+        document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true);  }
+        document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true);  }
+        document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false);  }
+        document.getElementById("updatesBtn").onclick = function () { selectTab("updatesBtn", "updatesTab", false); }
 
 
         function setStyleToolTip(description, name) {
@@ -697,17 +101,17 @@
             } else {
                 inputObject.value = inputObject.value + amount;
             }
-
+            inputObject.focus();
         }
 
         var numberDecreasers = document.getElementsByClassName("rDwnB");
         for (let i = 0; i < numberDecreasers.length; i++) {
             numberDecreasers[i].addEventListener("click", (e) => {
-                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0],-0.5);
+                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], -0.5);
                 console.log(e.target.parentElement.parentElement.getElementsByTagName("input")[0].value);
             }, false);
         }
-        
+
         var numberIncresers = document.getElementsByClassName("rUpB");
         for (let i = 0; i < numberDecreasers.length; i++) {
             numberIncresers[i].addEventListener("click", (e) => {
@@ -723,14 +127,8 @@
 
 
         var isMouseDown = false;
-
-        document.getElementById("sg").addEventListener('mousedown', function () {
-            isMouseDown = true;
-        }, true);
-
-        document.addEventListener('mouseup', function () {
-            isMouseDown = false;
-        }, true);
+        document.getElementById("sg").addEventListener('mousedown', function () { isMouseDown = true; }, true);
+        document.addEventListener('mouseup', function () { isMouseDown = false; }, true);
 
 
 
@@ -761,11 +159,9 @@
             setColot();
         });
 
-        document.getElementById("transparencitySlider").addEventListener("change", function (evt) {
-            setColot();
-        });
+        document.getElementById("transparencitySlider").addEventListener("change", function (evt) { setColot(); });
 
-    </script> 
+    </script>
 
 </head>
 <body>
@@ -845,7 +241,7 @@
                 <div class="tip">Here is style settings</div>
             </div>
 
-            <div class="tabArea" id="seT">
+            <div class="tabArea selected" id="seT">
                 <div id="settingsArea">
                     <div class="option" id="hideAppName">
                         <div class="oLable">Hide app name</div>

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{2dc40a8c-267d-4dc5-b870-cdbae7039f79}</ProjectGuid>
@@ -186,6 +187,7 @@
     <None Include="ui\menu.svg" />
     <None Include="ui\minimalize.svg" />
     <None Include="ui\save.svg" />
+    <None Include="ui\settings.css" />
     <None Include="ui\settings.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
