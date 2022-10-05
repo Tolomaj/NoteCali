@@ -34,7 +34,17 @@ sciter::om::hasset<SettingsWin> settingsWin;
 
 
 int uimain(std::function<int()> run) {
-    
+
+    ::SciterSetOption(nullptr, SCITER_SET_DEBUG_MODE, true);
+    SciterSetOption(NULL, SCITER_SET_SCRIPT_RUNTIME_FEATURES,
+        ALLOW_FILE_IO |
+        ALLOW_SOCKET_IO |
+        ALLOW_EVAL |
+        ALLOW_SYSINFO);
+
+
+
+
     sciter::archive::instance().open(aux::elements_of(resources)); // bind resources[] (defined in "resources.cpp") with the archive
 
     sciter::om::hasset<CalculatrWin> pwin = new CalculatrWin();

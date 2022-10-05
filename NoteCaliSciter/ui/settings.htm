@@ -170,6 +170,10 @@
             padding: 0px 8px;
         }
 
+            .oLable.oLong {
+                font-size: 12px;
+            }
+
 
         .tabArea {
             margin-left: 1*;
@@ -560,24 +564,53 @@
             border: solid black 1px;
         }
 
+        .numInput {
+            background-color:#D9D9D9;
+            height:25px;
+        }
+
         .numInput input > button {
             display: none;
+            background-color:yellow;
+            height:25px;
         }
 
         .numInput input {
             text-align: center;
-            color: width;
             display: inline;
+            padding:0;
+            margin:0;
+            border:0;
+            
         }
 
             .numInput input > caption {
-                border-radius:0;
-                width: 30px;
+                border-radius: 5px;
+                padding: 0;
+                color: white;
+                font-size: 18px;
+                margin: 0;
+                line-height: 25px; /*tohle je mrdka odskakuje celí blok když je víc než 0*/
+                border: 0;
+                width: 40px;
+                height: 26px;
+                background-color: #2B6CA8;
+                position:relative;
+                bottom:5px;
             }
 
         .rUpB, .rDwnB  { /*not work*/
-            background-color: rgba(255, 0, 0, 1);
+           /*background-color: rgba(255, 0, 0, 1);*/
         } /*not work*/
+
+
+            .rUpB img, .rDwnB img { /*not work*/
+                height: 15px;
+                padding: 5px 0;
+                filter: invert(0);
+                /*background-color: rgba(255, 0, 0, 1);*/
+            }
+        /*not work*/
 
     </style>
 
@@ -654,6 +687,34 @@
                 document.getElementById("pickerSelection").style.display = "block";
             }, false);
         }
+
+
+        function addToNumInput(inputObject, amount) {
+            if (inputObject.value == undefined) {
+                inputObject.value = 0;
+            } else {
+                inputObject.value = inputObject.value + amount;
+            }
+
+        }
+
+        var numberDecreasers = document.getElementsByClassName("rDwnB");
+        for (let i = 0; i < numberDecreasers.length; i++) {
+            numberDecreasers[i].addEventListener("click", (e) => {
+                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0],-0.5);
+                console.log(e.target.parentElement.parentElement.getElementsByTagName("input")[0].value);
+            }, false);
+        }
+
+        var numberIncresers = document.getElementsByClassName("rUpB");
+        for (let i = 0; i < numberDecreasers.length; i++) {
+            numberIncresers[i].addEventListener("click", (e) => {
+                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], 0.5);
+                console.log(e.target.parentElement.parentElement.getElementsByTagName("input")[0].value);
+            }, false);
+        }
+
+
 
         document.getElementById("pickingDone").onclick = function () { document.getElementById("pickerSelection").style.display = "none"; }
 
@@ -814,15 +875,19 @@
                     </div>
                     <div class="option" id="FontSize">
                         <div class="oLable">Font Size</div>
-                        <div class="inp numInput">
-                            <span class="rUpB"><</span>
-                            <input type="number" step="0.5"><!-- add input corection-->
-                            <span class="rDwnB">></span>
-                        </div>
+                        <span class="inp numInput">
+                            <span class="rUpB"><img src="left-arrow.png" /></span>
+                            <input type="number" step="0.5" value="18"><!-- add input corection-->
+                            <span class="rDwnB"><img src="right-arrow.png" /></span>
+                        </span>
                     </div>
                     <div class="option" id="LinePadding">
-                        <div class="oLable">Padding Between Lines</div>
-                        <div class="inp"></div> <!-- add number input -->
+                        <div class="oLable oLong">Padding Between Lines</div>
+                        <span class="inp numInput">
+                            <span class="rUpB"><img src="left-arrow.png" /></span>
+                            <input type="number" step="0.5" value="2"><!-- add input corection-->
+                            <span class="rDwnB"><img src="right-arrow.png" /></span>
+                        </span>
                     </div>
                 </div>
             </div>
