@@ -77,7 +77,8 @@
     <IncludePath>D:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\SDKs\sciter-js-sdk-main\include;$(IncludePath)</IncludePath>
+    <CustomBuildBeforeTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>D:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
@@ -131,7 +132,7 @@
       <AdditionalDependencies>uxtheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>D:\SDKs\sciter-js-sdk\bin\windows\packfolder.exe ui resources.cpp -v "resources"</Command>
+      <Command>C:\SDKs\sciter-js-sdk-main\bin\windows\packfolder.exe ui resources.cpp -v "resources"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -199,6 +200,8 @@
     <Font Include="ui\kvoc.otf" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="ui\left-arrow.png" />
+    <Image Include="ui\right-arrow.png" />
     <Image Include="ui\sci_fi_city_cities_artwork_art_futuristic_5120x4096.jpg" />
     <Image Include="ui\switch.png" />
     <Image Include="ui\transpa.png" />

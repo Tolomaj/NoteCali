@@ -143,10 +143,12 @@
             background-size: 42px 25px;
             background-repeat: no-repeat;
             transition: background-position 0.02s linear 0s;
+            opacity:0.7;
         }
 
             switch:checked {
                 background-position: 0 2px;
+                opacity:1;
             }
 
             switch:focus {
@@ -701,7 +703,7 @@
         var numberDecreasers = document.getElementsByClassName("rDwnB");
         for (let i = 0; i < numberDecreasers.length; i++) {
             numberDecreasers[i].addEventListener("click", (e) => {
-                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0],-0.5;
+                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0],-0.5);
                 console.log(e.target.parentElement.parentElement.getElementsByTagName("input")[0].value);
             }, false);
         }
@@ -763,7 +765,7 @@
             setColot();
         });
 
-    </script>
+    </script> 
 
 </head>
 <body>
