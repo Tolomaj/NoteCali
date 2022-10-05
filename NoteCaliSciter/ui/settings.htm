@@ -41,12 +41,12 @@
         }
 
 
-        document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn","seT",true); }
-        document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn","interfaceTab",true); }
+        document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn", "seT", true); }
+        document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true); }
         document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true); }
-        document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true);  }
-        document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true);  }
-        document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false);  }
+        document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true); }
+        document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true); }
+        document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false); }
         document.getElementById("updatesBtn").onclick = function () { selectTab("updatesBtn", "updatesTab", false); }
 
 
@@ -202,7 +202,7 @@
     <div id="botomSection">
         <div id="categoriMenu">
             <img id="styleIcon" src="filter.svg" />
-            <button class="tabButton" id="styleBtn">
+            <button class="tabButton selected " id="styleBtn">
                 <img src="color-palette.svg" />
                 <div class="CLabel">Style</div>
             </button>
@@ -241,7 +241,7 @@
                 <div class="tip">Here is style settings</div>
             </div>
 
-            <div class="tabArea selected" id="seT">
+            <div class="tabArea" id="seT">
                 <div id="settingsArea">
                     <div class="option" id="hideAppName">
                         <div class="oLable">Hide app name</div>
