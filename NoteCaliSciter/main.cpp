@@ -11,7 +11,6 @@
 #endif // WIN_VERSION
 
 #include <iostream>
-
 #include "SettingsObject.h"
 #include "calcualtionAlg.h"
 

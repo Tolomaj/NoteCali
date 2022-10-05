@@ -1,3 +1,5 @@
+#include "library/ini.h" // https://github.com/pulzed/mINI
+
 class Settings {
 	
 public: 
@@ -24,3 +26,16 @@ public:
 
 }settings;
 
+bool Settings::loadSettings(){
+	ini::File file = ini::open("settings.ini");
+
+	file.add_section("appSettings");
+	file["appSettings"]["is_generic_key"] = "true";
+
+	file.write("settings.ini");
+
+};
+
+bool Settings::saveSettings(){
+
+};

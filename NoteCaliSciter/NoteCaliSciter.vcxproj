@@ -163,6 +163,8 @@
     <ClInclude Include="calcWin.h" />
     <ClInclude Include="debugConsole.h" />
     <ClInclude Include="calcualtionAlg.h" />
+    <ClInclude Include="ini.h" />
+    <ClInclude Include="library\ini.h" />
     <ClInclude Include="SettingsObject.h" />
     <ClInclude Include="settWin.h" />
     <ClInclude Include="stdafx.h" />
