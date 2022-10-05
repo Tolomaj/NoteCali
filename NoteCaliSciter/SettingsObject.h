@@ -1,4 +1,4 @@
-#include "library/ini.h" // https://github.com/pulzed/mINI
+#include "library/SimpleIni.h" // https://github.com/pulzed/mINI
 
 class Settings {
 	
@@ -11,11 +11,11 @@ public:
 	int fontPadding = 2;
 	bool clickToCopy = true;
 	 
-
+	 
 	bool ishighlitingOn() {
 		return highliteERR || highliteVAR;
 	}
-
+	
 
 	std::string backgroudColor = "";
 	std::string dividerLineColor = "";
@@ -26,16 +26,30 @@ public:
 
 }settings;
 
+
 bool Settings::loadSettings(){
-	ini::File file = ini::open("settings.ini");
+	CSimpleIniA ini;
+	ini.SetUnicode();
 
-	file.add_section("appSettings");
-	file["appSettings"]["is_generic_key"] = "true";
+	SI_Error rc = ini.LoadFile("appData.ini");
+	if (rc < 0) { debugLOG("failed to open"); };
 
-	file.write("settings.ini");
+	
+	ini.SetValue("appSetings", "key", "true");
+	ini.SetBoolValue("settings", "showAppName", true);
 
+	const char* pv = ini.GetValue("section", "key", "default");
+
+
+	debugLOG(std::string(pv));
+	ini.SaveFile("appData.ini");
+	//strlen();
+
+	
+
+	return 0;
 };
 
 bool Settings::saveSettings(){
-
+	return 0;
 };

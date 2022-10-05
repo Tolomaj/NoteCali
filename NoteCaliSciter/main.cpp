@@ -63,5 +63,7 @@ int uimain(std::function<int()> run) {
     pwin->expand();
     pwin->updateSettings();
 
+    settings.loadSettings();
+
     return run();
 }
