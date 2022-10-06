@@ -61,11 +61,7 @@ public:
             if (target.get_attribute("class") == L"mathOutputLine") {
                 sciter::string s = target.text();
                 std::string so = std::string(s.begin(), s.end());
-                toClipboard(get_hwnd(), so);     
-
-
-              std::string si = "document.style.variable('FontSize','" + std::to_string(40) + "')";  // testing
-              eval(aux::utf2w(si)); // testing
+                toClipboard(get_hwnd(), so);   
             }
 
             if (elementId == L"closeB") {
@@ -89,6 +85,8 @@ public:
         return false;
     }
 
+    void updateStyles();
+
     void handle_size(HELEMENT he);
 
     int CalculateValidPositionX();
@@ -98,6 +96,11 @@ public:
     void toggleSettingsWin();
 };
 
+
+void CalculatrWin::updateStyles() {
+    std::string si = "document.style.variable('FontSize','" + std::to_string(settings.fontSize) + "')";  // testing
+    eval(aux::utf2w(si)); // testing
+};
 
 sciter::dom::element CalculatrWin::getElementById(std::string id) {
     sciter::dom::element root = sciter::dom::element::root_element(get_hwnd());

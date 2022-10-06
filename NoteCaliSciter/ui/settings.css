@@ -391,6 +391,7 @@ textarea:focus, input:focus {
     top: 25px;
     left: 0;
     display: none;
+    z-index: 50;
 }
 
 .colorpicker { /* element in settings box that open color picker */
@@ -571,6 +572,7 @@ textarea:focus, input:focus {
 .numInput {
     background-color: #D9D9D9;
     height: 25px;
+    
 }
 
     .numInput input > button {
@@ -599,6 +601,7 @@ textarea:focus, input:focus {
             position: relative;
             bottom: 5px;
             transition: background-color 0.5s;
+            
         }
 
         .numInput input:focus > caption {
