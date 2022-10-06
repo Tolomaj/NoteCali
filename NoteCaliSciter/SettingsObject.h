@@ -1,7 +1,7 @@
 #include "library/SimpleIni.h" // https://github.com/pulzed/mINI
 
 class Settings {
-	
+
 public: 
 	bool showAppName = true;
 	bool highliteERR = true;
@@ -24,15 +24,35 @@ public:
 
 	bool saveSettings();
 
+	bool resetSettingsToDefault();
+
 }settings;
 
+
+bool Settings::resetSettingsToDefault() {
+	CSimpleIniA ini;
+	ini.SetUnicode();
+
+	ini.SetValue("appSetings", "key", "true");
+	ini.SetBoolValue("settings", "showAppName", true);
+
+	ini.SaveFile("appData.ini");
+	//strlen();
+
+
+
+	return 0;
+};
 
 bool Settings::loadSettings(){
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
 	SI_Error rc = ini.LoadFile("appData.ini");
-	if (rc < 0) { debugLOG("failed to open"); };
+	if (rc < 0) { 
+		debugLOG("failed to open");
+		resetSettingsToDefault();
+	};
 
 	
 	ini.SetValue("appSetings", "key", "true");
