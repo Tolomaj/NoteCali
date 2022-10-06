@@ -18,6 +18,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Soubory zdrojů</Filter>
     </ClCompile>
+    <ClCompile Include="library\ConvertUTF.c">
+      <Filter>Zdrojové soubory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debugConsole.h">
@@ -41,7 +44,10 @@
     <ClInclude Include="library\ini.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
-    <ClInclude Include="ini.h">
+    <ClInclude Include="library\ConvertUTF.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="library\SimpleIni.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
   </ItemGroup>

@@ -159,14 +159,16 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="library\ConvertUTF.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="calcWin.h" />
     <ClInclude Include="debugConsole.h" />
     <ClInclude Include="calcualtionAlg.h" />
-    <ClInclude Include="ini.h" />
+    <ClInclude Include="library\ConvertUTF.h" />
     <ClInclude Include="library\ini.h" />
+    <ClInclude Include="library\SimpleIni.h" />
     <ClInclude Include="SettingsObject.h" />
     <ClInclude Include="settWin.h" />
     <ClInclude Include="stdafx.h" />

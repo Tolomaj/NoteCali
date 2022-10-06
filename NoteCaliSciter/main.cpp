@@ -1,4 +1,5 @@
 #define WIN_VERSION true
+#define DEBUG true
 
 #include <sciter-x.h>
 #include <sciter-x-window.hpp>
@@ -42,6 +43,12 @@ int uimain(std::function<int()> run) {
         ALLOW_SYSINFO);
 
 
+    startDebugConsole();
+    debugLOG((int)is_light_theme());
+
+    settings.loadSettings();
+
+
 
 
     sciter::archive::instance().open(aux::elements_of(resources)); // bind resources[] (defined in "resources.cpp") with the archive
@@ -51,8 +58,7 @@ int uimain(std::function<int()> run) {
     aux::bytes res_data = sciter::archive::instance().get(stylePath);
     SciterSetMasterCSS(res_data.start, res_data.length);*/
     
-    startDebugConsole();
-    debugLOG((int)is_light_theme());
+
     // note: this:://app URL is dedicated to the sciter::archive content associated with the application
     pwin->load(L"this://app/calculator.htm");
     
@@ -63,7 +69,6 @@ int uimain(std::function<int()> run) {
     pwin->expand();
     pwin->updateSettings();
 
-    settings.loadSettings();
 
     return run();
 }
