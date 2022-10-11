@@ -14,6 +14,15 @@ std::string WstrToStr(std::wstring s) {
 	return std::string(s.begin(), s.end());
 }
 
+std::string intToHEXstr(int input){
+	std::ostringstream ss;
+	ss << std::hex << input;
+	std::string result = ss.str();
+
+	return result;
+}
+
+
 bool is_light_theme() {
 	// based on https://stackoverflow.com/questions/51334674/how-to-detect-windows-10-light-dark-mode-in-win32-application
 

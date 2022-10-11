@@ -81,7 +81,7 @@
         for (let i = 0; i < options.length; i++) {
             options[i].addEventListener("click", (e) => {
                 var sw = e.currentTarget.getElementsByClassName("inp")[0];
-                console.log(e.target.tagName);
+                //console.log(e.target.tagName);
                 if (e.target.tagName != "SWITCH") { sw.checked = !sw.checked; }
             }, false);
         }
@@ -295,21 +295,25 @@
             </div>
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
-                    <div class="option">
+                    <div class="option" id="countingOnLineEnd">
                         <div class="oLable">Counting On Line End</div>
-                        <switch />
+                        <switch class="inp"/>
                     </div>
                     <div class="option">
                         <div class="oLable">All lines Are Superines</div>
-                        <switch />
+                        <switch class="inp"/>
                     </div>
                     <div class="option">
                         <div class="oLable">Show Line Numbers</div>
-                        <switch />
+                        <switch class="inp"/>
                     </div>
                     <div class="option">
                         <div class="oLable">Click To Copy</div>
-                        <switch />
+                        <switch class="inp"/>
+                    </div>
+                    <div class="option" id="useTextMath">
+                        <div class="oLable">Use textMath</div>
+                        <switch class="inp"/>
                     </div>
                 </div>
             </div>

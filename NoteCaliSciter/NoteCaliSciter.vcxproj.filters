@@ -52,7 +52,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.me" />
     <None Include="ui\add.svg" />
     <None Include="ui\add-variable.svg" />
     <None Include="ui\angle-left.svg" />

@@ -54,7 +54,6 @@ public:
 
 	bool resetSettingsToDefault();
 
-
 }settings;
 
 
