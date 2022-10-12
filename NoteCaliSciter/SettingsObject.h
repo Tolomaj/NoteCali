@@ -7,12 +7,14 @@
 #define HIGHLITE_VAR_DEFAULT true
 #define CLICK_TO_COPY_DEFAULT true
 
+
 #if DEBUG
 	#define SHOW_LINE_END_DEFAULT true
 #else
 	#define SHOW_LINE_END_DEFAULT false
 #endif
 
+#define TRANSPARENT_MODE_DEFAULT 100
 #define FONT_SIZE_DEFAULT 18
 #define FONT_PADDING_DEFAULT 2
 
@@ -34,10 +36,18 @@ public:
 	bool showAppName = SHOW_APP_NAME_DEFAULT;
 	bool highliteERR = HIGHLITE_ERR_DEFAULT;
 	bool highliteVAR = HIGHLITE_VAR_DEFAULT;
+	bool highliteSUPER = false;
 	bool clickToCopy = CLICK_TO_COPY_DEFAULT;
 	bool showLineEnd = SHOW_LINE_END_DEFAULT;
-	int fontSize = FONT_SIZE_DEFAULT;
-	int fontPadding = FONT_PADDING_DEFAULT;
+	bool useTextMath = false;
+	bool showLineNumbers = false;
+	bool isAllLinesSuperlines = false;
+	bool countingOnLineEnd = false;
+
+	double transparencity = TRANSPARENT_MODE_DEFAULT;
+	double fontSize = FONT_SIZE_DEFAULT;
+	double fontPadding = FONT_PADDING_DEFAULT;
+
 	 
 	 
 	bool ishighlitingOn() {
@@ -54,7 +64,60 @@ public:
 
 	bool resetSettingsToDefault();
 
+	void setSingleSettingsbyName(std::string name,bool value);
+
+	void setSingleSettingsbyName(std::string name, double value);
+
 }settings;
+
+void Settings::setSingleSettingsbyName(std::string name,bool value) {
+	if (name == "showAppName") {
+		showAppName = value;
+	}
+	else if (name == "highliteERR") {
+		highliteERR = value;
+	}
+	else if (name == "highliteVAR") {
+		highliteVAR = value;
+	}
+	else if (name == "clickToCopy") {
+		clickToCopy = value;
+	}
+	else if (name == "showLineEnd") {
+		showLineEnd = value;
+	}
+
+	else if (name == "highliteSUPER") {
+		highliteSUPER = value;
+	}
+	else if (name == "useTextMath") {
+		useTextMath = value;
+	}
+	else if (name == "showLineNumbers") {
+		showLineNumbers = value;
+	}
+	else if (name == "isAllLinesSuperlines") {
+		isAllLinesSuperlines = value;
+	}
+	else if (name == "countingOnLineEnd") {
+		countingOnLineEnd = value;
+	}
+
+
+
+};
+
+void Settings::setSingleSettingsbyName(std::string name, double value) {
+	if (name == "fontSize") {
+		fontSize = value;
+	}
+	else if (name == "fontPadding") {
+		fontPadding = value;
+	}
+	else if (name == "transparencity") {
+		transparencity = value;
+	}
+};
 
 
 bool Settings::resetSettingsToDefault() {
@@ -66,7 +129,7 @@ bool Settings::resetSettingsToDefault() {
 	ini.SetBoolValue("settings", "highliteVAR", HIGHLITE_VAR_DEFAULT);
 	ini.SetBoolValue("settings", "clickToCopy", CLICK_TO_COPY_DEFAULT);
 	ini.SetBoolValue("settings", "showLineEnd", SHOW_LINE_END_DEFAULT);
-
+	//add new values
 	ini.SetDoubleValue("settings","fontSize", FONT_SIZE_DEFAULT);
 	ini.SetDoubleValue("settings", "fontPadding", FONT_PADDING_DEFAULT);
 
@@ -102,7 +165,7 @@ int Settings::loadSettings(){
 	bool showLineEnd = ini.GetBoolValue("settings", "showLineEnd", SHOW_LINE_END_DEFAULT);
 	int fontSize = ini.GetDoubleValue("settings", "fontSize", FONT_SIZE_DEFAULT);
 	int fontPadding = ini.GetDoubleValue("settings", "fontPadding", FONT_PADDING_DEFAULT);;
-	
+	//add new values
 
 	return 0;
 };
@@ -121,6 +184,6 @@ bool Settings::saveSettings(){
 	ini.SetDoubleValue("settings", "fontPadding", fontPadding);
 
 	ini.SaveFile("appData.ini");
-
+	//add new values
 	return 0;
 };

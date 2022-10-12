@@ -65,19 +65,29 @@ public:
 
         virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
         sciter::dom::element target = params.heTarget;
-        //debugLOG("something with: " + intToHEXstr(params.cmd) + " - " + std::to_string(params.cmd));
+       // debugLOG("something with: " + intToHEXstr(params.cmd) + " - " + std::to_string(params.cmd));
+
+
 
         switch (params.cmd) {
         case CHANGE:
-          //debugLOG("something changes");
+         // debugLOG("something changes");
             break;
 
         case 161: // not in doc caled twice
             if (target.test("switch.inp") && params.reason == 0) {
                 sciter::dom::element targetP = target.parent();
-
                 debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps: " + std::to_wstring(params.reason) );
-               
+                settings.setSingleSettingsbyName(sciterStrToStr(targetP.get_attribute("id")), (bool)target.get_value().get(0));
+                settings.saveSettings();
+                return true; // handled
+            }
+
+            if (target.test("caption") && params.reason == 0) {
+                sciter::dom::element targetP = target.parent();
+                targetP = targetP.parent();
+                targetP = targetP.parent();
+                debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring((double)target.get_value().get<double>()) + L" " + target.get_value().to_string() + L" -daps: " + std::to_wstring(params.reason));
                 
                 return true; // handled
             }
