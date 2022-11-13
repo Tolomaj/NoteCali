@@ -13,11 +13,13 @@
         function hslToHex(h, s, l) { l /= 100; const a = s * Math.min(l, 1 - l) / 100; const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); }; return `#${f(0)}${f(8)}${f(4)}`; }
 
 
-        var selectedTab = "seT";
+        var selectedTabName = "Style";
+        var tabDescription = "Here is style settings";
 
-        function selectTab(btnName, tabName, tooltipisOn) {
+        function selectTab(btnName, tabName, tooltipisOn, description = "neni") {
 
-            selectedTab = tabName;
+            selectedTabName = tabName.charAt(0).toUpperCase() + tabName.replace('Tab', '').slice(1);
+            tabDescription = description;
 
             if (tooltipisOn) {
                 document.getElementById("tabWithToolTip").style.display = "block";
@@ -41,49 +43,38 @@
         }
 
 
-        document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn", "seT", true); }
-        document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true); }
-        document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true); }
-        document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true); }
-        document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true); }
+        document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn", "styleTab", true, "Here is style settings"); }
+        document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true , "Interface"); }
+        document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true , "System"); }
+        document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true, "Variables"); }
+        document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true, "Functions"); }
         document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false); }
         document.getElementById("updatesBtn").onclick = function () { selectTab("updatesBtn", "updatesTab", false); }
 
 
-        function setStyleToolTip(description, name) {
+        function setStyleToolTip(name, description) {
             document.getElementById("toolTip").getElementsByClassName("tip")[0].innerHTML = description;
             document.getElementById("toolTip").getElementsByClassName("header")[0].innerHTML = name;
         };
 
-
-        document.getElementById("showAppName").onmouseover = function () { setStyleToolTip("Just hide app name", "Hide app name"); }
-        document.getElementById("transparencity").onmouseover = function () { setStyleToolTip("Allow transparencity for background color. Transparencity level is driven by backgroundColor property", "Transparencity"); }
-        document.getElementById("BackgroundColor").onmouseover = function () { setStyleToolTip("Set background Color. Transparencity not work if Transperencity option is not turned on", "Background Color"); }
-        document.getElementById("BackgroundImage").onmouseover = function () { setStyleToolTip("Image used for background. \n !solid color is alwys faster that image!", "Background Image"); }
-        document.getElementById("highliteERR").onmouseover = function () { setStyleToolTip("Color of error highliting", "Error High lite"); }
-        document.getElementById("highliteVAR").onmouseover = function () { setStyleToolTip("Color of variable highliting", "Variable Highlite"); }
-        document.getElementById("SuperLineHighlite").onmouseover = function () { setStyleToolTip("Color used for highliting superline if is turned off all lines are superlines", "Super Line Highlite"); }
-
         function settingsDefaultToolTip() {
-            document.getElementById("toolTip").getElementsByClassName("tip")[0].innerHTML = "Here is style settings";
-            document.getElementById("toolTip").getElementsByClassName("header")[0].innerHTML = "Style";
+            setStyleToolTip(selectedTabName,tabDescription);
         }
 
-        document.getElementById("showAppName").onmouseleave = settingsDefaultToolTip;
-        document.getElementById("transparencity").onmouseleave = settingsDefaultToolTip;
-        document.getElementById("BackgroundColor").onmouseleave = settingsDefaultToolTip;
-        document.getElementById("BackgroundImage").onmouseleave = settingsDefaultToolTip;
-        document.getElementById("highliteERR").onmouseleave = settingsDefaultToolTip;
-        document.getElementById("highliteVAR").onmouseleave = settingsDefaultToolTip;
-        document.getElementById("SuperLineHighlite").onmouseleave = settingsDefaultToolTip;
-
-        var options = document.getElementsByClassName("option");
+        var options = document.getElementsByClassName("option"); // nastavení chování možností
         for (let i = 0; i < options.length; i++) {
             options[i].addEventListener("click", (e) => {
                 var sw = e.currentTarget.getElementsByClassName("inp")[0];
-                //console.log(e.target.tagName);
+                if (e.target.tagName != "SWITCH") { sw.checked = !sw.checked; }
                 if (e.target.tagName != "SWITCH") { sw.checked = !sw.checked; }
             }, false);
+
+            options[i].addEventListener("mouseover", (e) => {
+                var TipName = e.currentTarget.getElementsByClassName("oLable")[0].innerHTML;
+                setStyleToolTip(TipName, e.currentTarget.getAttribute("tip"));
+            }, false);
+
+            options[i].onmouseleave = settingsDefaultToolTip;
         }
 
         var pickers = document.getElementsByClassName("colorpicker");
@@ -108,7 +99,6 @@
         for (let i = 0; i < numberDecreasers.length; i++) {
             numberDecreasers[i].addEventListener("click", (e) => {
                 addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], -0.5);
-                console.log(e.target.parentElement.parentElement.getElementsByTagName("input")[0].value);
             }, false);
         }
 
@@ -116,10 +106,8 @@
         for (let i = 0; i < numberDecreasers.length; i++) {
             numberIncresers[i].addEventListener("click", (e) => {
                 addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], 0.5);
-                console.log(e.target.parentElement.parentElement.getElementsByTagName("input")[0].value);
             }, false);
         }
-
 
 
         document.getElementById("pickingDone").onclick = function () { document.getElementById("pickerSelection").style.display = "none"; }
@@ -241,13 +229,13 @@
                 <div class="tip">Here is style settings</div>
             </div>
 
-            <div class="tabArea" id="seT">
+            <div class="tabArea" id="styleTab">
                 <div id="settingsArea">
-                    <div class="option" id="showAppName"> <!-- variable in c++ name-->
+                    <div class="option" id="showAppName" tip="Just hide app name."> <!-- variable in c++ name-->
                         <div class="oLable">Hide app name</div>
                         <switch class="inp" />
                     </div>
-                    <div class="option" id="transparencity"> <!-- variable in c++ name-->
+                    <div class="option" id="transparencity" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property."> <!-- variable in c++ name-->
                         <div class="oLable">Transparencity</div>
                         <span class="inp numInput">
                             <span class="rUpB"><img src="left-arrow.png" /></span>
@@ -255,36 +243,38 @@
                             <span class="rDwnB"><img src="right-arrow.png" /></span>
                         </span>
                     </div>
-                    <div class="option" id="BackgroundColor">
+                    <div class="option" id="BackgroundColor" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
                         <div class="oLable">Background Color</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="BackgroundImage">
+                    <div class="option" id="BackgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
                         <div class="oLable">Background Image</div>
                         <switch class="inp" />
                     </div>
-                    <div class="option" id="highliteERR"> <!-- variable in c++ name-->
+                    <div class="option" id="highliteERR" tip="Color of error highliting"> <!-- variable in c++ name-->
                         <div class="oLable">Error Highlite</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="highliteVAR"> <!-- variable in c++ name-->
+                    <div class="option" id="highliteVAR" tip="Color of variable highliting."> <!-- variable in c++ name-->
                         <div class="oLable">Variable Highlite</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="highliteSUPER"> <!-- variable in c++ name-->
+                    <div class="option" id="highliteSUPER" tip="Color used for highliting superline if is turned off all lines are superlines."> <!-- variable in c++ name-->
                         <div class="oLable">SuperLine Highlite</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="fontSize">  <!-- variable in c++ name-->
+                    <div class="option" id="fontSize" tip="Size of font.">  <!-- variable in c++ name-->
                         <div class="oLable">Font Size</div>
                         <span class="inp numInput">
+
+                            <!--<span class="inp numInput" step="0.5" vlaue="18" >-->
                             <span class="rUpB"><img src="left-arrow.png" /></span>
                             <input class="inp" type="number" step="0.5" value="18"><!-- add input corection-->
                             <span class="rDwnB"><img src="right-arrow.png" /></span>
                         </span>
                     </div>
                     <div class="option" id="fontPadding"> <!-- variable in c++ name-->
-                        <div class="oLable oLong">Padding Between Lines</div>
+                        <div class="oLable oLong">Padding Between Lines</div> <!-- mabey crete smaller name and chouse better tool tip-->
                         <span class="inp numInput">
                             <span class="rUpB"><img src="left-arrow.png" /></span>
                             <input class="inp" type="number" step="0.5" value="2"><!-- add input corection-->

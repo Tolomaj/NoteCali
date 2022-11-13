@@ -48,12 +48,11 @@ public:
 
 
         if (params.cmd == EDIT_VALUE_CHANGED) {
-            solver.solve(sciterStrToWStr(target.get_value().to_string()));
-            solver.publish(highites, mathOutput, sciter::dom::element::root_element(get_hwnd()));
+            solveTextArea(sciterStrToWStr(target.get_value().to_string()), mathOutput, highites);
         }
 
         if (((params.cmd == 32928 || params.cmd == 160) && target.get_element_uid() == texAreaUid) || params.cmd == EDIT_VALUE_CHANGED) { 
-            handleScroll();
+            handleScroll(); return true;
         }
 
         if (params.cmd == BUTTON_CLICK) {
@@ -61,7 +60,8 @@ public:
             if (target.get_attribute("class") == L"mathOutputLine") {
                 sciter::string s = target.text();
                 std::string so = std::string(s.begin(), s.end());
-                toClipboard(get_hwnd(), so);   
+                toClipboard(get_hwnd(), so); 
+                return true;
             }
 
             if (elementId == L"closeB") {
@@ -70,14 +70,7 @@ public:
                 return true; // handled
             }
             if (elementId == L"meuB") {
-                if (settingsWin != nullptr && settingsWin->is_valid()) {
-                    settingsWin->close();
-                } else {
-                    settingsWin = new SettingsWin();
-                    settingsWin->load(L"this://app/settings.htm");
-                    SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP | SW_ENABLE_DEBUG);
-                    settingsWin->expand();
-                } 
+                toggleSettingsWin();
                 return true; // handled
             }
         }
@@ -94,7 +87,24 @@ public:
     int CalculateValidPositionY();
 
     void toggleSettingsWin();
+
+    int solveTextArea(std::wstring textFromArea, HELEMENT mathOutput, HELEMENT highlights);
 };
+
+
+
+void CalculatrWin::toggleSettingsWin() {
+    if (settingsWin != nullptr && settingsWin->is_valid()) {
+        settingsWin->close();
+    }
+    else {
+        settingsWin = new SettingsWin();
+        settingsWin->load(L"this://app/settings.htm");
+        SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP | SW_ENABLE_DEBUG);
+        settingsWin->expand();
+    }
+};
+
 
 
 void CalculatrWin::updateStyles() {
@@ -136,3 +146,11 @@ int CalculatrWin::CalculateValidPositionY() {
     if (position > MONITOR_HEIGHT - SETTINGS_WIN_HEIGHT) { position = MONITOR_HEIGHT - SETTINGS_WIN_HEIGHT; }
     return position;
 }
+
+int CalculatrWin::solveTextArea(std::wstring textFromArea, HELEMENT mathOutput, HELEMENT highlights) {
+    solver.solve(textFromArea);
+
+
+    solver.publish(highlights, mathOutput);
+    return 1;
+};

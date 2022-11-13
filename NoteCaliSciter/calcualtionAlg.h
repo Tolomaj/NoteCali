@@ -2,20 +2,33 @@
 #include <string>
 
 class mline {
-	std::wstring line = L"";
-	bool isSuperLine = false; // default from settings add
-	bool isVariable = false;
-	bool isGraph = false;
-	bool hasNonExistencialVar = false;
-	std::wstring localVariableName = L"";
-	std::vector<std::wstring> dependecees;
+    std::wstring line = L"";
+    bool isSuperLine = false; // default from settings add
+    bool isVariable = false;
+    bool isGraph = false;
+    bool hasNonExistencialVar = false;
+    std::wstring localVariableName = L"";
+    std::vector<std::wstring> dependecees;
     std::wstring solution = L"";
 };
 
-class matematicalSolver {
+class solution {
     std::wstring notFormatedInput; //remove
-	std::vector<mline> lines;
+    std::vector<mline> lines;
+};
+
+class matematicalSolver {
+    solution *lastSolution;
+    solution *nowSolution;
+    std::wstring notFormatedInput; //remove
+
 	int prevousLineCount = -1;
+
+    void pushSolution() { // not tested
+        delete lastSolution;
+        lastSolution = nowSolution;
+        nowSolution = new solution;
+    }
 
 	void updateSystemVariables() {
 
@@ -59,7 +72,7 @@ public:
         notFormatedInput = s;
 	}
 
-    void publish(sciter::dom::element highlight, sciter::dom::element solutionsOutput, sciter::dom::element root) {
+    void publish(sciter::dom::element highlight, sciter::dom::element solutionsOutput) {
         // prevent <div></div> characters
         //add hinting sistem <hint></hint>
         // to > html add turnoffable linoe counting
