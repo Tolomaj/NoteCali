@@ -1,16 +1,25 @@
 #include <cctype>
 
 
-void lop() {
-
-};
-
 class CalculatrWin : public sciter::window {
+private:
+    Controler *controler;
+
 public:
-    CalculatrWin() : window(SW_POPUP | SW_ENABLE_DEBUG, { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {}
+    CalculatrWin(Controler * controler) : window(SW_POPUP | SW_ENABLE_DEBUG, { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {
+        this->controler = controler;
+    }
     
     sciter::dom::element getElementById(std::string id);
     
+    void updateStyles();
+
+    void handle_size(HELEMENT he);
+
+    void toggleSettingsWin();
+
+    void updateSettings();
+
 
     sciter::dom::element highites;
     sciter::dom::element mathInput;
@@ -26,17 +35,13 @@ public:
         mathOutput.set_scroll_pos(scroll); 
     }
 
-    void updateSettings() {
-        //std::string s = ;
-        //eval(const_chars(s.c_str()));
-        //std::string s = "document.style.variable('FontSize','" + std::to_string(40) + "')";
-        //eval(const_chars(s.c_str()));
-    }
-
-
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
+
+        if (params.cmd == INPUT_KEYBOARD) {
+            debugLOG(params.data.to_string());
+        }
 
         if (firstEvent && params.cmd == DOCUMENT_READY) {
             firstEvent = false;
@@ -48,7 +53,25 @@ public:
 
 
         if (params.cmd == EDIT_VALUE_CHANGED) {
-            solver.solve(sciterStrToWStr(target.get_value().to_string()));
+            std::wstring dta = sciterStrToWStr(target.get_value().to_string());
+            std::wstring comand;
+            int change = solver.processComands(&dta,&comand);
+            controler->doCommand(comand);
+           // printElement(target);
+
+            if (change != -1) {
+                target.set_text(dta.c_str());
+                target.update();
+                debugLOG(std::to_string(change) + " - " + std::to_string(dta.length()));
+                std::string si2 = "this.focus(); this.textarea.selectRange(" + std::to_string(dta.length()) + "," + std::to_string(dta.length()) + "); ";
+                target.eval(aux::utf2w(si2));
+                /* std::string si2 = "document.getElementById(\"mathInput\").textarea.selectRange(2, 5); ";
+                target.eval(aux::utf2w(si2));*/
+            }
+            
+
+            
+            solver.solve(dta);
             solver.publish(highites, mathOutput, sciter::dom::element::root_element(get_hwnd()));
         }
 
@@ -61,7 +84,8 @@ public:
             if (target.get_attribute("class") == L"mathOutputLine") {
                 sciter::string s = target.text();
                 std::string so = std::string(s.begin(), s.end());
-                toClipboard(get_hwnd(), so);   
+                toClipboard(get_hwnd(), so); 
+                updateStyles();
             }
 
             if (elementId == L"closeB") {
@@ -70,14 +94,7 @@ public:
                 return true; // handled
             }
             if (elementId == L"meuB") {
-                if (settingsWin != nullptr && settingsWin->is_valid()) {
-                    settingsWin->close();
-                } else {
-                    settingsWin = new SettingsWin();
-                    settingsWin->load(L"this://app/settings.htm");
-                    SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP | SW_ENABLE_DEBUG);
-                    settingsWin->expand();
-                } 
+                controler->toggleSettings();
                 return true; // handled
             }
         }
@@ -85,21 +102,26 @@ public:
         return false;
     }
 
-    void updateStyles();
 
-    void handle_size(HELEMENT he);
-
-    int CalculateValidPositionX();
-
-    int CalculateValidPositionY();
-
-    void toggleSettingsWin();
 };
 
 
+void CalculatrWin::updateSettings() {
+
+};
+
 void CalculatrWin::updateStyles() {
-    std::string si = "document.style.variable('FontSize','" + std::to_string(settings.fontSize) + "')";  // testing
-    eval(aux::utf2w(si)); // testing
+    
+   std::wstring si = L"document.style.variable('FontSize','" + std::to_wstring(settings.fontSize) + L"');";
+   si += L"document.style.variable('FontColor','" + settings.fontColor + L"');";
+   si += L"document.style.variable('SolutionFontColor','" + settings.solutionFontColor + L"');";
+   si += L"document.style.variable('ClickColor','" + settings.clickColor + L"');";
+   si += L"document.style.variable('HowerColor','" + settings.howerColor + L"');";
+   si += L"document.style.variable('BackgroundColor','" + settings.backgroudColor + L"');";
+   si += L"document.style.variable('dividerLineColor','" + settings.dividerLineColor + L"');";
+   debugLOG(si);
+   eval(aux::wchars(si.c_str(), si.length())); // testing
+   debugLOG(si);
 };
 
 sciter::dom::element CalculatrWin::getElementById(std::string id) {
@@ -111,28 +133,12 @@ sciter::dom::element CalculatrWin::getElementById(std::string id) {
 void CalculatrWin::handle_size(HELEMENT he) {
     RECT rect;
     GetWindowRect(get_hwnd(), &rect);
-    getElementById("appName").set_style_attribute("opacity", (rect.right - rect.left < 220) ? L"0" : L"1");
-}
-
-int CalculatrWin::CalculateValidPositionX() {
-    RECT rect;
-    GetWindowRect(get_hwnd(), &rect);
-    bool isLeftSideBigger = rect.left > SETTINGS_WIN_WIDTH + WIN_MARGIN;
-    bool winFits = rect.left > SETTINGS_WIN_WIDTH + WIN_MARGIN || MONITOR_WIDTH - rect.right > SETTINGS_WIN_WIDTH + WIN_MARGIN;
-    if (winFits) {
-        return (rect.left + rect.right - SETTINGS_WIN_WIDTH) / 2 + ((rect.right - rect.left + SETTINGS_WIN_WIDTH) / 2 + WIN_MARGIN) * (isLeftSideBigger ? -1 : 1);
+    if (settings.showAppName) {
+        getElementById("appName").set_style_attribute("opacity", (rect.right - rect.left < 220) ? L"0" : L"1");
     }
     else {
-        return (MONITOR_WIDTH - SETTINGS_WIN_WIDTH) / 2;
+        getElementById("appName").set_style_attribute("opacity", L"0");
     }
+    
 }
 
-
-int CalculatrWin::CalculateValidPositionY() {
-    RECT rect;
-    GetWindowRect(this->get_hwnd(), &rect);
-    int position = (rect.top + rect.bottom) / 2 - SETTINGS_WIN_HEIGHT / 2;
-    if (position < 0) { position = 0; }
-    if (position > MONITOR_HEIGHT - SETTINGS_WIN_HEIGHT) { position = MONITOR_HEIGHT - SETTINGS_WIN_HEIGHT; }
-    return position;
-}

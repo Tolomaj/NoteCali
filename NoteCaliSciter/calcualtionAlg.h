@@ -50,9 +50,28 @@ class matematicalSolver {
 
     void updateSolutionList(sciter::dom::element highlight, int newLineCount);
 
+   
+
 public:
     
 
+
+    int processComands(std::wstring * str, std::wstring * comand) {
+        int pos = str->find(L"@");
+        if (pos == std::string::npos) {
+            debugLOG("iiiidd");
+            return -1;
+        }
+        for (size_t i = pos; i < str->length(); i++){
+            if (str->at(i) == '\n') {
+                *comand = str->substr(pos+1, i);
+                debugLOG(L"COMAND STRS: " + *comand);
+                str->erase(pos,i+1);
+                return i;
+            }
+        }
+        return -1;
+    }
 
 	void solve(std::wstring s) {
 		debugLOG(s);
@@ -64,7 +83,11 @@ public:
         //add hinting sistem <hint></hint>
         // to > html add turnoffable linoe counting
 
+        //processComands(&notFormatedInput);
+        
+
         int nowLineCount = getLineCount(notFormatedInput);
+
 
         std::wstring htmlin = formateHighlights(notFormatedInput, nowLineCount); //add nevelement that hadles lineEnds
         aux::w2utf utf8(htmlin);

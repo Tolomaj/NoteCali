@@ -48,71 +48,63 @@ PAGINATION_STARTS = 0xE0,     // behavior:pager starts pagination
 PAGINATION_PAGE = 0xE1,     // behavior:pager paginated page no, reason -> page no
 PAGINATION_ENDS = 0xE2,     // behavior:pager end pagination, reason -> total pages
 FIRST_APPLICATION_EVENT_CODE = 0x100
-*/  // events list
+*/  
+// events list 
 
 
 
 class SettingsWin : public sciter::window {
-public:
-    SettingsWin() : window(SW_POPUP | SW_ENABLE_DEBUG | SW_HIDE, { 0, 0 , 600, 500 }) {}
+private:
+    Controler* controler;
 
-    SOM_PASSPORT_BEGIN(SettingsWin)
-        SOM_FUNCS(
-            SOM_FUNC(nativeMessage)
-        )SOM_PASSPORT_END
+public:
+    SettingsWin(Controler* controler) : window(SW_POPUP | SW_ENABLE_DEBUG | SW_HIDE, { 0, 0 , 600, 500 }) {
+        this->controler = controler;
+    }
 
         
 
-        virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
+    virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
         sciter::dom::element target = params.heTarget;
-       // debugLOG("something with: " + intToHEXstr(params.cmd) + " - " + std::to_string(params.cmd));
-
-
 
         switch (params.cmd) {
-        case CHANGE:
-         // debugLOG("something changes");
-            break;
+            case CHANGE: /* debugLOG("something changes"); */  break;
 
-        case 161: // not in doc caled twice
-            if (target.test("switch.inp") && params.reason == 0) {
-                sciter::dom::element targetP = target.parent();
-                debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps: " + std::to_wstring(params.reason) );
-                settings.setSingleSettingsbyName(sciterStrToStr(targetP.get_attribute("id")), (bool)target.get_value().get(0));
-                settings.saveSettings();
-                return true; // handled
-            }
+            case 161: // not in doc caled twice
+                if (target.test("switch.inp") && params.reason == 0) {
+                    sciter::dom::element targetP = target.parent();
+                    debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps: " + std::to_wstring(params.reason) );
+                    settings.setSingleSettingsbyName(sciterStrToStr(targetP.get_attribute("id")), (bool)target.get_value().get(0));
+                    settings.saveSettings();
+                    return true; // handled
+                }
 
-            if (target.test("caption") && params.reason == 0) {
-                sciter::dom::element targetP = target.parent();
-                targetP = targetP.parent();
-                targetP = targetP.parent();
-                debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring((double)target.get_value().get<double>()) + L" " + target.get_value().to_string() + L" -daps: " + std::to_wstring(params.reason));
+                if (target.test("caption") && params.reason == 0) {
+                    sciter::dom::element targetP = target.parent();
+                    targetP = targetP.parent();
+                    targetP = targetP.parent();
+                    debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring((double)target.get_value().get<double>()) + L" " + target.get_value().to_string() + L" -daps: " + std::to_wstring(params.reason));
                 
-                return true; // handled
-            }
-            break;
-        case BUTTON_CLICK:
-            sciter::string elementId = target.get_attribute("id");
+                    return true; // handled
+                }
+                break;
+            case BUTTON_CLICK:
+                sciter::string elementId = target.get_attribute("id");
             
-           /* if (target.test("switch.inp")) {
-                sciter::dom::element targetP = target.parent();
-                
-                debugLOG(L"hvent:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)));
-                return true; // handled
-            }*/
+               /* if (target.test("switch.inp")) {
+                    sciter::dom::element targetP = target.parent();
+                    debugLOG(L"hvent:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)));
+                    return true; // handled
+                }*/
 
-            if (target.test("button#styleBtn")) {
-                // click on <button id="foo"> ...
-                // for now:
-                //target.attach_event_handler(&myHandler);
-                debugLOG("btncls");
-                return true; // handled
-            }
+                if (target.test("button#styleBtn")) {
+                    debugLOG("btncls");
+                    return true; // handled
+                }
         }
         return false;
     }
 
-        sciter::string  nativeMessage() { return L"Hello C++ World"; }
 
 };
+

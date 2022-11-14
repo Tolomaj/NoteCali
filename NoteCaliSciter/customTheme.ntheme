@@ -1,0 +1,13 @@
+﻿[theme]
+showAppName = true
+highliteERR = true
+highliteVAR = true
+highliteSUPER = true
+clickToCopy = true
+showLineEnd = true
+showLineNumbers = false
+isAllLinesSuperlines = false
+countingOnLineEnd = false
+transparencity = 100.000000
+fontSize = 18.000000
+fontPadding = 2.000000

@@ -1,6 +1,7 @@
 ﻿<html custom-frame=solid-with-shadow window-resizable>
 <head>
     <title>noteCali</title>
+
     <style>
 
 
@@ -64,7 +65,6 @@
             background: none;
             border: none;
             padding: 0;
-            
         }
 
             button img {
@@ -85,10 +85,14 @@
             height: 100%;
         }
 
-        @set v-scroll-indicator { .base { width: 0; } }
+        @set v-scroll-indicator {
+            .base {
+                width: 0;
+            }
+        }
 
         #mathInput, #highlights {
-            color: var(FontColor) ;
+            color: var(FontColor);
             display: block;
             padding: 0;
             margin: 0 0 0 2px;
@@ -127,7 +131,7 @@
             background-color: #b1d5e5;
             white-space: pre-wrap;
             color: transparent;
-            cursor:pointer; /* ?? try another way*/
+            cursor: pointer; /* ?? try another way*/
         }
 
 
@@ -137,6 +141,7 @@
             color: transparent;
             white-space: pre-wrap;
         }
+
         le {
             width: 0;
             height: 0;
@@ -201,16 +206,14 @@
             transition: color 0s;
             color: var(ClickColor);
         }
-
-
     </style>
 </head>
 <body>
     <div id="header">
-        <button id="meuB""><img src="menu.svg"/></button>
+        <button id="meuB" "><img src="menu.svg" /></button>
         <div id="appName" role="window-caption">NoteCali 📝</div>
-        <button role="window-minimize"><img src="minimalize.svg"/></button>
-        <button id="closeB"><img src="close.svg"/></button>
+        <button role="window-minimize"><img src="minimalize.svg" /></button>
+        <button id="closeB"><img src="close.svg" /></button>
     </div>
 
     <div id="UserArea">
@@ -224,4 +227,10 @@
         </div>
     </div>
 </body>
+<script>
+    /*document.getElementById("mathInput").addEventListener("keydown", function (evt) {
+        console.log(evt.ctrlKey, evt.altKey, evt.shiftKey, evt.keyCode);
+    });*/
+
+</script>
 </html>

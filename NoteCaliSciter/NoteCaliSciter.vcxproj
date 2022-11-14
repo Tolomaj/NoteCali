@@ -128,6 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="calcWin.h" />
+    <ClInclude Include="Controler.h" />
     <ClInclude Include="debugConsole.h" />
     <ClInclude Include="calcualtionAlg.h" />
     <ClInclude Include="library\ConvertUTF.h" />

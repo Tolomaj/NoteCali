@@ -6,8 +6,13 @@ std::string sciterStrToStr(sciter::string s){
 	return std::string(s.begin(), s.end());
 }
 
+
 std::wstring sciterStrToWStr(sciter::string s){
 	return std::wstring(s.begin(), s.end());
+}
+
+sciter::string WStrToSciterStr(std::wstring s) {
+	return sciter::string(s.begin(), s.end());
 }
 
 std::string WstrToStr(std::wstring s) {
@@ -20,35 +25,6 @@ std::string intToHEXstr(int input){
 	std::string result = ss.str();
 
 	return result;
-}
-
-
-bool is_light_theme() {
-	// based on https://stackoverflow.com/questions/51334674/how-to-detect-windows-10-light-dark-mode-in-win32-application
-
-	// The value is expected to be a REG_DWORD, which is a signed 32-bit little-endian
-	auto buffer = std::vector<char>(4);
-	auto cbData = static_cast<DWORD>(buffer.size() * sizeof(char));
-	auto res = RegGetValueW(
-		HKEY_CURRENT_USER,
-		L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
-		L"AppsUseLightTheme",
-		RRF_RT_REG_DWORD, // expected value type
-		nullptr,
-		buffer.data(),
-		&cbData);
-
-	if (res != ERROR_SUCCESS) {
-		throw std::runtime_error("Error: error_code=" + std::to_string(res));
-	}
-
-	// convert bytes written to our buffer to an int, assuming little-endian
-	auto i = int(buffer[3] << 24 |
-		buffer[2] << 16 |
-		buffer[1] << 8 |
-		buffer[0]);
-
-	return i == 1;
 }
 
 
@@ -133,6 +109,23 @@ void printElement(sciter::dom::element target) {
 	for (int i = 0; i < target.get_attribute_count(); i++) {
 		debugLOG(target.get_attribute_name(i), false);
 		debugLOG(", ", false);
+	}
+}
+
+std::wstring toLower(std::wstring text) {
+	for (size_t i = 0; i < text.length(); i++) {
+		text.at(i) = towlower(text.at(i));
+	}
+	return text;
+}
+
+bool stringToBool(std::wstring value) { // true false 1 0 on off 
+	value = toLower(value);
+	if (value == L"1" || value == L"on" || value == L"true") {
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 

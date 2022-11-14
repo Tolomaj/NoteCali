@@ -4,7 +4,7 @@
 #include <sciter-x.h>
 #include <sciter-x-window.hpp>
 #include "sciter-win-main.cpp"
-#include "resources.cpp" // resources packaged into binary blob.
+
 
 #if WIN_VERSION
 #include <Uxtheme.h>
@@ -27,48 +27,25 @@
 #define WIN_MARGIN 10
 
 
-#include "settWin.h"
-sciter::om::hasset<SettingsWin> settingsWin;
-#include "calcWin.h"
+#include "Controler.h"
 
 
 
 int uimain(std::function<int()> run) {
 
-    ::SciterSetOption(nullptr, SCITER_SET_DEBUG_MODE, true);
-    SciterSetOption(NULL, SCITER_SET_SCRIPT_RUNTIME_FEATURES,
-        ALLOW_FILE_IO |
-        ALLOW_SOCKET_IO |
-        ALLOW_EVAL |
-        ALLOW_SYSINFO);
-
+    SciterSetOption(nullptr, SCITER_SET_DEBUG_MODE, true);
+    SciterSetOption(NULL, SCITER_SET_SCRIPT_RUNTIME_FEATURES, ALLOW_FILE_IO | ALLOW_SOCKET_IO | ALLOW_EVAL | ALLOW_SYSINFO);
 
     startDebugConsole();
-    debugLOG((int)is_light_theme());
 
-    settings.loadSettings();
+    Controler controler;
 
+    controler.start();
 
-
-
-    sciter::archive::instance().open(aux::elements_of(resources)); // bind resources[] (defined in "resources.cpp") with the archive
-
-    sciter::om::hasset<CalculatrWin> pwin = new CalculatrWin();
     /*LPCWSTR stylePath = is_light_theme() ? L"lightTheme.css" : L"darkTheme.css";
     aux::bytes res_data = sciter::archive::instance().get(stylePath);
     SciterSetMasterCSS(res_data.start, res_data.length);*/
     
-
-    // note: this:://app URL is dedicated to the sciter::archive content associated with the application
-    pwin->load(L"this://app/calculator.htm");
-    
-
-    //or use this to load UI from  
-    //  pwin->load( WSTR("file:///home/andrew/Desktop/Project/res/main.htm") );
-
-    pwin->expand();
-    pwin->updateSettings();
-
 
     return run();
 }
