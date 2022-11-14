@@ -10,12 +10,12 @@
 #define SHOW_LINE_NUMBERS_DEFAULT false
 #define ALL_SUPERLINE_DEFAUTL false
 
-#define BACKGROUND_COLOR_DEFAULT L"#d9d9d9"
-#define DIVIDER_LINE_COLOR_DEFAULT L"#10819A"
-#define FONT_COLOR_DEFAULT L"#1F2937"
-#define SOLUTION_FONT_COLOR_DEFAULT L"#0E2235"
-#define CLICK_COLOR_DEFAULT L"#2F71AF"
-#define HOWER_COLOR_DEFAULT L"#1C456B"
+#define BACKGROUND_COLOR_DEFAULT "#d9d9d9"
+#define DIVIDER_LINE_COLOR_DEFAULT "#10819A"
+#define FONT_COLOR_DEFAULT "#1F2937"
+#define SOLUTION_FONT_COLOR_DEFAULT "#0E2235"
+#define CLICK_COLOR_DEFAULT "#2F71AF"
+#define HOWER_COLOR_DEFAULT "#1C456B"
 
 
 #if DEBUG
@@ -90,12 +90,12 @@ private:
 
 
 public:
-	std::wstring backgroudColor = BACKGROUND_COLOR_DEFAULT;
-	std::wstring dividerLineColor = DIVIDER_LINE_COLOR_DEFAULT;
-	std::wstring fontColor = FONT_COLOR_DEFAULT;
-	std::wstring solutionFontColor = SOLUTION_FONT_COLOR_DEFAULT;
-	std::wstring clickColor = CLICK_COLOR_DEFAULT;
-	std::wstring howerColor = HOWER_COLOR_DEFAULT;
+	std::string backgroudColor = BACKGROUND_COLOR_DEFAULT;
+	std::string dividerLineColor = DIVIDER_LINE_COLOR_DEFAULT;
+	std::string fontColor = FONT_COLOR_DEFAULT;
+	std::string solutionFontColor = SOLUTION_FONT_COLOR_DEFAULT;
+	std::string clickColor = CLICK_COLOR_DEFAULT;
+	std::string howerColor = HOWER_COLOR_DEFAULT;
 private:
 
 	/*
@@ -103,9 +103,9 @@ private:
 	*/
 
 	#define TEXT_VAR_NUM 6 // idk jak jinak to dìlat ve foru
-	std::wstring * textValPointers[TEXT_VAR_NUM] = { &backgroudColor          , &dividerLineColor, &fontColor, &solutionFontColor, &clickColor, &howerColor };
+	std::string * textValPointers[TEXT_VAR_NUM] = { &backgroudColor          , &dividerLineColor, &fontColor, &solutionFontColor, &clickColor, &howerColor };
 	std::string textVariableNames[TEXT_VAR_NUM] = { "backgroudColor"         , "dividerLineColor", "fontColor", "solutionFontColor", "clickColor", "howerColor"};
-	std::wstring textValDefault[TEXT_VAR_NUM] =    { BACKGROUND_COLOR_DEFAULT , DIVIDER_LINE_COLOR_DEFAULT ,FONT_COLOR_DEFAULT,SOLUTION_FONT_COLOR_DEFAULT,CLICK_COLOR_DEFAULT,HOWER_COLOR_DEFAULT };
+	std::string textValDefault[TEXT_VAR_NUM] =    { BACKGROUND_COLOR_DEFAULT , DIVIDER_LINE_COLOR_DEFAULT ,FONT_COLOR_DEFAULT,SOLUTION_FONT_COLOR_DEFAULT,CLICK_COLOR_DEFAULT,HOWER_COLOR_DEFAULT };
 
 
 
@@ -132,9 +132,9 @@ public:
 	bool setSingleSettingsbyName(std::string name, bool value);
 	bool setSingleSettingsbyName(std::string name, double value);
 	bool setSingleSettingsbyName(std::string name, int value);
-	bool setSingleSettingsbyName(std::string name, std::wstring value);
+	bool setSingleSettingsbyName(std::string name, std::string value);
 
-	bool setSetting(std::string name, std::wstring value);
+	bool setSetting(std::string name, std::string value);
 
 
 	bool is_light_theme();
@@ -144,7 +144,7 @@ public:
 
 
 
-bool SettingsOBJ::setSetting(std::string name, std::wstring value) {
+bool SettingsOBJ::setSetting(std::string name, std::string value) {
 	for (size_t i = 0; i < BOOL_VAR_NUM; i++) {
 		if (boolVariableNames[i] == name) {
 			*boolValPointers[i] = stringToBool(value);
@@ -208,7 +208,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, int value) {
 
 };
 
-bool SettingsOBJ::setSingleSettingsbyName(std::string name, std::wstring value) {
+bool SettingsOBJ::setSingleSettingsbyName(std::string name, std::string value) {
 	for (size_t i = 0; i < TEXT_VAR_NUM; i++) {
 		if (textVariableNames[i] == name) {
 			*textValPointers[i] = value;
@@ -231,6 +231,10 @@ bool SettingsOBJ::resetSettingsToDefault() {
 	for (size_t i = 0; i < DOUBLE_VAR_NUM; i++) {
 		*doubleValPointers[i] = doubleValDefault[i];
 	}
+	for (size_t i = 0; i < TEXT_VAR_NUM; i++) {
+		*textValPointers[i] = textValDefault[i];
+	}
+
 	return 0;
 };
 
@@ -316,7 +320,9 @@ int SettingsOBJ::loadSettings(){
 	for (size_t i = 0; i < DOUBLE_VAR_NUM; i++) {
 		*doubleValPointers[i] = ini.GetDoubleValue(styleDestinatio.c_str(), doubleVariableNames[i].c_str(), doubleValDefault[i]);
 	}
-
+	for (size_t i = 0; i < TEXT_VAR_NUM; i++) {
+		*textValPointers[i] = ini.GetValue(styleDestinatio.c_str(), textVariableNames[i].c_str(), textValDefault[i].c_str());
+	}
 
 	return 0;
 };

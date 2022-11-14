@@ -617,3 +617,33 @@ textarea:focus, input:focus {
         filter: invert(0);
         /*background-color: rgba(255, 0, 0, 1);*/
     }
+
+
+.categoryButton.selected {
+    background-color: #5b92c5;
+}
+
+
+.categoryButton {
+    background-color: #2B6CA8;
+    padding: 2px 4px;
+    margin: 4px 1*;
+    border-radius: 5px;
+    height: 15px;
+    width:20%;
+    border: 2px solid #2B6CA8;
+    font-size: 15px;
+    color : white;
+}
+
+.styleType {
+    
+    padding: 4px 4px;
+    margin: 4px;
+    display: inline-block;
+    background-color: #aebcc3;
+    border-radius: 15px;
+    flow: horizontal;
+    width: 90%;
+    cursor: pointer;
+}

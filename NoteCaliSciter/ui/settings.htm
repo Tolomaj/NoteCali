@@ -9,37 +9,25 @@
 
         Window.this.on("size", function () { document.getElementById("styleIcon").style.height = (document.offsetWidth < 200) ? "0" : "60px"; });
 
-        function hsv_to_hsl(h, s, v) { var l = (2 - s) * v / 2; if (l != 0) { if (l == 1) { s = 0; } else if (l < 0.5) { s = s * v / (l * 2); } else { s = s * v / (2 - l * 2); } } return [h, s, l]; }
-        function hslToHex(h, s, l) { l /= 100; const a = s * Math.min(l, 1 - l) / 100; const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); }; return `#${f(0)}${f(8)}${f(4)}`; }
-
-
         var selectedTabName = "Style";
         var tabDescription = "Here is style settings";
 
         function selectTab(btnName, tabName, tooltipisOn, description = "neni") {
+            setStyleToolTip(tabName, description);
 
             selectedTabName = tabName.charAt(0).toUpperCase() + tabName.replace('Tab', '').slice(1);
             tabDescription = description;
 
-            if (tooltipisOn) {
-                document.getElementById("tabWithToolTip").style.display = "block";
-            } else {
-                document.getElementById("tabWithToolTip").style.display = "none";
-            }
+            document.getElementById("tabWithToolTip").style.display = tooltipisOn ? "block" : "none";
 
             var tabs = document.getElementsByClassName("tabArea");
-            for (let i = 0; i < tabs.length; i++) {
-                tabs[i].style.display = "none";
-            }
+            for (let i = 0; i < tabs.length; i++) { tabs[i].style.display = "none";  }
 
             var tabButtons = document.getElementsByClassName("tabButton");
-            for (let i = 0; i < tabButtons.length; i++) {
-                tabButtons[i].classList.remove("selected");
-            }
+            for (let i = 0; i < tabButtons.length; i++) { tabButtons[i].classList.remove("selected"); } // unselect all buttons
 
-            document.getElementById(btnName).classList.add("selected");
-
-            document.getElementById(tabName).style.display = "block";
+            document.getElementById(btnName).classList.add("selected"); // select seleected button
+            document.getElementById(tabName).style.display = "block";  
         }
 
 
@@ -57,9 +45,6 @@
             document.getElementById("toolTip").getElementsByClassName("header")[0].innerHTML = name;
         };
 
-        function settingsDefaultToolTip() {
-            setStyleToolTip(selectedTabName, tabDescription);
-        }
 
         var options = document.getElementsByClassName("option"); // nastavení chování možností
         for (let i = 0; i < options.length; i++) {
@@ -67,15 +52,12 @@
                 var sw = e.currentTarget.getElementsByClassName("inp")[0];
                 if (e.target.tagName != "SWITCH") { sw.checked = !sw.checked; sw.focus(); }
             }, false);
-
-            options[i].addEventListener("mouseover", (e) => {
-                var TipName = e.currentTarget.getElementsByClassName("oLable")[0].innerHTML;
-                setStyleToolTip(TipName, e.currentTarget.getAttribute("tip"));
-            }, false);
-
-            options[i].onmouseleave = settingsDefaultToolTip;
         }
 
+
+        // pickering not done
+        function hsv_to_hsl(h, s, v) { var l = (2 - s) * v / 2; if (l != 0) { if (l == 1) { s = 0; } else if (l < 0.5) { s = s * v / (l * 2); } else { s = s * v / (2 - l * 2); } } return [h, s, l]; }
+        function hslToHex(h, s, l) { l /= 100; const a = s * Math.min(l, 1 - l) / 100; const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); }; return `#${f(0)}${f(8)}${f(4)}`; }
         var pickers = document.getElementsByClassName("colorpicker");
         for (let i = 0; i < pickers.length; i++) {
             pickers[i].addEventListener("click", (e) => {
@@ -84,50 +66,17 @@
             }, false);
         }
 
-
-        function addToNumInput(inputObject, amount) {
-            if (inputObject.value == undefined) {
-                inputObject.value = 0;
-            } else {
-                inputObject.value = inputObject.value + amount;
-            } 
-            inputObject.focus();
-        }
-
-        var numberDecreasers = document.getElementsByClassName("rDwnB");
-        for (let i = 0; i < numberDecreasers.length; i++) {
-            numberDecreasers[i].addEventListener("click", (e) => {
-                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], -0.5);
-            }, false);
-        }
-
-        var numberIncresers = document.getElementsByClassName("rUpB");
-        for (let i = 0; i < numberIncresers.length; i++) {
-            numberIncresers[i].addEventListener("click", (e) => {
-                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], 0.5);
-            }, false);
-        }
-
-
         document.getElementById("pickingDone").onclick = function () { document.getElementById("pickerSelection").style.display = "none"; }
-
-
-
         var isMouseDown = false;
         document.getElementById("sg").addEventListener('mousedown', function () { isMouseDown = true; }, true);
         document.addEventListener('mouseup', function () { isMouseDown = false; }, true);
-
-
-
         var lastH, lastS, lastL, lastA;
-
         function setColot() {
             var color = hsv_to_hsl(document.getElementById("hueSlider").value / 360, Math.floor(lastS) / 100, Math.floor(lastL) / 100);
             document.getElementById("colorPrew").style.background = "hsl(" + color[0] * 360 + ", " + color[1] * 100 + ", " + color[2] * 100 + ")";
             document.getElementById("colorPrew").style.opacity = document.getElementById("transparencitySlider").value / 100;
             document.getElementById("colorTInput").value = hslToHex(color[0] * 360, color[1] * 100, color[2] * 100);
         }
-
         document.getElementById("sg").addEventListener("mousemove", (e) => {
             if (isMouseDown) {
                 var yclick = e.clientY - document.getElementById("sg").getBoundingClientRect().top;
@@ -145,8 +94,53 @@
             document.getElementById("bcg").style.background = "hsl(" + document.getElementById("hueSlider").value + ", 100%, 50%)";
             setColot();
         });
-
         document.getElementById("transparencitySlider").addEventListener("change", function (evt) { setColot(); });
+
+        // pickering not done END
+
+        var tipedElements = document.getElementsByClassName("hasTip"); 
+        for (let i = 0; i < tipedElements.length; i++) {
+            tipedElements[i].addEventListener("mouseover", (e) => {
+                var label = e.currentTarget.getElementsByClassName("oLable");
+                var TipName = (label != 0) ? label[0].innerHTML : e.currentTarget.innerHTML; // if dont have olabel class then is geted all iner html !
+                setStyleToolTip(TipName, e.currentTarget.getAttribute("tip"));
+            }, false);
+
+            tipedElements[i].onmouseleave = setStyleToolTip(selectedTabName, tabDescription);;
+        }
+
+
+        var categoryButton = document.getElementsByClassName("categoryButton"); // nastavení chování možností
+        for (let i = 0; i < categoryButton.length; i++) {
+            categoryButton[i].addEventListener("click", (e) => {
+                for (let i = 0; i < categoryButton.length; i++) { categoryButton[i].style.background = "#2B6CA8"; } // all buttons to unselected color
+                e.currentTarget.style.background = "#205280";
+
+                var displayOU = (e.currentTarget.getAttribute("value") == "3") ? "inline" : "none"; // add notclickable for user to know what hapend
+
+                var custombtns = document.getElementsByClassName("customPa");
+                for (let i = 0; i < custombtns.length; i++) { custombtns[i].style.display = displayOU; }
+            }, false);
+        }
+
+        function addToNumInput(inputObject, amount) {
+            inputObject.value = (inputObject.value == undefined) ? 0 : inputObject.value + amount;
+            inputObject.focus();
+        }
+
+        var numberDecreasers = document.getElementsByClassName("rDwnB");
+        for (let i = 0; i < numberDecreasers.length; i++) {
+            numberDecreasers[i].addEventListener("click", (e) => {
+                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], -0.5);
+            }, false);
+        }
+
+        var numberIncresers = document.getElementsByClassName("rUpB");
+        for (let i = 0; i < numberIncresers.length; i++) {
+            numberIncresers[i].addEventListener("click", (e) => {
+                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], 0.5);
+            }, false);
+        }
 
     </script>
 
@@ -230,12 +224,19 @@
 
             <div class="tabArea" id="styleTab">
                 <div id="settingsArea">
-                    <div class="option" id="showAppName" tip="Just hide app name.">
+                    <div class="styleType">
+                        <button class="categoryButton hasTip" value="0" tip="Default mode defined by windows setting">AUTO</button>
+                        <button class="categoryButton hasTip" value="1" tip="Forced light mode">LIGHT</button>
+                        <button class="categoryButton hasTip" value="2" tip="Forced dark mode">DARK</button>
+                        <button class="categoryButton hasTip" value="3" tip="Set your own style">CUSTOM</button>
+                    </div>
+
+                    <div class="option hasTip" id="showAppName" tip="Just hide app name.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Hide app name</div>
                         <switch class="inp" />
                     </div>
-                    <div class="option" id="transparencity" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
+                    <div class="option hasTip" id="transparencity" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Transparencity</div>
                         <span class="inp numInput">
@@ -244,30 +245,34 @@
                             <span class="rDwnB"><img src="right-arrow.png" /></span>
                         </span>
                     </div>
-                    <div class="option" id="BackgroundColor" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
+                    <div class="option customPa hasTip" id="BackgroundColor" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
                         <div class="oLable">Background Color</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="BackgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
+                    <div class="option customPa hasTip" id="dividerLineColor" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
+                        <div class="oLable">DividerLine Color</div>
+                        <div class="inp colorpicker"></div>
+                    </div>
+                    <div class="option customPa hasTip" id="BackgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
                         <div class="oLable">Background Image</div>
                         <switch class="inp" />
                     </div>
-                    <div class="option" id="highliteERR" tip="Color of error highliting">
+                    <div class="option hasTip" id="highliteERR" tip="Color of error highliting">
                         <!-- variable in c++ name-->
                         <div class="oLable">Error Highlite</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="highliteVAR" tip="Color of variable highliting.">
+                    <div class="option hasTip" id="highliteVAR" tip="Color of variable highliting.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Variable Highlite</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="highliteSUPER" tip="Color used for highliting superline if is turned off all lines are superlines.">
+                    <div class="option hasTip" id="highliteSUPER" tip="Color used for highliting superline if is turned off all lines are superlines.">
                         <!-- variable in c++ name-->
                         <div class="oLable">SuperLine Highlite</div>
                         <div class="inp colorpicker"></div>
                     </div>
-                    <div class="option" id="fontSize" tip="Size of font.">
+                    <div class="option hasTip" id="fontSize" tip="Size of font.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Font Size</div>
                         <span class="inp numInput">
@@ -278,7 +283,7 @@
                             <span class="rDwnB"><img src="right-arrow.png" /></span>
                         </span>
                     </div>
-                    <div class="option" id="fontPadding">
+                    <div class="option hasTip" id="fontPadding">
                         <!-- variable in c++ name-->
                         <div class="oLable oLong">Padding Between Lines</div> <!-- mabey crete smaller name and chouse better tool tip-->
                         <span class="inp numInput">

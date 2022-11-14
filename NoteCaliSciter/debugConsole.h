@@ -112,16 +112,16 @@ void printElement(sciter::dom::element target) {
 	}
 }
 
-std::wstring toLower(std::wstring text) {
+std::string toLower(std::string text) {
 	for (size_t i = 0; i < text.length(); i++) {
 		text.at(i) = towlower(text.at(i));
 	}
 	return text;
 }
 
-bool stringToBool(std::wstring value) { // true false 1 0 on off 
+bool stringToBool(std::string value) { // true false 1 0 on off 
 	value = toLower(value);
-	if (value == L"1" || value == L"on" || value == L"true") {
+	if (value == "1" || value == "on" || value == "true") {
 		return true;
 	}
 	else {

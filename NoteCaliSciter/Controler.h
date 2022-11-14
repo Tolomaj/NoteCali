@@ -47,7 +47,8 @@ int Controler::doCommand(std::wstring cmd) {
 			value += cmd.at(i);
 		}
 		const std::string s(func.begin(), func.end());
-		settings.setSetting(s,value);
+		const std::string o(value.begin(), value.end());
+		settings.setSetting(s,o);
 		debugLOG(func + L" -o- " + value);
 	}
 

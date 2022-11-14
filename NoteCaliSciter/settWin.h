@@ -71,6 +71,7 @@ public:
             case CHANGE: /* debugLOG("something changes"); */  break;
 
             case 161: // not in doc caled twice
+                debugLOG("helo ");
                 if (target.test("switch.inp") && params.reason == 0) {
                     sciter::dom::element targetP = target.parent();
                     debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps: " + std::to_wstring(params.reason) );
@@ -87,8 +88,15 @@ public:
                 
                     return true; // handled
                 }
+
                 break;
             case BUTTON_CLICK:
+                debugLOG("helo2 ");
+                if (target.test("button.categoryButton")) {
+                    settings.stylescheme = _wtoi(target.get_attribute("value").c_str());
+                    settings.saveSettings();
+                    return true; // handled
+                }
                 sciter::string elementId = target.get_attribute("id");
             
                /* if (target.test("switch.inp")) {

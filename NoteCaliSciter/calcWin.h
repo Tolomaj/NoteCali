@@ -112,15 +112,15 @@ void CalculatrWin::updateSettings() {
 
 void CalculatrWin::updateStyles() {
     
-   std::wstring si = L"document.style.variable('FontSize','" + std::to_wstring(settings.fontSize) + L"');";
-   si += L"document.style.variable('FontColor','" + settings.fontColor + L"');";
-   si += L"document.style.variable('SolutionFontColor','" + settings.solutionFontColor + L"');";
-   si += L"document.style.variable('ClickColor','" + settings.clickColor + L"');";
-   si += L"document.style.variable('HowerColor','" + settings.howerColor + L"');";
-   si += L"document.style.variable('BackgroundColor','" + settings.backgroudColor + L"');";
-   si += L"document.style.variable('dividerLineColor','" + settings.dividerLineColor + L"');";
+   std::string si = "document.style.variable('FontSize','" + std::to_string(settings.fontSize) + "');";
+   si += "document.style.variable('FontColor','" + settings.fontColor + "');";
+   si += "document.style.variable('SolutionFontColor','" + settings.solutionFontColor + "');";
+   si += "document.style.variable('ClickColor','" + settings.clickColor + "');";
+   si += "document.style.variable('HowerColor','" + settings.howerColor + "');";
+   si += "document.style.variable('BackgroundColor', '" + settings.backgroudColor + "'); ";
+   si += "document.style.variable('dividerLineColor','" + settings.dividerLineColor + "');";
    debugLOG(si);
-   eval(aux::wchars(si.c_str(), si.length())); // testing
+   eval(aux::chars(si.c_str(), si.length())); // testing
    debugLOG(si);
 };
 
