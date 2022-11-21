@@ -78,7 +78,7 @@
     <IncludePath>D:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\SDKs\ginac-1.8.4;D:\SDKs\cln-1.3.6\include;C:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
     <CustomBuildBeforeTargets />
     <OutDir>$(SolutionDir)\SolutionFinal</OutDir>
     <IntDir>$(SolutionDir)\SolutionDebug</IntDir>
@@ -129,6 +129,8 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <CompileAs>Default</CompileAs>
+      <AdditionalIncludeDirectories>D:\projekty\allVisualStudio\NoteCaliSciter Controler\NoteCaliSciter\library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions> /bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -169,8 +171,12 @@
     <ClInclude Include="debugConsole.h" />
     <ClInclude Include="calcualtionAlg.h" />
     <ClInclude Include="library\ConvertUTF.h" />
+    <ClInclude Include="library\exprtk.h" />
+    <ClInclude Include="library\exprtk.hpp" />
     <ClInclude Include="library\ini.h" />
     <ClInclude Include="library\SimpleIni.h" />
+    <ClInclude Include="LineSeparator.h" />
+    <ClInclude Include="mLines.h" />
     <ClInclude Include="SettingsObject.h" />
     <ClInclude Include="settWin.h" />
     <ClInclude Include="stdafx.h" />

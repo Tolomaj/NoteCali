@@ -1,3 +1,9 @@
+#include "SettingsObject.h"
+#include "mLines.h"
+
+#include "calcualtionAlg.h"
+#include "LineSeparator.h"
+
 class Controler; // idk haw to run .h and .cpp type of structure
 class CalculatrWin; // idk haw to run .h and .cpp type of structure
 class SettingsWin; // idk haw to run .h and .cpp type of structure
@@ -7,6 +13,8 @@ class Controler {
 	//SettingsOBJ settings;
 	sciter::om::hasset<CalculatrWin> calculatorWin;// = new CalculatrWin();
 	sciter::om::hasset<SettingsWin> settingsWin;
+	LineRegister lineSeparator;
+	MatematicalSolver mathSolver;
 
 	int CalculateValidPositionX();
 
@@ -19,10 +27,11 @@ public:
 
 	int doCommand(std::wstring cmd);
 
+	int doCommandLine(mline * cmdLine);
+
 	int start();
 
-
-
+	int procesChangedInput(std::wstring);
 
 };
 
@@ -34,6 +43,8 @@ public:
 int Controler::doCommand(std::wstring cmd) {
 	std::wstring func;
 	std::wstring value;
+
+	debugLOG(cmd);
 
 	if (cmd.substr(0,7) == L"setset ") {
 		int i = 7;
@@ -55,16 +66,103 @@ int Controler::doCommand(std::wstring cmd) {
 	if (cmd.substr(0, 7) == L"saveset") { settings.saveSettings(); }
 
 	if (cmd.substr(0, 7) == L"applset") { calculatorWin->updateStyles(); }
+
+	if (cmd.substr(0, 6) == L"test 1") { calculatorWin->setText(L"Hello World"); }
 	
-	debugLOG("s");
+	
 	return 1;
+};
+
+#define NOT_CMD 0
+#define LINE_NULLING_CMD 1
+#define LINE_NOT_NULLING_CMD 2
+#define LINE_NEEDS_REPROCESS 5
+#define LINE_NOT_NULLING_NEEDS_REPROCESS 6
+#define LINE_WITH_RESPONSE 8
+
+#define LINE_ENDING_CALCULATION_PROCESS 25
+//#define LINE_CALC_PROCES_STOP_AND_NULLING 26
+ 
+int Controler::doCommandLine(mline * cmdLine) {
+	debugLOG("cmdTests");
+	cmdLine->isComandDone = true;
+
+
+	if (cmdLine->lineModifier == L"setset" && cmdLine->isEnded == true) {
+		int i = 0;
+		wstring cmd = cmdLine->line;
+		wstring func = L"";
+		wstring value = L"";
+		for (1; i < cmd.length(); i++) {
+			if (cmd.at(i) == ' ' || cmd.at(i) == '\n') { i++; break; }
+			func += cmd.at(i);
+		}
+		for (1; i < cmd.length(); i++) {
+			if (cmd.at(i) == ' ' || cmd.at(i) == '\n') { break; }
+			value += cmd.at(i);
+		}
+		const std::string s(func.begin(), func.end());
+		const std::string o(value.begin(), value.end());
+
+		if( !settings.setSetting(s, o) ){
+			cmdLine->lineModifier = L"";
+			cmdLine->line = L"setingsSotFound!";
+			return LINE_WITH_RESPONSE;
+		}
+		
+	} else if (cmdLine->lineModifier == L"saveset" ) { settings.saveSettings(); }
+
+	else if (cmdLine->lineModifier == L"applset") { calculatorWin->updateStyles(); }
+
+	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"1") {
+		cmdLine->lineModifier = L"";
+		cmdLine->line = L"Helo World!";
+		return LINE_WITH_RESPONSE;
+	}
+	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"2") {
+		cmdLine->solution = L"solus";
+		return LINE_NOT_NULLING_CMD;
+	}
+	else if (cmdLine->lineModifier == L"clear") { calculatorWin->setText(L""); return LINE_ENDING_CALCULATION_PROCESS; }
+
+	else { cmdLine->isComandDone = false; return NOT_CMD; } // if not any comad works
+	return LINE_NULLING_CMD;
+};
+
+
+int Controler::procesChangedInput(std::wstring dta) {
+	debugLOG("ivc");
+	lineSeparator.procesInput(&dta);
+	debugLOG("separated");
+	bool refreshAfterCmd = false;
+	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
+		if (lineSeparator.lines.at(i).lineModifier != L"") {
+			int linePostOperationID = doCommandLine(&lineSeparator.lines.at(i));
+			if (linePostOperationID == LINE_NULLING_CMD) {
+				lineSeparator.lines.erase(lineSeparator.lines.begin() + i);
+				i--;
+				refreshAfterCmd = true;
+			}
+			else if (linePostOperationID == LINE_WITH_RESPONSE) {  refreshAfterCmd = true; }
+			else if (linePostOperationID == LINE_ENDING_CALCULATION_PROCESS) { return 0; }
+		}
+	}
+	if (refreshAfterCmd) {
+		calculatorWin->setText(compositeLines(&lineSeparator.lines));
+	}
+	
+	mathSolver.solve(&lineSeparator.lines);
+
+	calculatorWin->publish(lineSeparator.lines);
+
+	return 0;
 };
 
 int Controler::start() {
 	settings.loadSettings();
 
 	sciter::archive::instance().open(aux::elements_of(resources));
-	calculatorWin = new CalculatrWin(this);
+	calculatorWin = new CalculatrWin(this,&lineSeparator);
 	calculatorWin->load(L"this://app/calculator.htm");
 	calculatorWin->expand();
 	calculatorWin->updateSettings();
