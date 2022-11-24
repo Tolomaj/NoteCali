@@ -74,7 +74,7 @@ public:
         }
 
         if (((params.cmd == 32928 || params.cmd == 160) && target.get_element_uid() == texAreaUid) || params.cmd == EDIT_VALUE_CHANGED) { 
-            handleScroll();
+            handleScroll(); return true;
         }
 
         if (params.cmd == BUTTON_CLICK) {
@@ -83,7 +83,8 @@ public:
                 sciter::string s = target.text();
                 std::string so = std::string(s.begin(), s.end());
                 toClipboard(get_hwnd(), so); 
-                updateStyles();
+                updateStyles(); // idk
+                return true;
             }
 
             if (elementId == L"closeB") {
@@ -170,13 +171,22 @@ public:
         mathOutput.update();
 
     }
-
 };
 
 
-void CalculatrWin::updateSettings() {
 
+void CalculatrWin::toggleSettingsWin() {
+    if (settingsWin != nullptr && settingsWin->is_valid()) {
+        settingsWin->close();
+    }
+    else {
+        settingsWin = new SettingsWin();
+        settingsWin->load(L"this://app/settings.htm");
+        SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP | SW_ENABLE_DEBUG);
+        settingsWin->expand();
+    }
 };
+
 
 void CalculatrWin::updateStyles() {
     
@@ -209,4 +219,3 @@ void CalculatrWin::handle_size(HELEMENT he) {
     }
     
 }
-

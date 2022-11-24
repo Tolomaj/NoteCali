@@ -64,8 +64,11 @@ public:
 
         
 
-    virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
+
+virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) { 
         sciter::dom::element target = params.heTarget;
+       debugLOG("something with: " + intToHEXstr(params.cmd) + " - " + std::to_string(params.cmd)  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason));
+
 
         switch (params.cmd) {
             case CHANGE: /* debugLOG("something changes"); */  break;

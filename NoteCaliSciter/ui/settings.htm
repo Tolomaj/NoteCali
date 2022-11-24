@@ -52,6 +52,13 @@
                 var sw = e.currentTarget.getElementsByClassName("inp")[0];
                 if (e.target.tagName != "SWITCH") { sw.checked = !sw.checked; sw.focus(); }
             }, false);
+
+            options[i].addEventListener("mouseover", (e) => {
+                var TipName = e.currentTarget.getElementsByClassName("oLable")[0].innerHTML;
+                setStyleToolTip(TipName, e.currentTarget.getAttribute("tip"));
+            }, false);
+
+            options[i].onmouseleave = settingsDefaultToolTip;
         }
 
 
@@ -65,7 +72,6 @@
                 document.getElementById("pickerSelection").style.display = "block";
             }, false);
         }
-
         document.getElementById("pickingDone").onclick = function () { document.getElementById("pickerSelection").style.display = "none"; }
         var isMouseDown = false;
         document.getElementById("sg").addEventListener('mousedown', function () { isMouseDown = true; }, true);
