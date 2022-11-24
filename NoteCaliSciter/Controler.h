@@ -165,7 +165,6 @@ int Controler::start() {
 	calculatorWin = new CalculatrWin(this,&lineSeparator);
 	calculatorWin->load(L"this://app/calculator.htm");
 	calculatorWin->expand();
-	calculatorWin->updateSettings();
 	calculatorWin->updateStyles();
 
 	return 1;

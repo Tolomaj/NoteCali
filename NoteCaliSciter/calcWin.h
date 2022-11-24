@@ -175,17 +175,6 @@ public:
 
 
 
-void CalculatrWin::toggleSettingsWin() {
-    if (settingsWin != nullptr && settingsWin->is_valid()) {
-        settingsWin->close();
-    }
-    else {
-        settingsWin = new SettingsWin();
-        settingsWin->load(L"this://app/settings.htm");
-        SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP | SW_ENABLE_DEBUG);
-        settingsWin->expand();
-    }
-};
 
 
 void CalculatrWin::updateStyles() {
