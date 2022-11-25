@@ -80,7 +80,8 @@ public:
         if (params.cmd == BUTTON_CLICK) {
            
             if (target.get_attribute("class") == L"mathOutputLine") {
-                sciter::string s = target.text();
+                
+                sciter::string s = target.get_attribute("val", L"0");
                 std::string so = std::string(s.begin(), s.end());
                 toClipboard(get_hwnd(), so); 
                 updateStyles(); // idk
@@ -162,7 +163,7 @@ public:
             int LineCount = round((LineEndPosX - prevousLineEndPosX) / (settings.fontSize + 2.0f * settings.fontPadding));
 
             wstring type = settings.clickToCopy ? L"button" : L"span";
-            solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" style=\"padding: " + std::to_wstring((LineCount - 1) * (settings.fontSize + 2 * settings.fontPadding) / 2) + L"px 0;\">" + lines.at(i).solution + L"</" + type + L">");
+            solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\""+ lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring((LineCount - 1) * (settings.fontSize + 2 * settings.fontPadding) / 2) + L"px 0;\">" + lines.at(i).solutionModifier + L" " + lines.at(i).solution + L"</" + type + L">");
             
             prevousLineEndPosX = LineEndPosX;
         }
@@ -172,9 +173,6 @@ public:
 
     }
 };
-
-
-
 
 
 void CalculatrWin::updateStyles() {

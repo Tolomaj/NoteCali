@@ -25,7 +25,7 @@
 
 #define WIN_MARGIN 10
 
-
+using namespace std;
 #include "Controler.h"
 
 

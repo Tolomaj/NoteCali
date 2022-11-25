@@ -131,9 +131,7 @@ int Controler::doCommandLine(mline * cmdLine) {
 
 
 int Controler::procesChangedInput(std::wstring dta) {
-	debugLOG("ivc");
 	lineSeparator.procesInput(&dta);
-	debugLOG("separated");
 	bool refreshAfterCmd = false;
 	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
 		if (lineSeparator.lines.at(i).lineModifier != L"") {
@@ -166,6 +164,12 @@ int Controler::start() {
 	calculatorWin->load(L"this://app/calculator.htm");
 	calculatorWin->expand();
 	calculatorWin->updateStyles();
+
+	/* load variables */
+	settings.globalVariables.push_back(Variable(L"pi", 3.14159265359));
+	settings.globalVariables.push_back(Variable(L"PI", 3.14159265359));
+
+	/* load variables */
 
 	return 1;
 };

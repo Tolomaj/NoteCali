@@ -46,9 +46,23 @@
 #define TYPE_TEXTMATH 0
 #define TYPE_TREEMATH 1
 
+struct Variable {
+	wstring varName = L"";
+	double number = 0;
+	Variable(wstring name, double num) { varName = name; number = num; };
+};
+
+struct Function {
+	wstring funcName = L"";
+	wstring funcDec = L"";
+};
 
 class SettingsOBJ {
 public:  
+	vector<Variable> globalVariables;
+	vector<Variable> userVariables;
+	vector<Function> userFunctions;
+
 	int stylescheme = CUSTOM;
 	int mathType = TYPE_TREEMATH;
 	
@@ -61,6 +75,7 @@ public:
 	bool showLineNumbers = SHOW_LINE_NUMBERS_DEFAULT;
 	bool isAllLinesSuperlines = ALL_SUPERLINE_DEFAUTL;
 	bool countingOnLineEnd = false;
+	bool ignoreVarCapitalLetters = true; // not implemented in setting process
 
 private:
 	#define BOOL_VAR_NUM 9 // idk jak jinak to dìlat ve foru

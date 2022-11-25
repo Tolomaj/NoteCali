@@ -3,15 +3,16 @@ using namespace std;
 #include <string>
 #include <vector>
 
-struct mline {
+struct mline { // mabey add solution preponder
 	bool isEnded = true;
 	bool isComandDone = false;
 	bool completlySolved = false;
-	std::wstring lineModifier = L"";
-	std::wstring line = L"";
+	wstring lineModifier = L"";
+	wstring line = L"";
 
-	std::wstring localVariableName = L"";
-	std::wstring solution = L"none";
+	wstring localVariableName = L"";
+	wstring solution = L"";
+	wstring solutionModifier = L"";
 };
 
 wstring compositeLines(vector<mline>* lines) {
