@@ -1,0 +1,6 @@
+[variables]
+mojepromena = 1
+pi = 3.141592
+
+[functions]
+test(x,y) = x+2*y*(5+x)

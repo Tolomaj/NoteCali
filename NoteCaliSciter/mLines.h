@@ -7,12 +7,12 @@ struct mline { // mabey add solution preponder
 	bool isEnded = true;
 	bool isComandDone = false;
 	bool completlySolved = false;
-	wstring lineModifier = L"";
-	wstring line = L"";
+	wstring lineModifier = L""; // comand for program or comand that modify line behavior
+	wstring line = L"";		// line to solve
 
 	wstring localVariableName = L"";
-	wstring solution = L"";
-	wstring solutionModifier = L"";
+	wstring solution = L""; // copiable solution to line
+	wstring solutionModifier = L""; // not copiable coment to solution
 };
 
 wstring compositeLines(vector<mline>* lines) {

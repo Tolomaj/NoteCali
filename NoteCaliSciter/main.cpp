@@ -32,19 +32,16 @@ using namespace std;
 
 int uimain(std::function<int()> run) {
 
+#if DEBUG
     SciterSetOption(nullptr, SCITER_SET_DEBUG_MODE, true);
     SciterSetOption(NULL, SCITER_SET_SCRIPT_RUNTIME_FEATURES, ALLOW_FILE_IO | ALLOW_SOCKET_IO | ALLOW_EVAL | ALLOW_SYSINFO);
-
     startDebugConsole();
+#endif
+
 
     Controler controler;
 
     controler.start();
-
-    /*LPCWSTR stylePath = is_light_theme() ? L"lightTheme.css" : L"darkTheme.css";
-    aux::bytes res_data = sciter::archive::instance().get(stylePath);
-    SciterSetMasterCSS(res_data.start, res_data.length);*/
-    
 
     return run();
 }

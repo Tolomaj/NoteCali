@@ -40,23 +40,16 @@ public:
         size_t prev = 0;
         wstring a = L"";
         while ((pos = str->find(L"\n", prev)) != string::npos) {
-            debugLOG("svc");
-            debugLOG((int)(pos - prev - 1));
             int posN = pos - prev - 1;
             if (posN < 0) { posN = 0; }
-            debugLOG(posN);
             a = str->substr(prev, pos - prev - (str->at(posN) == L'\r'));
-                debugLOG(L"psolw");
             registerLine(&a);
             prev = pos + 1;
-            debugLOG("pods");
         }
-        debugLOG("podss");
         if (prev < str->length()) {
             a = str->substr(prev);
             registerLine(&a, false);
         }
-
     };
 
 

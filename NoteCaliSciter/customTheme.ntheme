@@ -1,13 +1,10 @@
 ﻿[theme]
-showAppName = true
-highliteERR = true
-highliteVAR = true
-highliteSUPER = true
-clickToCopy = true
-showLineEnd = true
 showLineNumbers = false
-isAllLinesSuperlines = false
-countingOnLineEnd = false
 transparencity = 100.000000
-fontSize = 18.000000
-fontPadding = 2.000000
+backgroudColor = #bd11d4
+dividerLineColor = #2fb5b5
+fontColor = #1F2937
+solutionFontColor = #0E2235
+clickColor = #2F71AF
+howerColor = #1C456B
+barIconColor = #ffffff

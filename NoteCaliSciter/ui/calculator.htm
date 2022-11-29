@@ -31,6 +31,7 @@
             var(HowerColor): #1C456B;
             var(BackgroundColor): #d9d9d9;
             var(dividerLineColor): #10819A;
+            var(LineEndSze): 0px;
         }
 
         body, html {
@@ -147,7 +148,7 @@
             height: 0;
             background-color: darkseagreen;
             letter-spacing: -2px;
-            font-size: 10px; /* set to 0 if you dont want debug*/
+            font-size: var(LineEndSze); /* set to 0 if you dont want debug*/
             padding: 0;
             margin: 0;
         }
@@ -196,6 +197,10 @@
             font-weight: bold;
         }
 
+        span.mathOutputLine {
+            behavior: htmlarea;
+            context-menu: selector(menu#for-htmlarea);
+        }
 
         button.mathOutputLine:hover {
             color: var(HowerColor);
@@ -223,7 +228,6 @@
         </div>
         <div id="dividerLine"></div>
         <div id="mathOutput">
-            <span class="mathOutputLine" selectable>Ready</span>
         </div>
     </div>
 </body>

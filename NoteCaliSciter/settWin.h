@@ -62,54 +62,88 @@ public:
         this->controler = controler;
     }
 
+    SOM_PASSPORT_BEGIN(SettingsWin)
+        SOM_FUNCS(
+            SOM_FUNC(setSet)
+        )
+        SOM_PASSPORT_END
+
+    void setSet(sciter::string variable, sciter::string value, sciter::string complete) {
+        string var = sciterStrToStr(variable);
+        string val = sciterStrToStr(value);
+        debugLOG(var);
+        debugLOG(val);
+        debugLOG(sciterStrToStr(complete));
+        debugLOG(settings.setSetting(var, val));
+        if (complete == L"t") {
+            debugLOG("swin");
+            controler->processSettingsChange(DONT_RELOAD_ON_FILE, SAVE_FILE);
+        }else {
+            debugLOG("nswin");
+            controler->processSettingsChange(DONT_RELOAD_ON_FILE, DONT_SAVE_FILE);
+        }
         
+        debugLOG(settings.backgroudColor);
+    }
 
 
-virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) { 
+    void loadSettingsInWindow() {
+        call_function("SetOpenedCategory",settings.stylescheme);
+        // add loading more settings     ///TODO
+    }
+
+    void updateStyles() {
+
+    }
+
+    void numberInputEvent(sciter::dom::element target){
+        settings.setSingleSettingsbyName(sciterStrToStr(target.get_attribute("settingName")), (double)target.get_value().get(0));
+        sciter::string elementId = target.get_attribute("id"); //
+        controler->processSettingsChange();
+        //string value = sciterStrToStr( target.get_attribute("settingName"));
+       // debugLOG("XX " + sciterStrToStr(elementId) + " - " + to_string((int)target.get_value().get(0)) + " - " + value);
+    }
+
+
+
+    virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) { 
         sciter::dom::element target = params.heTarget;
-       debugLOG("something with: " + intToHEXstr(params.cmd) + " - " + std::to_string(params.cmd)  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason));
+        sciter::string elementId = target.get_attribute("id");
+        debugLOG("something with:" + std::to_string(params.cmd)  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + sciterStrToStr(elementId));
+
+
 
 
         switch (params.cmd) {
-            case CHANGE: /* debugLOG("something changes"); */  break;
-
+            /* case CHANGE:  debugLOG("something changes");   break;*/
+            case 23: numberInputEvent(target);  break;
+                    
             case 161: // not in doc caled twice
                 debugLOG("helo ");
-                if (target.test("switch.inp") && params.reason == 0) {
+                if (target.test("switch.inp") && params.reason == 0) { // switch / bool event
                     sciter::dom::element targetP = target.parent();
-                    debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps: " + std::to_wstring(params.reason) );
-                    settings.setSingleSettingsbyName(sciterStrToStr(targetP.get_attribute("id")), (bool)target.get_value().get(0));
-                    settings.saveSettings();
+                    debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps0: " + std::to_wstring(params.reason) );
+                    
+                    settings.setSingleSettingsbyName(sciterStrToStr(targetP.get_attribute("settingName")), (bool)target.get_value().get(0));
+                    controler->processSettingsChange();
                     return true; // handled
                 }
 
-                if (target.test("caption") && params.reason == 0) {
-                    sciter::dom::element targetP = target.parent();
-                    targetP = targetP.parent();
-                    targetP = targetP.parent();
-                    debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring((double)target.get_value().get<double>()) + L" " + target.get_value().to_string() + L" -daps: " + std::to_wstring(params.reason));
-                
+                if (target.test("input.inp") && params.reason == 0) {
+                    debugLOG(L"##hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps1: " + std::to_wstring(params.reason));
                     return true; // handled
+                }
+
+                if (target.test("caption") && params.reason == 0) {  
+                    numberInputEvent(target.parent()); 
+                    return true; 
                 }
 
                 break;
             case BUTTON_CLICK:
-                debugLOG("helo2 ");
-                if (target.test("button.categoryButton")) {
-                    settings.stylescheme = _wtoi(target.get_attribute("value").c_str());
-                    settings.saveSettings();
-                    return true; // handled
-                }
-                sciter::string elementId = target.get_attribute("id");
-            
-               /* if (target.test("switch.inp")) {
-                    sciter::dom::element targetP = target.parent();
-                    debugLOG(L"hvent:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)));
-                    return true; // handled
-                }*/
-
-                if (target.test("button#styleBtn")) {
-                    debugLOG("btncls");
+                if (target.test("button.categoryButton")) { // nastav kategorii / auto dark light custom
+                    settings.stylescheme = _wtoi(target.get_attribute("value").c_str());        
+                    controler->processSettingsChange(RELOAD_FROM_FILE, SAVE_SYTEM_ONLY_FILE);
                     return true; // handled
                 }
         }

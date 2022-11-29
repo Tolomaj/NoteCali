@@ -33,6 +33,13 @@ public:
 
 	int procesChangedInput(std::wstring);
 
+	#define RELOAD_FROM_FILE true
+	#define DONT_RELOAD_ON_FILE false
+	#define SAVE_SYTEM_ONLY_FILE 2
+	#define SAVE_FILE 1
+	#define DONT_SAVE_FILE 0
+	void processSettingsChange(bool reLoadFromFile = DONT_RELOAD_ON_FILE, int SaveFile = SAVE_FILE); //reload data from config files. is needed if is chaget Dark,Auto,Custom
+
 };
 
 
@@ -83,10 +90,8 @@ int Controler::doCommand(std::wstring cmd) {
 #define LINE_ENDING_CALCULATION_PROCESS 25
 //#define LINE_CALC_PROCES_STOP_AND_NULLING 26
  
-int Controler::doCommandLine(mline * cmdLine) {
-	debugLOG("cmdTests");
+int Controler::doCommandLine(mline * cmdLine) { // find and execute system comand from text  // if comand is not recognized is ignered becouse can modify line calculation process
 	cmdLine->isComandDone = true;
-
 
 	if (cmdLine->lineModifier == L"setset" && cmdLine->isEnded == true) {
 		int i = 0;
@@ -109,21 +114,12 @@ int Controler::doCommandLine(mline * cmdLine) {
 			cmdLine->line = L"setingsSotFound!";
 			return LINE_WITH_RESPONSE;
 		}
-		
-	} else if (cmdLine->lineModifier == L"saveset" ) { settings.saveSettings(); }
-
-	else if (cmdLine->lineModifier == L"applset") { calculatorWin->updateStyles(); }
-
-	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"1") {
-		cmdLine->lineModifier = L"";
-		cmdLine->line = L"Helo World!";
-		return LINE_WITH_RESPONSE;
 	}
-	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"2") {
-		cmdLine->solution = L"solus";
-		return LINE_NOT_NULLING_CMD;
-	}
-	else if (cmdLine->lineModifier == L"clear") { calculatorWin->setText(L""); return LINE_ENDING_CALCULATION_PROCESS; }
+	else if (cmdLine->lineModifier == L"saveset" )                      { settings.saveSettings();       }
+	else if (cmdLine->lineModifier == L"applset")                       { calculatorWin->updateStyles(); }
+	else if (cmdLine->lineModifier == L"clear")                         { calculatorWin->setText(L"");                                   return LINE_ENDING_CALCULATION_PROCESS; }
+	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"1") { cmdLine->lineModifier = L"";  cmdLine->line = L"Helo World!";  return LINE_WITH_RESPONSE; }
+	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"2") { cmdLine->solution = L"solus";                                  return LINE_NOT_NULLING_CMD; }
 
 	else { cmdLine->isComandDone = false; return NOT_CMD; } // if not any comad works
 	return LINE_NULLING_CMD;
@@ -134,15 +130,15 @@ int Controler::procesChangedInput(std::wstring dta) {
 	lineSeparator.procesInput(&dta);
 	bool refreshAfterCmd = false;
 	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
-		if (lineSeparator.lines.at(i).lineModifier != L"") {
+		if (lineSeparator.lines.at(i).lineModifier != L"") { // když obsahuje nejaký pøíkaz zavolá doCommand aby ho popøípadì zpustil
 			int linePostOperationID = doCommandLine(&lineSeparator.lines.at(i));
-			if (linePostOperationID == LINE_NULLING_CMD) {
+			if (linePostOperationID == LINE_NULLING_CMD) { // remove comand line and must refresh text area
 				lineSeparator.lines.erase(lineSeparator.lines.begin() + i);
 				i--;
 				refreshAfterCmd = true;
 			}
-			else if (linePostOperationID == LINE_WITH_RESPONSE) {  refreshAfterCmd = true; }
-			else if (linePostOperationID == LINE_ENDING_CALCULATION_PROCESS) { return 0; }
+			else if (linePostOperationID == LINE_WITH_RESPONSE) {  refreshAfterCmd = true; } // text area must be rerfreshed
+			else if (linePostOperationID == LINE_ENDING_CALCULATION_PROCESS) { return 0; } // comand ends text solving
 		}
 	}
 	if (refreshAfterCmd) {
@@ -168,7 +164,6 @@ int Controler::start() {
 	/* load variables */
 	settings.globalVariables.push_back(Variable(L"pi", 3.14159265359));
 	settings.globalVariables.push_back(Variable(L"PI", 3.14159265359));
-
 	/* load variables */
 
 	return 1;
@@ -176,13 +171,13 @@ int Controler::start() {
 int Controler::toggleSettings() {
 	if (settingsWin != nullptr && settingsWin->is_valid()) {
 		settingsWin->close();
-	}
-	else {
+	} else {
 		settingsWin = new SettingsWin(this);
 		settingsWin->load(L"this://app/settings.htm");
 		SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP | SW_ENABLE_DEBUG);
 		settingsWin->expand();
-		//settingsWin->updateSettings();
+		//settingsWin->updateStyles();
+		settingsWin->loadSettingsInWindow();
 	}
 	return 0;
 }
@@ -209,4 +204,19 @@ int Controler::CalculateValidPositionY() {
 	if (position < 0) { position = 0; }
 	if (position > MONITOR_HEIGHT - SETTINGS_WIN_HEIGHT) { position = MONITOR_HEIGHT - SETTINGS_WIN_HEIGHT; }
 	return position;
+}
+
+
+void Controler::processSettingsChange(bool reLoadFromFile , int SaveFile) { //reload data from config files. is needed if is chaget Dark,Auto,Custom // and reload styles
+	if (SaveFile == SAVE_FILE) {
+		settings.saveSettings();
+	}else if (SaveFile == SAVE_SYTEM_ONLY_FILE) {
+		settings.SaveSystemSettings();
+	}
+	if (reLoadFromFile) {
+		settings.loadSettings();
+	}
+
+	calculatorWin->updateStyles();
+	settingsWin->updateStyles();
 }

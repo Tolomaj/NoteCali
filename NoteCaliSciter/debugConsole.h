@@ -18,6 +18,9 @@ sciter::string WStrToSciterStr(std::wstring s) {
 std::string WstrToStr(std::wstring s) {
 	return std::string(s.begin(), s.end());
 }
+std::wstring StrToWstr(std::string s) {
+	return std::wstring(s.begin(), s.end());
+}
 
 std::string intToHEXstr(int input){
 	std::ostringstream ss;
@@ -26,6 +29,15 @@ std::string intToHEXstr(int input){
 
 	return result;
 }
+
+
+std::wstring dtos(double val) { // double to string without useful nulls // not mine
+	std::wstring str = std::to_wstring(val);
+	str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+	str.erase(str.find_last_not_of('.') + 1, std::string::npos);
+	return str;
+}
+
 
 
 
