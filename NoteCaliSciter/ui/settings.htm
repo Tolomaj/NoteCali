@@ -3,187 +3,13 @@
     <title>noteCali settings</title>
     <link rel="stylesheet" type="text/css" href="settings.css" />
 
+    <script src="tooltipsAndMenuButtons.js"></script>
+    <script src="colorPicker.js"></script>
+    <script src="inputElements.js"></script>
 
     <script>
-        var f = Window.this.SettingsWin;
-
-        Window.this.on("size", function () { document.getElementById("styleIcon").style.height = (document.offsetWidth < 200) ? "0" : "60px"; });
-
-        var selectedTabName = "Style";
-        var tabDescription = "Here is style settings";
-
-        function selectTab(btnName, tabName, tooltipisOn, description = "neni") {
-            setStyleToolTip(tabName, description);
-            selectedTabName = tabName.charAt(0).toUpperCase() + tabName.replace('Tab', '').slice(1);
-            tabDescription = description;
-
-            document.getElementById("tabWithToolTip").style.display = tooltipisOn ? "block" : "none";
-
-            var tabs = document.getElementsByClassName("tabArea");
-            for (let i = 0; i < tabs.length; i++) { tabs[i].style.display = "none";  }
-
-            var tabButtons = document.getElementsByClassName("tabButton");
-            for (let i = 0; i < tabButtons.length; i++) { tabButtons[i].classList.remove("selected"); } // unselect all buttons
-
-            document.getElementById(btnName).classList.add("selected"); // select seleected button
-            document.getElementById(tabName).style.display = "block";  
-        }
-
-
-        document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn", "styleTab", true, "Here is style settings"); }
-        document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true, "Interface"); }
-        document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true, "System"); }
-        document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true, "Variables"); }
-        document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true, "Functions"); }
-        document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false); }
-        document.getElementById("updatesBtn").onclick = function () { selectTab("updatesBtn", "updatesTab", false); }
-
-
-        function setStyleToolTip(name, description) {
-            document.getElementById("toolTip").getElementsByClassName("tip")[0].innerHTML = description;
-            document.getElementById("toolTip").getElementsByClassName("header")[0].innerHTML = name.toUpperCase();;
-        };
-
-        var options = document.getElementsByClassName("option"); // nastavení chování možností
-
-        for (let i = 0; i < options.length; i++) {
-            options[i].addEventListener("click", (e) => {
-                var sw = e.currentTarget.getElementsByClassName("inp")[0];
-                if (e.target.tagName != "SWITCH") { sw.checked = !sw.checked; sw.focus(); }
-            }, false);
-        }
-
-
-        for (const hasTipElement of document.getElementsByClassName("hasTip")) { // všem elementům classy hasTip
-            hasTipElement.addEventListener("mouseover", (e) => {
-                var label = e.currentTarget.getElementsByClassName("oLable");
-                var TipName = (label != 0) ? label[0].innerHTML : e.currentTarget.innerHTML; // if dont have olabel class then is geted all iner html !
-                setStyleToolTip(TipName, e.currentTarget.getAttribute("tip"));
-            }, false);
-            hasTipElement.addEventListener("mouseleave", (e) => {
-                console.log(selectedTabName, tabDescription);
-                setStyleToolTip(selectedTabName, tabDescription);
-            }, false);
-        }
-
-
-
-        for (const categoryButton of document.getElementsByClassName("categoryButton")) { // attach event for all buttons // categories
-            categoryButton.addEventListener("click", (e) => {
-                for (const categoryButton of document.getElementsByClassName("categoryButton")) { categoryButton.style.background = "#2B6CA8"; } // all buttons to unselected color
-                e.currentTarget.style.background = "#205280"; // self is selected
-
-                var displayOU = (e.currentTarget.getAttribute("value") == "3") ? "inline" : "none"; // add notclickable for user to know what hapend
-
-                for (const customOpt of document.getElementsByClassName("customPa")) { customOpt.style.display = displayOU; } // if is custom tab show all buttons if not show only noncustom
-            }, false);
-        }
-
-        function addToNumInput(inputObject, modifier) {
-            var amout = (inputObject.getAttribute("step") == undefined) ? 0 : inputObject.getAttribute("step");
-            inputObject.value = (inputObject.value == undefined) ? 0 : inputObject.value + amout * modifier;
-            inputObject.focus();
-        }
-
-        var numberDecreasers = document.getElementsByClassName("rDwnB");
-        for (let i = 0; i < numberDecreasers.length; i++) {
-            numberDecreasers[i].addEventListener("mousedown", (e) => {
-                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], -1);
-            }, false);
-        }
-
-        var numberIncresers = document.getElementsByClassName("rUpB");
-        for (let i = 0; i < numberIncresers.length; i++) {
-            numberIncresers[i].addEventListener("mousedown", (e) => {
-                addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], 1);
-            }, false);
-        }
-
-
-
-
-
-
-
-
-
-        // pickering not done
-
-        var nowPickingOption = "";
-        var prewiewsColor = ""; // not done!
-
-        function hsv_to_hsl(h, s, v) { var l = (2 - s) * v / 2; if (l != 0) { if (l == 1) { s = 0; } else if (l < 0.5) { s = s * v / (l * 2); } else { s = s * v / (2 - l * 2); } } return [h, s, l]; }
-        function hslToHex(h, s, l) { l /= 100; const a = s * Math.min(l, 1 - l) / 100; const f = n => { const k = (n + h / 30) % 12; const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1); return Math.round(255 * color).toString(16).padStart(2, '0'); }; return `#${f(0)}${f(8)}${f(4)}`; }
-        var pickers = document.getElementsByClassName("colorpicker");
-        for (let i = 0; i < pickers.length; i++) {
-            pickers[i].addEventListener("click", (e) => {
-                document.getElementById("pickerSelection").style.display = "block";
-                nowPickingOption = e.target.parentElement.getAttribute("settingName");
-            }, false);
-        }
         
-        var isMouseDown = false;
-        document.getElementById("sg").addEventListener('mousedown', function () { isMouseDown = true; }, true);
-        document.addEventListener('mouseup', function () { isMouseDown = false; }, true);
-        var lastH, lastS, lastL, lastA;
-        function setColot() {
-            var color = hsv_to_hsl(document.getElementById("hueSlider").value / 360, Math.floor(lastS) / 100, Math.floor(lastL) / 100);
-            document.getElementById("colorPrew").style.background = "hsl(" + color[0] * 360 + ", " + color[1] * 100 + ", " + color[2] * 100 + ")";
-            document.getElementById("colorPrew").style.opacity = document.getElementById("transparencitySlider").value / 100;
-            document.getElementById("colorTInput").value = hslToHex(color[0] * 360, color[1] * 100, color[2] * 100);
-            passColor();
-        }
-
-
-
-        document.getElementById("sg").addEventListener("mousemove", (e) => {
-            if (isMouseDown) {
-                var yclick = e.clientY - document.getElementById("sg").getBoundingClientRect().top;
-                var xclick = e.clientX - document.getElementById("sg").getBoundingClientRect().left;
-                document.getElementById("dragDot").style.marginTop = yclick - 5;
-                document.getElementById("dragDot").style.marginLeft = xclick - 5;
-
-                lastL = 100 - yclick / document.getElementById("sg").getBoundingClientRect().height * 100;
-                lastS = (xclick / document.getElementById("sg").getBoundingClientRect().width) * 100;
-                setColot();
-            }
-        }, false);
-
-        document.getElementById("hueSlider").addEventListener("change", function (evt) {
-            document.getElementById("bcg").style.background = "hsl(" + document.getElementById("hueSlider").value + ", 100%, 50%)";
-            setColot();
-        });
-        document.getElementById("transparencitySlider").addEventListener("change", function (evt) { setColot(); });
-
-        function passColor() {
-            Window.this.SettingsWin.setSet(nowPickingOption, document.getElementById("colorTInput").value,"f");
-        }
-        document.getElementById("pickingSave").onclick = function () {
-            console.log("saving");
-            Window.this.SettingsWin.setSet(nowPickingOption, document.getElementById("colorTInput").value, "t");
-            document.getElementById("pickerSelection").style.display = "none";
-           
-        }
-        document.getElementById("pickingCanceled").onclick = function () {
-            document.getElementById("pickerSelection").style.display = "none";
-            //apply Prewiews color
-        }
-
-
-        // pickering not done END
-
-
-        function SetOpenedCategory(i) {
-            var categoryButton = document.getElementsByClassName("categoryButton");
-            for (const categoryButton of document.getElementsByClassName("categoryButton")) { categoryButton.style.background = "#2B6CA8"; } // all buttons to unselected color
-                categoryButton[i].style.background = "#205280"; // self is selected
-
-                var displayOU = (i == "3") ? "inline" : "none"; // add notclickable for user to know what hapend
-
-                for (const customOpt of document.getElementsByClassName("customPa")) { customOpt.style.display = displayOU; } // if is custom tab show all buttons if not show only noncustom
-         }
-
-
+       // Window.this.on("size", function () { document.getElementById("styleIcon").style.height = (document.offsetWidth < 200) ? "0" : "60px"; });
 
     </script>
 
@@ -207,12 +33,11 @@
                 <div id="lss">
                     <div class="gradientPicker">
                         <div id="bcg"></div>
-                        <div class="fg"></div>
+                        <div id="fg"></div>
                         <div id="sg">
                             <div id="dragDot"></div>
                         </div>
                     </div>
-
                 </div>
             </div>
             <input type="hslider" id="hueSlider" max="359" value="180" step="1" />
@@ -266,73 +91,67 @@
             </div>
 
             <div class="tabArea" id="styleTab">
-                <div id="settingsArea">
-                    <div class="styleType">
-                        <button class="categoryButton hasTip" value="0" tip="Default mode defined by windows setting">AUTO</button>
-                        <button class="categoryButton hasTip" value="1" tip="Forced light mode">LIGHT</button>
-                        <button class="categoryButton hasTip" value="2" tip="Forced dark mode">DARK</button>
-                        <button class="categoryButton hasTip" value="3" tip="Set your own style">CUSTOM</button>
-                    </div>
-
-                    <div class="option hasTip" settingName="showAppName" tip="Just hide app name.">
-                        <!-- variable in c++ name-->
-                        <div class="oLable">Show app name</div>
-                        <switch class="inp" />
-                    </div>
-                    <div class="option customPa hasTip" settingName="transparencity" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
-                        <!-- variable in c++ name-->
-                        <div class="oLable">Transparencity</div>
+                <div class="styleType">
+                    <button class="categoryButton hasTip" value="0" tip="Default mode defined by windows setting">AUTO</button>
+                    <button class="categoryButton hasTip" value="1" tip="Forced light mode">LIGHT</button>
+                    <button class="categoryButton hasTip" value="2" tip="Forced dark mode">DARK</button>
+                    <button class="categoryButton hasTip" value="3" tip="Set your own style">CUSTOM</button>
+                </div>
+                <div id="settingsArea" style="height: calc(100% - 60px);">
+                    <div class="option hasTip" tip="Size of font.">
+                        <div class="oLable">Font Size</div>
                         <span class="inp numInput">
-                            <span class="rUpB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="1" value="100" settingName="transparencity"><!-- add input corection-->
-                            <span class="rDwnB"><img src="right-arrow.png" /></span>
+                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <input class="inp" type="number" step="0.5" value="18"  max="100" min="2" id="fontSizeINP"><!-- id = variableName + "INP" -->
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
                         </span>
                     </div>
-                    <div class="option customPa hasTip" settingName="backgroudColor" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
-                        <div class="oLable">Background Color</div>
-                        <div class="inp colorpicker"></div>
+                    <div class="option hasTip" tip="Just hide app name.">
+                        <div class="oLable">Show app name</div>
+                        <switch class="inp" id="showAppNameSW" /> <!-- showAppName + SW -->
                     </div>
-                    <div class="option customPa hasTip" settingName="dividerLineColor" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
+                    <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
+                        <div class="oLable">Transparencity</div>
+                        <span class="inp numInput">
+                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP"><!-- transparecity + INP -->
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                        </span>
+                    </div>
+                    <div class="option customPa hasTip" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
+                        <div class="oLable">Background Color</div>
+                        <div class="inp colorpicker" id="backgroudColorCLR"></div>
+                    </div>
+                    <div class="option customPa hasTip" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
                         <div class="oLable">DividerLine Color</div>
-                        <div class="inp colorpicker"></div>
+                        <div class="inp colorpicker" id="dividerLineColorCLR"></div>
+                    </div>
+                    <div class="option customPa hasTip" tip="Set text Color.">
+                        <div class="oLable">Text Color</div>
+                        <div class="inp colorpicker" id="fontColorCLR"></div>
                     </div>
                     <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
                         <div class="oLable">Background Image</div>
                         <switch class="inp" />
                     </div>
-                    <div class="option hasTip" settingName="highliteERR" tip="Color of error highliting">
-                        <!-- variable in c++ name-->
+                    <div class="option customPa hasTip" tip="Color of error highliting">
                         <div class="oLable">Error Highlite</div>
-                        <div class="inp colorpicker"></div>
+                        <div class="inp colorpicker" id="highliteERRCLR"></div>
                     </div>
-                    <div class="option hasTip" settingName="highliteVAR" tip="Color of variable highliting.">
-                        <!-- variable in c++ name-->
+                    <div class="option customPa hasTip" tip="Color of variable highliting.">
                         <div class="oLable">Variable Highlite</div>
-                        <div class="inp colorpicker"></div>
+                        <div class="inp colorpicker" id="highliteVARCLR"></div>
                     </div>
-                    <div class="option hasTip" settingName="highliteSUPER" tip="Color used for highliting superline if is turned off all lines are superlines.">
-                        <!-- variable in c++ name-->
+                    <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
                         <div class="oLable">SuperLine Highlite</div>
-                        <div class="inp colorpicker"></div>
+                        <div class="inp colorpicker" id="highliteSUPERCLR"></div>
                     </div>
-                    <div class="option hasTip" settingName="fontSize" tip="Size of font.">
-                        <!-- variable in c++ name-->
-                        <div class="oLable">Font Size</div>
+                    <div class="option customPa hasTip">
+                        <div class="oLable oLong">Padding Between Lines</div>
                         <span class="inp numInput">
-
-                            <!--<span class="inp numInput" step="0.5" vlaue="18" >-->
-                            <span class="rUpB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="0.5" value="18"><!-- add input corection-->
-                            <span class="rDwnB"><img src="right-arrow.png" /></span>
-                        </span>
-                    </div>
-                    <div class="option hasTip" id="fontPadding">
-                        <!-- variable in c++ name-->
-                        <div class="oLable oLong">Padding Between Lines</div> <!-- mabey crete smaller name and chouse better tool tip-->
-                        <span class="inp numInput">
-                            <span class="rUpB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="0.5" value="2"><!-- add input corection-->
-                            <span class="rDwnB"><img src="right-arrow.png" /></span>
+                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP"><!-- id = variableName + "INP" -->
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
                         </span>
                     </div>
                 </div>
@@ -343,26 +162,26 @@
             </div>
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
-                    <div class="option" settingName="countingOnLineEnd">
+                    <div class="option">
                         <!-- variable in c++ name-->
                         <div class="oLable">Counting On Line End</div>
-                        <switch class="inp" />
+                        <switch class="inp" id="countingOnLineEndSW" />
                     </div>
-                    <div class="option" settingName="isAllLinesSuperlines">
+                    <div class="option">
                         <!-- variable in c++ name-->
                         <div class="oLable">All lines Are Superines</div>
-                        <switch class="inp" />
+                        <switch class="inp" id="isAllLinesSuperlinesSW"/>
                     </div>
-                    <div class="option" settingName="showLineNumbers">
+                    <div class="option" >
                         <div class="oLable">Show Line Numbers</div>
-                        <switch class="inp" />
+                        <switch class="inp" id="showLineNumbersSW" />
                     </div>
-                    <div class="option" settingName="clickToCopy">
+                    <div class="option">
                         <!-- variable in c++ name-->
                         <div class="oLable">Click To Copy</div>
-                        <switch class="inp" />
+                        <switch class="inp" id="clickToCopySW" />
                     </div>
-                    <div class="option" settingName="useTextMath">
+                    <div class="option" settingName="mathType"> <!-- recreate to list -->
                         <!-- variable in c++ name-->
                         <div class="oLable">Use textMath</div>
                         <switch class="inp" />

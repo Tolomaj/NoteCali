@@ -3,216 +3,194 @@
 
 class CalculatrWin : public sciter::window {
 private:
-    Controler *controler;
+    Controler *controler;   // odkaz na controler pro volání eventù
     LineRegister* lineSeparator;
+
+    bool firstEvent = true; //  první naètení elementù
+    sciter::dom::element highites; //odkaz na èasto používané elementy
+    sciter::dom::element mathInput; //odkaz na èasto používané elementy
+    sciter::dom::element mathOutput; //odkaz na èasto používané elementy
+
+
+    #define PREV_CHARS_NUM 3    //poèet preventovaných znaku v html
+    const wchar peventedC[PREV_CHARS_NUM] = { L'<'   ,L'>'   ,L'&' };   //preventovane znaky
+    const wstring peventedAlias[PREV_CHARS_NUM] = { L"&lt;",L"&gt;",L"&amp;" }; // alias pro preventovany znak
 
 public:
     CalculatrWin(Controler * controler, LineRegister* lineSeparator) : window(SW_POPUP | SW_ENABLE_DEBUG, { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {
         this->controler = controler;
         this->lineSeparator = lineSeparator;
     }
-    
+
     sciter::dom::element getElementById(std::string id);
     
-    void updateStyles();
+    void updateStyles();   // updatne styl okna.
 
-    void handle_size(HELEMENT he);
+    void handle_size(HELEMENT he);  // updatne jak vypadá okno schová jméno když je moc malé
 
-    void toggleSettingsWin();
+    void toggleSettingsWin();   // otevøe/zavøe okno nastavení
 
-    
+    void setText(std::wstring dta, bool focus = true);  // nastaví text userinputu
 
-    sciter::dom::element highites;
-    sciter::dom::element mathInput;
-    sciter::dom::element mathOutput;
-    int texAreaUid = 0;
+    POINT getScroll(sciter::dom::element* highites);
 
-    bool firstEvent = true;
+    void handleScroll();
 
-    void setText(std::wstring dta,bool focus = true) {
-        mathInput.set_text(dta.c_str());
-        mathInput.update();
-        if (focus) {
-            std::string si2 = "this.focus(); this.textarea.selectRange(" + std::to_string(dta.length()) + "," + std::to_string(dta.length()) + "); ";
-            mathInput.eval(aux::utf2w(si2));
-        }
-    };
+    void preventFuncChars(mline* line);   //upravi linie tak aby neobsahovani funkcni zanky pro html jejich pseudonymi
 
-    POINT getScroll(sciter::dom::element * highites) {
-        POINT scroll; RECT r; SIZE s;
-        mathInput.get_scroll_info(scroll, r, s);
-        return scroll;
-    }
-
-    void handleScroll() {
-        POINT scroll; RECT r; SIZE s;
-        mathInput.get_scroll_info(scroll, r, s);
-        highites.set_scroll_pos(scroll);
-        mathOutput.set_scroll_pos(scroll); 
-    }
+    void publish(std::vector<mline> lines); // publish solutions and highlights
 
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
-        //debugLOG((int)params.cmd);
 
-        if (params.cmd == 193) {
-            this->close();
-            PostQuitMessage(WM_QUIT);
-            return true; // handled
-        }
+        if (params.cmd == 193) { this->close(); PostQuitMessage(WM_QUIT); return true;  }// handlování zavøení okna
 
-        if (firstEvent && params.cmd == DOCUMENT_READY) {
-            firstEvent = false;
+        if (firstEvent && params.cmd == DOCUMENT_READY) { //naètení èasto používaných obìktù
             highites = getElementById("highlights");
             mathInput = getElementById("mathInput");
             mathOutput = getElementById("mathOutput");
-            texAreaUid = mathInput.get_element_uid();
+            firstEvent = false;
         }
 
-
-        if (params.cmd == EDIT_VALUE_CHANGED) {
-            debugLOG("starting");
-            std::wstring data = sciterStrToWStr(target.get_value().to_string());
-            debugLOG("startid");
-            controler->procesChangedInput(data);
-            debugLOG("inputProcesed");
+        if (params.cmd == EDIT_VALUE_CHANGED) {  // zmenilo se pole zadání vypocitat ho a publishnout
+            controler->procesChangedInput(sciterStrToWStr(target.get_value().to_string())); return true; 
         }
-
-        if (((params.cmd == 32928 || params.cmd == 160) && target.get_element_uid() == texAreaUid) || params.cmd == EDIT_VALUE_CHANGED) { 
-            handleScroll(); return true;
+  
+        if (((params.cmd == 32928 || params.cmd == 160) && target.get_element_uid() == mathInput.get_element_uid()) || params.cmd == EDIT_VALUE_CHANGED) {
+            handleScroll(); return true;  // øesení scrollovaní
         }
-
+        
         if (params.cmd == BUTTON_CLICK) {
-           
-            if (target.get_attribute("class") == L"mathOutputLine") {
-                
-                sciter::string s = target.get_attribute("val", L"0");
-                std::string so = std::string(s.begin(), s.end());
-                toClipboard(get_hwnd(), so); 
-                updateStyles(); // idk
-                return true;
-            }
-
-            if (elementId == L"closeB") {
-                this->close();
-                PostQuitMessage(WM_QUIT);
-                return true; // handled
-            }
-            if (elementId == L"meuB") {
-                controler->toggleSettings();
-                return true; // handled
-            }
+            if (target.get_attribute("class") == L"mathOutputLine") { toClipboard(get_hwnd(), sciterStrToStr(target.get_attribute("val", L"0"))); return true; } // copy to click. zkopírování hodnoty do clipboardu
+            if (elementId == L"closeB") { this->close(); PostQuitMessage(WM_QUIT); return true; } //zavreni okna
+            if (elementId == L"meuB") { controler->toggleSettings(); return true; } //otevreni/ zavreni nastaveni
         }
-
         return false;
     }
 
-    #define PREV_CHARS_NUM 3
-    wchar peventedC[PREV_CHARS_NUM] =       { L'<'   ,L'>'   ,L'&' };
-    wstring peventedAlias[PREV_CHARS_NUM] = { L"&lt;",L"&gt;",L"&amp;" };
-
-    void preventFuncChars(mline *line) {
-        for (int i = 0; i < line->line.size(); i++) {     //composite lines together with line ends and other things
-            wchar testedC = line->line.at(i);
-            for (size_t c = 0; c < PREV_CHARS_NUM; c++){
-                if (testedC == peventedC[c]) {
-                    line->line.replace(i, 1, peventedAlias[c]);
-                    i = i + peventedAlias[c].size();
-                }
-            }
-        }
-    }
-
-
-
-    void publish(std::vector<mline> lines) { // publish solutions and highlights 
-        for (int i = 0; i < lines.size(); i++) { // char preventing < > &
-            preventFuncChars(&lines.at(i));
-        }
-
-
-        std::wstring htmlin = L"";
-        
-        // highlights TODO
-        if (settings.ishighlitingOn()) {
-           /*testing*/ 
-            if (lines.size() > 0) {
-                //lines.at(0).line = L"<mf>" + lines.at(0).line + L"</mf>";
-            }
-            /*tersting end*/
-        }
-        //highlights end
-    
-
-        int lineCount = 0;
-        for (int i = 0; i < lines.size();i++) {     //composite lines together with line ends and other things
-            if (lines.at(i).lineModifier != L"") {
-                htmlin += L";" + lines.at(i).lineModifier;
-                if (lines.at(i).line != L"") { htmlin += L" "; }
-            }
-            htmlin.append(lines.at(i).line + L"<le id=\"le" + std::to_wstring(i) + L"\">i</le>\n");
-        }
-        aux::w2utf utf8(htmlin);
-        highites.set_html((LPCBYTE)utf8, utf8.length());
-        highites.update();
-
-
-        std::wstring solutionString = L"";
-        int prevousLineEndPosX = -settings.fontPadding;
-
-        for (size_t i = 0; i < lines.size(); i++) {
-            sciter::dom::element lineEnd = highites.get_element_by_id((L"le" + std::to_wstring(i)).c_str()); //vezme linku k teré patøí øešení a vezme její pozici
-            int LineEndPosX = lineEnd.get_location(PADDING_BOX).bottom - highites.get_location(PADDING_BOX).top + getScroll(&highites).y;
-            int LineCount = round((LineEndPosX - prevousLineEndPosX) / (settings.fontSize + 2.0f * settings.fontPadding)); // vypoèítá kolik linek pøíklad zabrá aby vysledek byl stejnì vysoký
-
-            wstring type = settings.clickToCopy ? L"button" : L"span"; // sets if is clck copiable
-                                                                                                                                                                                                                                                                                                //V / must be selectable if is span !!! // TODO
-            solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\""+ lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring((LineCount - 1) * (settings.fontSize + 2 * settings.fontPadding) / 2) + L"px 0;\" >" + lines.at(i).solutionModifier + L" " + lines.at(i).solution + L"</" + type + L">"); // composite non copiable part with copiable part of solution
-            
-            prevousLineEndPosX = LineEndPosX;
-        }
-        aux::w2utf utf82(solutionString);
-        mathOutput.set_html((LPCBYTE)utf82, utf82.length());
-        mathOutput.update();
-
-    }
+ 
 };
 
 
+void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and highlights 
+    for (int i = 0; i < lines.size(); i++) { // char preventing < > &
+        preventFuncChars(&lines.at(i));
+    }
+
+
+    std::wstring htmlin = L"";
+
+    // highlights TODO
+    if (settings.ishighlitingOn()) {
+        /*testing*/
+        if (lines.size() > 0) {
+            //lines.at(0).line = L"<mf>" + lines.at(0).line + L"</mf>";
+        }
+        /*tersting end*/
+    }
+    //highlights end
+
+
+    int lineCount = 0;
+    for (int i = 0; i < lines.size(); i++) {     //composite lines together with line ends and other things
+        if (lines.at(i).lineModifier != L"") {
+            htmlin += L";" + lines.at(i).lineModifier;
+            if (lines.at(i).line != L"") { htmlin += L" "; }
+        }
+        htmlin.append(lines.at(i).line + L"<le id=\"le" + std::to_wstring(i) + L"\">i</le>\n");
+    }
+    aux::w2utf utf8(htmlin);
+    highites.set_html((LPCBYTE)utf8, utf8.length());
+    highites.update();
+
+
+    std::wstring solutionString = L"";
+    double prevousLineEndPosX = -settings.fontPadding;
+
+    for (size_t i = 0; i < lines.size(); i++) {
+        sciter::dom::element lineEnd = highites.get_element_by_id((L"le" + std::to_wstring(i)).c_str()); //vezme linku k teré patøí øešení a vezme její pozici
+        int LineEndPosX = lineEnd.get_location(PADDING_BOX).bottom - highites.get_location(PADDING_BOX).top + getScroll(&highites).y;
+        int LineCount = (int)round((LineEndPosX - prevousLineEndPosX) / (settings.fontSize + 2.0f * settings.fontPadding)); // vypoèítá kolik linek pøíklad zabrá aby vysledek byl stejnì vysoký
+
+        wstring type = settings.clickToCopy ? L"button" : L"p"; // sets if is clck copiable
+        double paddingBtwLines = 0;
+        double solutionLineHeight = settings.fontSize + 4; // <- zahynu
+                                                                                                                                                                                                                                                                                            //V / must be selectable if is span !!! // TODO
+        solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >" + lines.at(i).solutionModifier + L" " + lines.at(i).solution + L"</" + type + L">"); // composite non copiable part with copiable part of solution
+
+        prevousLineEndPosX = LineEndPosX;
+    }
+    aux::w2utf utf82(solutionString);
+    mathOutput.set_html((LPCBYTE)utf82, utf82.length());
+    mathOutput.update();
+
+}
+
+void CalculatrWin::preventFuncChars(mline* line) {    //upravi linie tak aby neobsahovani funkcni zanky pro html jejich pseudonymi
+    for (size_t i = 0; i < line->line.size(); i++) {
+        for (size_t c = 0; c < PREV_CHARS_NUM; c++) { // kazdy znak oskousi jestli není funkci
+            if (line->line.at(i) == peventedC[c]) {
+                line->line.replace(i, 1, peventedAlias[c]); // pokud ano nahradimeho aliasem
+                i = i + peventedAlias[c].size();
+            }
+        }
+    }
+}
+
+POINT CalculatrWin::getScroll(sciter::dom::element* element) {
+    POINT scroll; RECT r; SIZE s;
+    element->get_scroll_info(scroll, r, s);
+    return scroll;
+}
+
+void CalculatrWin::handleScroll() {
+    POINT scroll = getScroll(&mathInput);
+    highites.set_scroll_pos(scroll);
+    mathOutput.set_scroll_pos(scroll);
+}
+
+void CalculatrWin::setText(std::wstring dta, bool focus) {
+    mathInput.set_text(dta.c_str());
+    mathInput.update();
+    if (focus) {
+        std::string si2 = "this.focus(); this.textarea.selectRange(" + std::to_string(dta.length()) + "," + std::to_string(dta.length()) + "); ";
+        mathInput.eval(aux::utf2w(si2));
+    }
+};
+
 void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
-    
+   debugLOG(" Updating Styles");
    std::string si = "document.style.variable('FontSize','" + std::to_string(settings.fontSize) + "');";
+   //si += "document.style.variable('FontPadding','" + std::to_string(settings.fontSize + settings.fontPadding) + "px');"; //
    si += "document.style.variable('FontColor','" + settings.fontColor + "');";
    si += "document.style.variable('SolutionFontColor','" + settings.solutionFontColor + "');";
    si += "document.style.variable('ClickColor','" + settings.clickColor + "');";
    si += "document.style.variable('HowerColor','" + settings.howerColor + "');";
    si += "document.style.variable('BackgroundColor', '" + settings.backgroudColor + "'); ";
    si += "document.style.variable('dividerLineColor','" + settings.dividerLineColor + "');";
+   string s = (settings.showLineEnd ? "0px');" : "10px');");
+   si += "document.style.variable('LineEndSze','" + s;
 
-   std::string tmpSi = settings.showLineEnd ? "0px');" : "10px');";
-   si += "document.style.variable('LineEndSze','" + tmpSi;
+   eval(aux::chars(si.c_str(), si.length()));   //spustení js na UI stranì
 
    if (!firstEvent) { // for input styles
-       std::wstring data = sciterStrToWStr(mathInput.get_value().to_string());
-       controler->procesChangedInput(data);
+       controler->procesChangedInput(sciterStrToWStr(mathInput.get_value().to_string()));   //pøepoèítání pøíkladu // TODO -> jen updatnout styly
    }
 
+   handle_size( sciter::dom::element::root_element(get_hwnd())   ); // refreshnout vse spojené s velikostí okna
 
-   handle_size(   sciter::dom::element::root_element(get_hwnd())   );
-   eval(aux::chars(si.c_str(), si.length()));
-   debugLOG(si);
+
+   
 };
 
 sciter::dom::element CalculatrWin::getElementById(std::string id) {
-    sciter::dom::element root = sciter::dom::element::root_element(get_hwnd());
-    return root.get_element_by_id(id.c_str());
+    return ((element)element::root_element(get_hwnd())).get_element_by_id(id.c_str());
 };
 
-
 void CalculatrWin::handle_size(HELEMENT he) {
+    debugLOG(" Handling Size");
     RECT rect;
-    debugLOG("haSi");
     GetWindowRect(get_hwnd(), &rect);
     getElementById("appName").set_style_attribute("opacity", (rect.right - rect.left > 220 && settings.showAppName) ? L"1" : L"0");
 }

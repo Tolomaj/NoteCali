@@ -179,6 +179,19 @@ switch {
     }
 
 
+@set simpleScroll {
+    .slider {
+        border: 1dip solid #848484;
+        border-radius: 5px;
+        background: #404040;
+    }
+    .slider:hover { border-left: 1px solid #848484;}
+    .slider:active { background: #252525;}
+    .base {  width: 8dip }
+    .base:hover {  width: 4dip; }
+}
+
+
 .tabArea {
     margin-left: 1*;
     height: 100%;
@@ -189,15 +202,19 @@ switch {
 #tabWithToolTip {
     width: calc(100% - 150px);
     background-color: #d9d9d9;
+    height: 100%;
 }
 
     #tabWithToolTip .tabArea {
         width: 100%;
+        height: calc(100% - 150px);
     }
 
 #settingsArea {
+    overflow-y: auto;
+    vertical-scrollbar: simpleScroll;
     padding: 0;
-    width: 100%;
+    height: 100%;
     flow: horizontal-flow;
     horizontal-align: center;
 }
@@ -449,7 +466,7 @@ textarea:focus, input:focus {
     background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 1) 100%);
 }
 
-.testGradi .fg { /*first layer*/
+#fg { /*first layer*/
     background: linear-gradient(0deg, rgba(255, 255, 255, 1) 0%,rgba(255, 255, 255, 0) 100%);
 }
 
@@ -639,11 +656,11 @@ textarea:focus, input:focus {
 .styleType {
     
     padding: 4px 4px;
-    margin: 4px;
+    margin: 4px 1*;
     display: inline-block;
     background-color: #aebcc3;
     border-radius: 15px;
     flow: horizontal;
-    width: 90%;
+    width: 95%;
     cursor: pointer;
 }

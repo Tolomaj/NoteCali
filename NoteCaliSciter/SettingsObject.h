@@ -46,11 +46,6 @@
 
 
 
-struct Variable {
-	wstring varName = L"";
-	double number = 0;
-	Variable(wstring name, double num) { varName = name; number = num; };
-};
 
 struct Function {
 	wstring funcName = L"";
@@ -59,8 +54,6 @@ struct Function {
 
 class SettingsOBJ {
 public:  
-	vector<Variable> globalVariables;
-	vector<Variable> userVariables;
 	vector<Function> userFunctions;
 
 	int stylescheme = AUTO;
@@ -78,6 +71,7 @@ public:
 	bool ignoreVarCapitalLetters = true; // not implemented in setting process
 
 private:
+
 	#define BOOL_VAR_NUM 9 // idk jak jinak to dìlat ve foru
 	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 };
 	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  };
@@ -116,10 +110,6 @@ public:
 	std::string howerColor = HOWER_COLOR_DEFAULT;
 	std::string barIconColor = BAR_ICON_DEFAULT;
 private:
-
-	/*
-		std::string backgroudColor = ;
-	*/
 
 	#define TEXT_VAR_NUM 7 // idk jak jinak to dìlat ve foru
 	bool systemTextValue[TEXT_VAR_NUM] =          { false                    , false                      , false              , false                       , false               , false               , false         };
@@ -193,7 +183,7 @@ wstring SettingsOBJ::getSettingAsWstring(std::string name) {
 			return StrToWstr(*textValPointers[i]);
 		}
 	}
-	debugLOG("settingNotFound by name!");
+	debugLOG("Setting Not Found by name! Name: " + name);
 	return L"none";
 };
 
@@ -211,6 +201,7 @@ bool SettingsOBJ::setSetting(std::string name, std::string value) {
 		}
 	}
 	for (size_t i = 0; i < INT_VAR_NUM; i++) {
+		debugLOG(systemIntVariableNames[i] + " : " + name);
 		if (systemIntVariableNames[i] == name) {
 			*systemIntValPointers[i] = std::stoi(value);
 			return true;
@@ -222,7 +213,7 @@ bool SettingsOBJ::setSetting(std::string name, std::string value) {
 			return true;
 		}
 	}
-	debugLOG("settingNotFound by name!");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->ALL_TYPES");
 	return false;
 }
 
@@ -235,7 +226,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name,bool value) {
 			return true;
 		}
 	}
-	debugLOG("settingNotFound by name!");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_TYPE");
 	return false;
 };
 
@@ -246,7 +237,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, double value) {
 			return true;
 		}
 	}
-	debugLOG("settingNotFound by name!");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_DOUBLE");
 	return false;
 
 };
@@ -258,7 +249,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, int value) {
 			return true;
 		}
 	}
-	debugLOG("settingNotFound by name!");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_INT");
 	return false;
 
 };
@@ -270,7 +261,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, std::string value) {
 			return true;
 		}
 	}
-	debugLOG("settingNotFound by name!");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_STRING");
 	return false;
 };
 
@@ -308,8 +299,6 @@ bool SettingsOBJ::resetSettingsFiles(int file  = 0) { // DATAFILE,STYLEFILE,BOAT
 			debugLOG("cant crete data file ! MATER ERROR = CLOSING");
 			exit(1);
 		}
-
-
 
 		appDataFile << "[settings]\nstylescheme = 0\nmathType = 1\n[defaultDarkTheme]\n" + defaultLightTheme + "\n[defaultLightTheme]\n" + defaultDarkTheme;
 		appDataFile.close();
@@ -362,6 +351,7 @@ int SettingsOBJ::loadSystemSettings() {
 			*doubleValPointers[i] = ini.GetDoubleValue("settings", doubleVariableNames[i].c_str(), doubleValDefault[i]);
 		}
 	}
+	return 0;
 };
 
 
@@ -421,22 +411,46 @@ int SettingsOBJ::loadSettings(){
 	return 0;
 };
 
-
+#define PRINT_SETINGS_SETT true
 bool SettingsOBJ::SaveSystemSettings() {
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
+	debugLOG(" -:SavingSystemSettings");
 	SI_Error rc = ini.LoadFile("appData.ini");
 	for (size_t i = 0; i < INT_VAR_NUM; i++) {
 		if (systemIntValue[i]) {
 			ini.SetValue("settings", systemIntVariableNames[i].c_str(), std::to_string(*systemIntValPointers[i]).c_str());
+			#if PRINT_SETINGS_SETT
+				debugLOG("  : " + systemIntVariableNames[i] + " - " + to_string(*systemIntValPointers[i]));
+			#endif	
 		}
 	}
 	for (size_t i = 0; i < BOOL_VAR_NUM; i++) {
 		if (systemBoolValue[i]) {
 			ini.SetBoolValue("settings", boolVariableNames[i].c_str(), *boolValPointers[i]);
+			#if PRINT_SETINGS_SETT
+				debugLOG("  : " + boolVariableNames[i] + " - " + to_string(*boolValPointers[i]));
+			#endif
 		}
 	}
+	for (size_t i = 0; i < DOUBLE_VAR_NUM; i++) {
+		if (systemDoubleValue[i]) {
+			ini.SetDoubleValue("settings", doubleVariableNames[i].c_str(), *doubleValPointers[i]);
+			#if PRINT_SETINGS_SETT
+				debugLOG("  : " + doubleVariableNames[i] + " - " + to_string(*doubleValPointers[i]));
+			#endif	
+		}
+	}
+	for (size_t i = 0; i < TEXT_VAR_NUM; i++) {
+		if (systemTextValue[i]) {
+			ini.SetValue("theme", textVariableNames[i].c_str(), textValPointers[i]->c_str());
+			#if PRINT_SETINGS_SETT
+				debugLOG("  : " + textVariableNames[i] + " - " + *textValPointers[i]);
+			#endif	
+		}
+	}
+
 	ini.SaveFile("appData.ini");
 
 	return 0;
@@ -447,20 +461,38 @@ bool SettingsOBJ::SaveThemeSettings() {
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
+	debugLOG(" -:SavingThemeSettings");
 	if (stylescheme == CUSTOM) { // only custom theme can be saved // saves all settings
+		for (size_t i = 0; i < INT_VAR_NUM; i++) {
+			if (!systemIntValue[i]) {
+				ini.SetValue("settings", systemIntVariableNames[i].c_str(), std::to_string(*systemIntValPointers[i]).c_str());
+				#if PRINT_SETINGS_SETT
+					debugLOG("  : " + systemIntVariableNames[i] + " - " + to_string(*systemIntValPointers[i]));
+				#endif	
+			}
+		}
 		for (size_t i = 0; i < BOOL_VAR_NUM; i++) {
 			if (!systemBoolValue[i]) {	// IF VARIABLE IS THEME 
 				ini.SetBoolValue("theme", boolVariableNames[i].c_str(), *boolValPointers[i]);
+				#if PRINT_SETINGS_SETT
+					debugLOG("  : " + boolVariableNames[i] + " - " + to_string(*boolValPointers[i]));
+				#endif	
 			}
 		}
 		for (size_t i = 0; i < DOUBLE_VAR_NUM; i++) {
 			if (!systemDoubleValue[i]) {
 				ini.SetDoubleValue("theme", doubleVariableNames[i].c_str(), *doubleValPointers[i]);
+				#if PRINT_SETINGS_SETT
+					debugLOG("  : " + doubleVariableNames[i] + " - " + to_string(*doubleValPointers[i]));
+				#endif	
 			}
 		}
 		for (size_t i = 0; i < TEXT_VAR_NUM; i++) {
 			if (!systemTextValue[i]) {
 				ini.SetValue("theme", textVariableNames[i].c_str(), textValPointers[i]->c_str());
+				#if PRINT_SETINGS_SETT
+					debugLOG("  : " + textVariableNames[i] + " - " + *textValPointers[i]);
+				#endif	
 			}
 		}
 		ini.SaveFile("customTheme.ntheme");
@@ -475,7 +507,9 @@ bool SettingsOBJ::SaveThemeSettings() {
 
 bool SettingsOBJ::saveSettings(){
 	SaveSystemSettings();
-	SaveThemeSettings();
+	if (stylescheme == CUSTOM) { // aby se nevypisovala chybová hláška
+		SaveThemeSettings();
+	}
 	return 0;
 };
 

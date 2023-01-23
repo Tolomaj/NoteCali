@@ -51,6 +51,7 @@ FIRST_APPLICATION_EVENT_CODE = 0x100
 */  
 // events list 
 
+using namespace sciter::dom;
 
 
 class SettingsWin : public sciter::window {
@@ -63,68 +64,34 @@ public:
     }
 
     SOM_PASSPORT_BEGIN(SettingsWin)
-        SOM_FUNCS(
-            SOM_FUNC(setSet)
-        )
+        SOM_FUNCS( SOM_FUNC(setSet) )
         SOM_PASSPORT_END
 
-    void setSet(sciter::string variable, sciter::string value, sciter::string complete) {
-        string var = sciterStrToStr(variable);
-        string val = sciterStrToStr(value);
-        debugLOG(var);
-        debugLOG(val);
-        debugLOG(sciterStrToStr(complete));
-        debugLOG(settings.setSetting(var, val));
-        if (complete == L"t") {
-            debugLOG("swin");
-            controler->processSettingsChange(DONT_RELOAD_ON_FILE, SAVE_FILE);
-        }else {
-            debugLOG("nswin");
-            controler->processSettingsChange(DONT_RELOAD_ON_FILE, DONT_SAVE_FILE);
-        }
-        
-        debugLOG(settings.backgroudColor);
-    }
+    void setSet(sciter::string variable, sciter::string value, sciter::string complete);
 
+    void loadSettingsInWindow();
 
-    void loadSettingsInWindow() {
-        call_function("SetOpenedCategory",settings.stylescheme);
-        // add loading more settings     ///TODO
-    }
+    void updateStyles() { }
 
-    void updateStyles() {
-
-    }
-
-    void numberInputEvent(sciter::dom::element target){
-        settings.setSingleSettingsbyName(sciterStrToStr(target.get_attribute("settingName")), (double)target.get_value().get(0));
-        sciter::string elementId = target.get_attribute("id"); //
-        controler->processSettingsChange();
-        //string value = sciterStrToStr( target.get_attribute("settingName"));
-       // debugLOG("XX " + sciterStrToStr(elementId) + " - " + to_string((int)target.get_value().get(0)) + " - " + value);
-    }
-
+    void numberInputEvent(sciter::dom::element target);
 
 
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) { 
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
-        debugLOG("something with:" + std::to_string(params.cmd)  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + sciterStrToStr(elementId));
 
+        string stro = "_";
 
-
+        if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
+        debugLOG("something with:" + std::to_string(params.cmd )  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro  + " - " + sciterStrToStr(elementId));
 
         switch (params.cmd) {
-            /* case CHANGE:  debugLOG("something changes");   break;*/
-            case 23: numberInputEvent(target);  break;
+            case 23: debugLOG("NumberEventInput");  numberInputEvent(target);  break;
                     
-            case 161: // not in doc caled twice
-                debugLOG("helo ");
+            case 161: // není v dokumentaci, odpozorováno. zavoláno dvakrát jednou reson je 1 podrzhé 0
                 if (target.test("switch.inp") && params.reason == 0) { // switch / bool event
-                    sciter::dom::element targetP = target.parent();
-                    debugLOG(L"hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + targetP.get_attribute("id") + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps0: " + std::to_wstring(params.reason) );
-                    
-                    settings.setSingleSettingsbyName(sciterStrToStr(targetP.get_attribute("settingName")), (bool)target.get_value().get(0));
+                    string name = sciterStrToStr(target.get_attribute("id")); // vezme Id elementu. to je název settings + "SW"
+                    settings.setSingleSettingsbyName(name.substr(0, name.size() - 2), (bool)target.get_value().get(0)); // odstraní z id "SW" a nastaví hodnotou
                     controler->processSettingsChange();
                     return true; // handled
                 }
@@ -136,14 +103,16 @@ public:
 
                 if (target.test("caption") && params.reason == 0) {  
                     numberInputEvent(target.parent()); 
+                    debugLOG("mocenos");
                     return true; 
                 }
 
                 break;
             case BUTTON_CLICK:
                 if (target.test("button.categoryButton")) { // nastav kategorii / auto dark light custom
-                    settings.stylescheme = _wtoi(target.get_attribute("value").c_str());        
-                    controler->processSettingsChange(RELOAD_FROM_FILE, SAVE_SYTEM_ONLY_FILE);
+                    settings.stylescheme = _wtoi(target.get_attribute("value").c_str());      // nastavi categorii  
+                    controler->processSettingsChange(RELOAD_FROM_FILE, SAVE_SYTEM_ONLY_FILE); // naète nastavení pro kategorii
+                    loadSettingsInWindow(); // naète styli pro kategorii z aktuálnho nastravení stylù
                     return true; // handled
                 }
         }
@@ -153,3 +122,52 @@ public:
 
 };
 
+
+
+
+void SettingsWin::numberInputEvent(sciter::dom::element target) {
+    string setName = sciterStrToStr(target.get_attribute("id")); // get setting name atributte from setting hl element
+    setName = setName.substr(0, setName.size() - 3);
+    settings.setSingleSettingsbyName(setName, (double)target.get_value().get(0.0f));
+    controler->processSettingsChange(); // refresh styles
+    debugLOG("setSet: " + setName + " - " + to_string((double)target.get_value().get(0.0f)));
+}
+
+void SettingsWin::setSet(sciter::string variable, sciter::string value, sciter::string complete) {
+    string var = sciterStrToStr(variable);
+    var = var.substr(0, var.size() - 3);
+    string val = sciterStrToStr(value);
+
+    debugLOG(" Seting seting : " + var + " to value : " + val + " resfresh is: " + sciterStrToStr(complete));
+
+    settings.setSingleSettingsbyName(var, val);
+
+    if (complete == L"t") {
+        controler->processSettingsChange(DONT_RELOAD_ON_FILE, SAVE_FILE); // save settings into file
+    }
+    else {
+        controler->processSettingsChange(DONT_RELOAD_ON_FILE, DONT_SAVE_FILE); // dont save into file only apply to styles
+    }
+}
+
+
+void SettingsWin::loadSettingsInWindow() {
+    call_function("SetOpenedCategory", settings.stylescheme);
+    sciter::dom::element root = sciter::dom::element::root_element(get_hwnd());
+    ((element)root.get_element_by_id("showAppNameSW")).set_value(sciter::value(settings.showAppName));
+    ((element)root.get_element_by_id("fontSizeINP")).set_value(sciter::value(settings.fontSize));
+    ((element)root.get_element_by_id("fontPaddingINP")).set_value(sciter::value(settings.fontPadding));
+    ((element)root.get_element_by_id("transparencityINP")).set_value(sciter::value(settings.transparencity));
+
+    ((element)root.get_element_by_id("backgroudColorCLR")).set_style_attribute("background-color", StrToWstr(settings.backgroudColor).c_str());
+    ((element)root.get_element_by_id("dividerLineColorCLR")).set_style_attribute("background-color", StrToWstr(settings.dividerLineColor).c_str());
+
+    ((element)root.get_element_by_id("fontColorCLR")).set_style_attribute("background-color", StrToWstr(settings.fontColor).c_str());
+
+    ((element)root.get_element_by_id("countingOnLineEndSW")).set_value(sciter::value(settings.countingOnLineEnd));
+    ((element)root.get_element_by_id("isAllLinesSuperlinesSW")).set_value(sciter::value(settings.isAllLinesSuperlines));
+    ((element)root.get_element_by_id("showLineNumbersSW")).set_value(sciter::value(settings.showLineNumbers));
+    ((element)root.get_element_by_id("clickToCopySW")).set_value(sciter::value(settings.clickToCopy));
+
+    // add loading more settings     ///TODO
+}

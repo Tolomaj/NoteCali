@@ -118,7 +118,7 @@ void printElement(sciter::dom::element target) {
 	debugLOG(" - ", false);
 	debugLOG((int)target.get_attribute_count(), false);
 	debugLOG(" : ", false);
-	for (int i = 0; i < target.get_attribute_count(); i++) {
+	for (size_t i = 0; i < target.get_attribute_count(); i++) {
 		debugLOG(target.get_attribute_name(i), false);
 		debugLOG(", ", false);
 	}

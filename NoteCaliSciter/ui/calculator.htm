@@ -4,7 +4,6 @@
 
     <style>
 
-
         @font-face {
             font-family: 'Open Sans';
             font-style: normal;
@@ -25,6 +24,7 @@
 
         html {
             var(FontSize): 18; /*without px*/
+            var(FontPadding): 20px; /*without px*/
             var(FontColor): #1F2937;
             var(SolutionFontColor): #0E2235;
             var(ClickColor): #2F71AF;
@@ -151,6 +151,7 @@
             font-size: var(LineEndSze); /* set to 0 if you dont want debug*/
             padding: 0;
             margin: 0;
+            border:0;
         }
 
         ph {
@@ -191,16 +192,21 @@
             font-size: var(FontSize)px;
             font-rendering-mode: snap-pixel;
             width: 100%;
-            height: 22px;
+            height: auto;
             text-align: center;
             transition: color 0.2s;
             font-weight: bold;
+        }
+
+        button .mathOutputLine {
+            height: var(FontSize)px;
         }
 
         span.mathOutputLine {
             behavior: htmlarea;
             context-menu: selector(menu#for-htmlarea);
         }
+
 
         button.mathOutputLine:hover {
             color: var(HowerColor);

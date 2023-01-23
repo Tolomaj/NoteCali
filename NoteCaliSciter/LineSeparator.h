@@ -14,7 +14,7 @@ class LineRegister {
             lines.push_back(separatedLine);
             return;
         }
-        int space = iline->find(L" ");
+        size_t space = iline->find(L" ");
         if (space == string::npos) {
             separatedLine.lineModifier = iline->substr(1,iline->length());
             lines.push_back(separatedLine);
@@ -40,7 +40,7 @@ public:
         size_t prev = 0;
         wstring a = L"";
         while ((pos = str->find(L"\n", prev)) != string::npos) {
-            int posN = pos - prev - 1;
+            size_t posN = pos - prev - 1;
             if (posN < 0) { posN = 0; }
             a = str->substr(prev, pos - prev - (str->at(posN) == L'\r'));
             registerLine(&a);

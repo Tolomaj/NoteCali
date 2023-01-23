@@ -1,0 +1,2 @@
+pøidání naaèítání a ukládání konstant z nastavovacího okna
+pøidat algoritmus poèítání kalkulaèky

@@ -7,6 +7,9 @@
 #include <sciter-x-window.hpp>
 #include "sciter-win-main.cpp"
 
+#include <chrono>
+
+
 #if WIN_VERSION
 #include <Uxtheme.h>
 #include "debugConsole.h"

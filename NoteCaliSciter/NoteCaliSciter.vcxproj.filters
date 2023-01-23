@@ -65,6 +65,15 @@
     <ClInclude Include="library\exprtk.hpp">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
+    <ClInclude Include="textMath.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\inputElements.js">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="variableLoader.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ui\add.svg" />
@@ -89,6 +98,8 @@
     <None Include="ui\update.svg" />
     <None Include="ui\variable.svg" />
     <None Include="ui\settings.css" />
+    <None Include="ui\tooltipsAndMenuButtons.js" />
+    <None Include="ui\colorPicker.js" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\inria-sans.otf" />
@@ -111,5 +122,8 @@
     <Image Include="ui\right-arrow.png">
       <Filter>Soubory zdrojů</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="poznámky.txt" />
   </ItemGroup>
 </Project>

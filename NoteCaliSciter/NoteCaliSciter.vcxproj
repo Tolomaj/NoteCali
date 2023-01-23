@@ -180,6 +180,9 @@
     <ClInclude Include="SettingsObject.h" />
     <ClInclude Include="settWin.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="textMath.h" />
+    <ClInclude Include="ui\inputElements.js" />
+    <ClInclude Include="variableLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ui\add-variable.svg" />
@@ -191,6 +194,7 @@
     </None>
     <None Include="ui\close.svg" />
     <None Include="ui\color-palette.svg" />
+    <None Include="ui\colorPicker.js" />
     <None Include="ui\feedback.svg" />
     <None Include="ui\filter.svg" />
     <None Include="ui\functions.svg" />
@@ -205,6 +209,7 @@
       <DeploymentContent>true</DeploymentContent>
     </None>
     <None Include="ui\switch.svg" />
+    <None Include="ui\tooltipsAndMenuButtons.js" />
     <None Include="ui\trash.svg" />
     <None Include="ui\update.svg" />
     <None Include="ui\variable.svg" />
@@ -220,6 +225,9 @@
     <Image Include="ui\sci_fi_city_cities_artwork_art_futuristic_5120x4096.jpg" />
     <Image Include="ui\switch.png" />
     <Image Include="ui\transpa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="poznámky.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

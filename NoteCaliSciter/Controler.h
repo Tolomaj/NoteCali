@@ -1,8 +1,10 @@
 #include "SettingsObject.h"
 #include "mLines.h"
 
+#include "variableLoader.h"
 #include "calcualtionAlg.h"
 #include "LineSeparator.h"
+
 
 class Controler; // idk haw to run .h and .cpp type of structure
 class CalculatrWin; // idk haw to run .h and .cpp type of structure
@@ -127,6 +129,7 @@ int Controler::doCommandLine(mline * cmdLine) { // find and execute system coman
 
 
 int Controler::procesChangedInput(std::wstring dta) {
+	debugLOG(">> Starting Processing Text Input <<");
 	lineSeparator.procesInput(&dta);
 	bool refreshAfterCmd = false;
 	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
@@ -148,12 +151,14 @@ int Controler::procesChangedInput(std::wstring dta) {
 	mathSolver.solve(&lineSeparator.lines);
 
 	calculatorWin->publish(lineSeparator.lines);
-
+	debugLOG(">> Text input Procesed <<");
 	return 0;
 };
 
 int Controler::start() {
 	settings.loadSettings();
+	debugLOG("loaded!");
+	variableTable.loadVariables();
 
 	sciter::archive::instance().open(aux::elements_of(resources));
 	calculatorWin = new CalculatrWin(this,&lineSeparator);
@@ -161,10 +166,8 @@ int Controler::start() {
 	calculatorWin->expand();
 	calculatorWin->updateStyles();
 
-	/* load variables */
-	settings.globalVariables.push_back(Variable(L"pi", 3.14159265359));
-	settings.globalVariables.push_back(Variable(L"PI", 3.14159265359));
-	/* load variables */
+
+
 
 	return 1;
 };
