@@ -94,14 +94,14 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
 
     int lineCount = 0;
     for (int i = 0; i < lines.size(); i++) {     //composite lines together with line ends and other things
-        if (lines.at(i).lineModifier != L"") {
-            htmlin += L";" + lines.at(i).lineModifier;
+        if (lines.at(i).command != L"") {
+            htmlin += L";" + lines.at(i).command;
             if (lines.at(i).line != L"") { htmlin += L" "; }
         }
         htmlin.append(lines.at(i).line + L"<le id=\"le" + std::to_wstring(i) + L"\">i</le>\n");
     }
     aux::w2utf utf8(htmlin);
-    highites.set_html((LPCBYTE)utf8, utf8.length());
+    //highites.set_html((LPCBYTE)utf8, utf8.length());
     highites.update();
 
 
@@ -116,8 +116,18 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         wstring type = settings.clickToCopy ? L"button" : L"p"; // sets if is clck copiable
         double paddingBtwLines = 0;
         double solutionLineHeight = settings.fontSize + 4; // <- zahynu
-                                                                                                                                                                                                                                                                                            //V / must be selectable if is span !!! // TODO
-        solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >" + lines.at(i).solutionModifier + L" " + lines.at(i).solution + L"</" + type + L">"); // composite non copiable part with copiable part of solution
+                       
+
+                                                           //V / must be selectable if is span !!! // TODO
+        solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >");
+        solutionString.append(lines.at(i).solutionModifier + L" ");
+        if (lines.at(i).localVariableName != L"") {
+            solutionString.append(lines.at(i).localVariableName + L":");
+        }
+        if (lines.at(i).error.type <= 0 || settings.showErrText) { // dont print errors
+            solutionString.append(lines.at(i).solution); // composite non copiable part with copiable part of solution
+        }
+        solutionString.append( L"</" + type + L">"); // composite non copiable part with copiable part of solution
 
         prevousLineEndPosX = LineEndPosX;
     }
@@ -169,6 +179,7 @@ void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
    si += "document.style.variable('HowerColor','" + settings.howerColor + "');";
    si += "document.style.variable('BackgroundColor', '" + settings.backgroudColor + "'); ";
    si += "document.style.variable('dividerLineColor','" + settings.dividerLineColor + "');";
+   si += "document.style.variable('TitleColor','" + settings.titleColor + "');";
    string s = (settings.showLineEnd ? "0px');" : "10px');");
    si += "document.style.variable('LineEndSze','" + s;
 

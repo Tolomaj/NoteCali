@@ -47,6 +47,8 @@ std::string ConvertToString(DWORD value) {
 	return ss.str(); 
 }
 
+#if DEBUG 
+
 void debugLOG(std::string s, bool onNewLine = true) {
 	if (onNewLine) { s = "\n" + s; } 
 	std::wstring stemp = std::wstring(s.begin(), s.end());
@@ -67,7 +69,6 @@ void debugLOG(sciter::string s, bool onNewLine = true) {
 	
 } 
  
-
 void debugLOG(int num, bool onNewLine = true) {
 	std::string s = std::to_string(num);
 	if (onNewLine) { s = "\n" + s; }
@@ -94,6 +95,22 @@ void debugLOG(double num, bool onNewLine = true) {
 	DWORD dwSize = 0;
 	WriteConsole(GetStdHandle(STD_OUTPUT_HANDLE), sw, lstrlen(sw), &dwSize, NULL);
 }
+
+#else
+
+void debugLOG(std::string s, bool onNewLine = true) {}
+
+void debugLOG(sciter::string s, bool onNewLine = true) {}
+
+void debugLOG(int num, bool onNewLine = true) {}
+
+void debugLOG(float num, bool onNewLine = true) {}
+
+void debugLOG(double num, bool onNewLine = true) {}
+
+#endif
+
+
 
 void startDebugConsole() {
 	AllocConsole();

@@ -2,9 +2,13 @@ var selectedTabName = "Style";
 var tabDescription = "Here is style settings";
 
 function selectTab(btnName, tabName, tooltipisOn, description = "neni") { // otevøení tabu a nastavení defaultního typu
-    setStyleToolTip(tabName, description);
+
     selectedTabName = tabName.charAt(0).toUpperCase() + tabName.replace('Tab', '').slice(1);
     tabDescription = description;
+
+    setStyleToolTip(selectedTabName, description);
+
+
 
     document.getElementById("tabWithToolTip").style.display = tooltipisOn ? "block" : "none";
 
@@ -19,18 +23,18 @@ function selectTab(btnName, tabName, tooltipisOn, description = "neni") { // ote
 }
 
 
-document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn", "styleTab", true, "Here is style settings"); }
-document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true, "Interface"); }
-document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true, "System"); }
-document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true, "Variables"); }
-document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true, "Functions"); }
+document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn", "styleTab", true, "Here is style settings.<br>If you want custom colors you must select custom profile."); }
+document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true, "This tab describes haw to comunicate with calculator. And calculator Features"); }
+document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true, "Here you can set system settings. All bohavior can by changed there"); }
+document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true, "Here is your variales<br>You can add more Variables in file on programfolder named constants.nConst<br>Restart Requaire"); }
+document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true, "There you can set Functions"); }
 document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false); }
 document.getElementById("updatesBtn").onclick = function () { selectTab("updatesBtn", "updatesTab", false); }
 
 
 function setStyleToolTip(name, description) {
     document.getElementById("toolTip").getElementsByClassName("tip")[0].innerHTML = description;
-    document.getElementById("toolTip").getElementsByClassName("header")[0].innerHTML = name.toUpperCase();;
+    document.getElementById("toolTip").getElementsByClassName("header")[0].innerHTML = name;
 };
 
 for (const hasTipElement of document.getElementsByClassName("hasTip")) { // všem elementùm classy hasTip

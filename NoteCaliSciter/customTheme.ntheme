@@ -1,10 +1,11 @@
 ﻿[theme]
 showLineNumbers = false
 transparencity = 100.000000
-backgroudColor = #2c4d4d
-dividerLineColor = #d018d6
-fontColor = #0da6a6
-solutionFontColor = #0E2235
+backgroudColor = #1f7a7a
+dividerLineColor = #3a4aa6
+fontColor = #a11da1
+solutionFontColor = #e329ca
 clickColor = #2F71AF
 howerColor = #1C456B
 barIconColor = #ffffff
+titleColor = #456b6b

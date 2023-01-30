@@ -8,16 +8,20 @@
     <script src="inputElements.js"></script>
 
     <script>
-        
-       // Window.this.on("size", function () { document.getElementById("styleIcon").style.height = (document.offsetWidth < 200) ? "0" : "60px"; });
-
+        function loadVariables(variableLines) {
+            var varArr = variableLines.split(';');
+            var vararea = document.getElementById("varArea");
+            for (let i = 0; i < varArr.length; i = i + 2) {
+                vararea.innerHTML += '<div class="var"> <div class="name">' + varArr[i] + '</div> <div class="value">' + varArr[i + 1] + '</div> <!--<img class="destroy" src="trash.svg"></img>--> </div>'; // trashcan icon is comemnted
+            }
+        }
     </script>
 
 </head>
 <body>
     <div id="titleBar" role="window-caption">
         <div id="titleName">NoteCali Settings</div>
-        <button id="closeB" role="window-minimize"><img src="close.svg" /></button>
+        <button id="closeB"><img src="close.svg" /></button>
     </div>
     <div id="pickerSelection">
         <div id="ColorPicker">
@@ -55,10 +59,6 @@
                 <img src="color-palette.svg" />
                 <div class="CLabel">Style</div>
             </button>
-            <button class="tabButton" id="interfaceBtn">
-                <img src="keyboard.svg" />
-                <div class="CLabel">Interface</div>
-            </button>
             <button class="tabButton" id="systemBtn">
                 <img src="gear.svg" />
                 <div class="CLabel">System</div>
@@ -67,13 +67,17 @@
                 <img src="variable.svg" />
                 <div class="CLabel">Variables</div>
             </button>
-            <button class="tabButton" id="functionBtn">
+            <button class="tabButton" id="functionBtn" style="display:none"> <!-- hide from menu -->
                 <img src="functions.svg" />
                 <div class="CLabel">Functions</div>
             </button>
+            <button class="tabButton" id="interfaceBtn">
+                <img src="keyboard.svg" />
+                <div class="CLabel">Interface</div>
+            </button>
 
             <div id="bottomMenu">
-                <button class="tabButton" id="feedbackBtn">
+                <button class="tabButton" id="feedbackBtn" style="display:none"> <!-- hide from menu -->
                     <img src="feedback.svg" />
                     <div class="CLabel">FeedBack</div>
                 </button>
@@ -102,7 +106,7 @@
                         <div class="oLable">Font Size</div>
                         <span class="inp numInput">
                             <span class="rDwnB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="0.5" value="18"  max="100" min="2" id="fontSizeINP"><!-- id = variableName + "INP" -->
+                            <input class="inp" type="number" step="0.5" value="18" max="100" min="2" id="fontSizeINP"><!-- id = variableName + "INP" -->
                             <span class="rUpB"><img src="right-arrow.png" /></span>
                         </span>
                     </div>
@@ -130,22 +134,30 @@
                         <div class="oLable">Text Color</div>
                         <div class="inp colorpicker" id="fontColorCLR"></div>
                     </div>
-                    <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
-                        <div class="oLable">Background Image</div>
-                        <switch class="inp" />
+                    <div class="option customPa hasTip" tip="Set color of solutions.">
+                        <div class="oLable">Solution Color</div>
+                        <div class="inp colorpicker" id="solutionFontColorCLR"></div>
                     </div>
-                    <div class="option customPa hasTip" tip="Color of error highliting">
-                        <div class="oLable">Error Highlite</div>
-                        <div class="inp colorpicker" id="highliteERRCLR"></div>
+                    <div class="option customPa hasTip" tip="Set title color.">
+                        <div class="oLable">Title Color</div>
+                        <div class="inp colorpicker" id="titleColorCLR"></div>
                     </div>
-                    <div class="option customPa hasTip" tip="Color of variable highliting.">
-                        <div class="oLable">Variable Highlite</div>
-                        <div class="inp colorpicker" id="highliteVARCLR"></div>
-                    </div>
-                    <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
-                        <div class="oLable">SuperLine Highlite</div>
-                        <div class="inp colorpicker" id="highliteSUPERCLR"></div>
-                    </div>
+                    <!-- not implemented !! <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
+                    <div class="oLable">Background Image</div>
+                    <switch class="inp" />
+                </div>
+                <div class="option customPa hasTip" tip="Color of error highliting">
+                    <div class="oLable">Error Highlite</div>
+                    <div class="inp colorpicker" id="highliteERRCLR"></div>
+                </div>
+                <div class="option customPa hasTip" tip="Color of variable highliting.">
+                    <div class="oLable">Variable Highlite</div>
+                    <div class="inp colorpicker" id="highliteVARCLR"></div>
+                </div>
+                <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
+                    <div class="oLable">SuperLine Highlite</div>
+                    <div class="inp colorpicker" id="highliteSUPERCLR"></div>
+                </div>-->
                     <div class="option customPa hasTip">
                         <div class="oLable oLong">Padding Between Lines</div>
                         <span class="inp numInput">
@@ -158,64 +170,163 @@
             </div>
 
             <div class="tabArea" id="interfaceTab">
+                <div class="feature"> <div class="name">€[lineNumber]</div> <div class="value">Pointer to line</div> </div>
+                <div class="feature"> <div class="name">5m + 6mm to cm</div> <div class="value">Unit conversion example</div> </div>
+                <div class="feature"> <div class="name">&0010 </div>      <div class="value">Using biar numbers</div> </div>
+                <div class="feature"> <div class="name">%</div>           <div class="value">Operation percent</div> </div>
+                <div class="feature"> <div class="name">^</div>           <div class="value">Operation power</div> </div>
+                <div class="feature"> <div class="name">*</div>           <div class="value">Operation multiply</div> </div>
+                <div class="feature"> <div class="name">/</div>           <div class="value">Operation div</div> </div>
+                <div class="feature"> <div class="name">+</div>           <div class="value">Operation add</div> </div>
+                <div class="feature"> <div class="name">-</div>           <div class="value">Operation sub</div> </div>
+                <div class="feature"> <div class="name"><</div>           <div class="value">Operation lower</div> </div>
+                <div class="feature"> <div class="name">></div>           <div class="value">Operation greater</div> </div>
+                <div class="feature"> <div class="name"><=</div>          <div class="value">Operation lower or equal</div> </div>
+                <div class="feature"> <div class="name">>=</div>          <div class="value">Operation greater or equal</div> </div>
+                <div class="feature"> <div class="name">==</div>          <div class="value">Operation equal</div> </div>
+                <div class="feature"> <div class="name">!=</div>          <div class="value">Operation not equal</div> </div>
+                <div class="feature"> <div class="name">&&</div>          <div class="value">Operation and</div> </div>
+                <div class="feature"> <div class="name">||</div>          <div class="value">Operation or</div> </div>
+                <div class="feature"> <div class="name">sin(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">cos(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">tan(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">cot(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">degtodeg(x)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">degtorad(x)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">degtorad(x)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">radtodeg(x)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">asin(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acos(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">atan(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acot(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">sinh(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">cosh(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">tanh(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">coth(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">asinh(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acosh(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">atanh(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acoth(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">ln(x)</div>        <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">log(x,base)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">exp(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">abs(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">sgn(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">round(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">int(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">ceil(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">floor(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">frac(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">factorial(x)</div> <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">gamma(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">sqrt(x)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">root(x,index)</div><div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">mod(x,y)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">if(cond,t,f)</div> <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">or(x,y)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">and(x,y)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">not(x)</div>       <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitor(x)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitand(x)</div>    <div class="value">Function</div> </div>
+
+                <div class="feature"> <div class="name">r[x];</div>    <div class="value">before line change rouonding settings for line</div> </div>
+                <div class="feature"> <div class="name">b[x];</div>    <div class="value">before line change number base settings for line</div> </div>
+                <div class="feature"> <div class="name">c;</div>    <div class="value">before line prevent line from solving</div> </div>
 
             </div>
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
-                    <div class="option">
+                    <!-- not done ! <div class="option">
+        <div class="oLable">Counting On Line End</div>
+        <switch class="inp" id="countingOnLineEndSW" />
+    </div>
+    <div class="option">
+        <div class="oLable">All lines Are Superines</div>
+        <switch class="inp" id="isAllLinesSuperlinesSW" />
+    </div>
+    <div class="option">
+        <div class="oLable">Show Line Numbers</div>
+        <switch class="inp" id="showLineNumbersSW" />
+    </div>-->
+                    <div class="option hasTip" tip="Default count of deciaml places.">
+                        <div class="oLable">Round to</div>
+                        <span class="inp numInput">
+                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <input class="inp" type="number" step="1" value="3" max="25" min="0" id="roundToDecINP"><!-- id = variableName + "INP" -->
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                        </span>
+                    </div>
+
+                    <div class="option hasTip" tip="Grouping numbers to groups 123 456.<br> 0 means no grouping">
+                        <div class="oLable">Group by</div>
+                        <span class="inp numInput">
+                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <input class="inp" type="number" step="1" value="0" max="10" min="0" id="numberGroupingINP"><!-- id = variableName + "INP" -->
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                        </span>
+                    </div>
+
+                    <div class="option hasTip" tip="Use 1.23E+10 format of numbers">
                         <!-- variable in c++ name-->
-                        <div class="oLable">Counting On Line End</div>
-                        <switch class="inp" id="countingOnLineEndSW" />
+                        <div class="oLable">Use Sience Numbers</div>
+                        <switch class="inp" id="useSientificSW" />
                     </div>
-                    <div class="option">
-                        <!-- variable in c++ name-->
-                        <div class="oLable">All lines Are Superines</div>
-                        <switch class="inp" id="isAllLinesSuperlinesSW"/>
-                    </div>
-                    <div class="option" >
-                        <div class="oLable">Show Line Numbers</div>
-                        <switch class="inp" id="showLineNumbersSW" />
-                    </div>
-                    <div class="option">
+
+                    <div class="option hasTip" tip="Allow you to click and by that copy solution.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Click To Copy</div>
                         <switch class="inp" id="clickToCopySW" />
                     </div>
-                    <div class="option" settingName="mathType"> <!-- recreate to list -->
+
+                    <div class="option hasTip" tip="Uses radians for functions like sin()">
                         <!-- variable in c++ name-->
-                        <div class="oLable">Use textMath</div>
-                        <switch class="inp" />
+                        <div class="oLable">Use Radians</div>
+                        <switch class="inp" id="useRadiansSW" /> <!-- add to variable list  -> setings-->
                     </div>
+                    <div class="option hasTip" tip="See for example h same as H">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Ignore Leter Diference</div>
+                        <switch class="inp" id="ignoreHightDiferenceSW" /> <!-- add to variable list  -> setings-->
+                    </div>
+                    <div class="option hasTip" tip="Shows Full Error on line (in major cases error is biget that working space)">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Show Error Text</div>
+                        <switch class="inp" id="showErrTextSW" /> <!-- add to variable list  -> setings-->
+                    </div>
+                    <div class="option hasTip" tip="Allow using &0 comand <br> <span style='color:#516e78;'> &0 is pointer to first line<span>">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Line Jumps</div>
+                        <switch class="inp" id="allowLineJumpSW" /> <!-- add to variable list  -> setings-->
+                    </div>
+                    <div class="option hasTip" tip="Define default metrics in whole calculator like m km cm dm.<br> Experimental feature">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Use Metrics</div>
+                        <switch class="inp" id="useMetricsSW" /> <!-- add to variable list  -> setings-->
+                    </div>
+
+                    <div class="option hasTip" tip="If ( is not ended imaginar ) is added on formula end">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Parenthesis corection</div>
+                        <switch class="inp" id="corectParenthesisSW" /> <!-- add to variable list  -> setings-->
+                    </div>
+
                 </div>
             </div>
 
             <div class="tabArea" id="variablesTab">
-                <div class="tabAreaCentred">
+                <div class="tabAreaCentred" id="varArea">
                     <div class="var">
-                        <div class="name">PI</div>
-                        <div class="value">3.141592</div>
-                        <img class="destroy" src="trash.svg"></img>
+                        <div class="name">system : pi</div>
+                        <div class="value">3.141592...</div>
                     </div>
                     <div class="var">
-                        <div class="name">sqrtTwo</div>
-                        <div class="value">1.41421</div>
-                        <img class="destroy" src="trash.svg"></img>
-                    </div>
-                    <div class="var">
-                        <div class="name">minutes</div>
-                        <div class="value">SYSTEM-RELATED</div>
-                        <img class="destroy" src="trash.svg"></img>
-                    </div>
-                    <div class="var">
-                        <div class="name">seconds</div>
-                        <div class="value">SYSTEM-RELATED</div>
-                        <img class="destroy" src="trash.svg"></img>
+                        <div class="name">system : e</div>
+                        <div class="value">1.41421...</div>
                     </div>
                 </div>
-                <img id="varAddBTN" src="add.svg"></img>
-                <img id="varAddBTN" src="save.svg"></img>
+                <!-- <img id="varAddBTN" src="add.svg"></img>
+            <img id="varAddBTN" src="save.svg"></img>-->
             </div>
-
             <div class="tabArea" id="functionsTab">
                 <div class="tabAreaCentred">
                     <div class="var">
@@ -253,23 +364,24 @@
         <div class="tabArea" id="updatesTab">
             <div id="uptudateBanner">
                 <img src="update.svg" />
-                <div class="msg">APP Is Up To Date</div>
+                <div class="msg">APP version</div>
                 <div class="version">v0.1</div>
             </div>
             <div id="versionChangelog">
                 <div id="versionTitle">
                     <div class="version">0.01</div>
-                    <div class="type">RELEASE</div>
+                    <div class="type">FULL RELEASE</div>
                 </div>
                 <div id="versionLog">
-                    App first released
-                    + superLines
-                    + variables
+                    App first released.<br>
+                    Auto Update is not awaiable in this version.<br>
+                    Please aend feedback to email adress.<br>
+                    <a href="mailto:abc@example.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
                 </div>
             </div>
         </div>
 
 
     </div>
-</body>
-</html>
+    </body>
+    </html>

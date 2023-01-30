@@ -20,6 +20,14 @@
 #define ALL_SUPERLINE_DEFAUTL false
 #define SHOW_LINE_END_DEFAULT false
 
+#define ALLOW_LINE_JUMP_DEFAULT false
+#define USE_RADIANS_DEFAULT false
+#define USE_MATRICS_DEFAULT false
+#define IGNORE_HIGHT_DIFERENCE_DEFAULT false
+#define PARENTHESIS_CORECTION_DEFAULT false
+#define SHOW_ERR_TEXT_DEFAULT false
+
+
 #define BACKGROUND_COLOR_DEFAULT "#d9d9d9"
 #define DIVIDER_LINE_COLOR_DEFAULT "#10819A"
 #define FONT_COLOR_DEFAULT "#1F2937"
@@ -27,12 +35,16 @@
 #define CLICK_COLOR_DEFAULT "#2F71AF"
 #define HOWER_COLOR_DEFAULT "#1C456B"
 #define BAR_ICON_DEFAULT "#ffffff"
+#define TITLE_DEFAULT_COLOR "#0a1016"
 
 
 #define TRANSPARENT_MODE_DEFAULT 100
 #define FONT_SIZE_DEFAULT 18
 #define FONT_PADDING_DEFAULT 2
-#define MATHTYPE_DEFAULT TYPE_EXPRTKMATH
+#define ROUND_DEC_NUM_DEFAULT 4
+
+#define USE_SIENCE_DEFAULT false
+#define GROUP_DEFAULT 0
 
 
 
@@ -47,17 +59,15 @@
 
 
 
-struct Function {
-	wstring funcName = L"";
-	wstring funcDec = L"";
-};
+
 
 class SettingsOBJ {
 public:  
 	vector<Function> userFunctions;
 
 	int stylescheme = AUTO;
-	int mathType = MATHTYPE_DEFAULT;
+	int roundToDec = ROUND_DEC_NUM_DEFAULT;
+	int numberGrouping = GROUP_DEFAULT;
 	
 	bool showAppName = SHOW_APP_NAME_DEFAULT; 
 	bool highliteERR = HIGHLITE_ERR_DEFAULT;
@@ -68,21 +78,26 @@ public:
 	bool showLineNumbers = SHOW_LINE_NUMBERS_DEFAULT;
 	bool isAllLinesSuperlines = ALL_SUPERLINE_DEFAUTL;
 	bool countingOnLineEnd = false;
-	bool ignoreVarCapitalLetters = true; // not implemented in setting process
+	bool allowLineJump = ALLOW_LINE_JUMP_DEFAULT;
+	bool useRadians = USE_RADIANS_DEFAULT;
+	bool useMetrics = USE_MATRICS_DEFAULT;
+	bool ignoreHightDiference = IGNORE_HIGHT_DIFERENCE_DEFAULT;
+	bool corectParenthesis = PARENTHESIS_CORECTION_DEFAULT;
+	bool useSientific = USE_SIENCE_DEFAULT;
+	bool showErrText = SHOW_ERR_TEXT_DEFAULT;
 
 private:
 
-	#define BOOL_VAR_NUM 9 // idk jak jinak to dìlat ve foru
-	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 };
-	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  };
-	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" };
-	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               };
-
-	#define INT_VAR_NUM 2 // idk jak jinak to dìlat ve foru
-	bool systemIntValue[INT_VAR_NUM] =                { true         , true };
-	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &mathType };
-	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "mathType"     };
-	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , MATHTYPE_DEFAULT };
+	#define BOOL_VAR_NUM 16 // idk jak jinak to dìlat ve foru
+	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 , true                    , true               , true               , true                          , true                          ,true              , true};
+	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  , &allowLineJump          , &useRadians        , &useMetrics        , &ignoreHightDiference         , &corectParenthesis            ,&useSientific     , &showErrText };
+	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"};
+	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT};
+	#define INT_VAR_NUM 3 // idk jak jinak to dìlat ve foru
+	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            };
+	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping };
+	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping"};
+	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , ROUND_DEC_NUM_DEFAULT, GROUP_DEFAULT   };
 
 
 
@@ -109,13 +124,14 @@ public:
 	std::string clickColor = CLICK_COLOR_DEFAULT;
 	std::string howerColor = HOWER_COLOR_DEFAULT;
 	std::string barIconColor = BAR_ICON_DEFAULT;
+	std::string titleColor = TITLE_DEFAULT_COLOR;
 private:
 
-	#define TEXT_VAR_NUM 7 // idk jak jinak to dìlat ve foru
-	bool systemTextValue[TEXT_VAR_NUM] =          { false                    , false                      , false              , false                       , false               , false               , false         };
-	std::string * textValPointers[TEXT_VAR_NUM] = { &backgroudColor          , &dividerLineColor,           &fontColor,          &solutionFontColor,           &clickColor,          &howerColor         , &barIconColor };
-	std::string textVariableNames[TEXT_VAR_NUM] = { "backgroudColor"         , "dividerLineColor",          "fontColor",         "solutionFontColor",          "clickColor",         "howerColor"        , "barIconColor"};
-	std::string textValDefault[TEXT_VAR_NUM] =    { BACKGROUND_COLOR_DEFAULT , DIVIDER_LINE_COLOR_DEFAULT , FONT_COLOR_DEFAULT , SOLUTION_FONT_COLOR_DEFAULT , CLICK_COLOR_DEFAULT , HOWER_COLOR_DEFAULT , BAR_ICON_DEFAULT };
+	#define TEXT_VAR_NUM 8 // idk jak jinak to dìlat ve foru
+	bool systemTextValue[TEXT_VAR_NUM] =          { false                    , false                      , false              , false                       , false               , false               , false            , false };
+	std::string * textValPointers[TEXT_VAR_NUM] = { &backgroudColor          , &dividerLineColor,           &fontColor,          &solutionFontColor,           &clickColor,          &howerColor         , &barIconColor    , &titleColor };
+	std::string textVariableNames[TEXT_VAR_NUM] = { "backgroudColor"         , "dividerLineColor",          "fontColor",         "solutionFontColor",          "clickColor",         "howerColor"        , "barIconColor"   , "titleColor"};
+	std::string textValDefault[TEXT_VAR_NUM] =    { BACKGROUND_COLOR_DEFAULT , DIVIDER_LINE_COLOR_DEFAULT , FONT_COLOR_DEFAULT , SOLUTION_FONT_COLOR_DEFAULT , CLICK_COLOR_DEFAULT , HOWER_COLOR_DEFAULT , BAR_ICON_DEFAULT , TITLE_DEFAULT_COLOR};
 
 
 
@@ -237,7 +253,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, double value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_DOUBLE");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->DOUBLE_TYPE");
 	return false;
 
 };
@@ -249,7 +265,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, int value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_INT");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->INT_TYPE");
 	return false;
 
 };
@@ -261,7 +277,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, std::string value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_STRING");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->STRING_TYPE");
 	return false;
 };
 
@@ -336,17 +352,17 @@ int SettingsOBJ::loadSystemSettings() {
 		if (rc < 0) { debugLOG("master error on opening file");  return SETINGS_FILE_NOT_FOUND; } // probably masterError
 	};
 
-	for (size_t i = 0; i < INT_VAR_NUM; i++) {	// save system varables
+	for (size_t i = 0; i < INT_VAR_NUM; i++) {	// load
 		if (systemIntValue[i]) {
 			*systemIntValPointers[i] = std::stoi(ini.GetValue("settings", systemIntVariableNames[i].c_str(), std::to_string(systemIntValDefault[i]).c_str()));
 		}
 	}
-	for (size_t i = 0; i < BOOL_VAR_NUM; i++) {	// save system bools non apereance 
+	for (size_t i = 0; i < BOOL_VAR_NUM; i++) {	// load system bools non apereance 
 		if (systemBoolValue[i]) {
 			*boolValPointers[i] = ini.GetBoolValue("settings", boolVariableNames[i].c_str(), boolValDefault[i]);
 		}
 	}
-	for (size_t i = 0; i < DOUBLE_VAR_NUM; i++) {	// save system doubles non apereance 
+	for (size_t i = 0; i < DOUBLE_VAR_NUM; i++) {	// load system doubles non apereance 
 		if (systemDoubleValue[i]) {
 			*doubleValPointers[i] = ini.GetDoubleValue("settings", doubleVariableNames[i].c_str(), doubleValDefault[i]);
 		}

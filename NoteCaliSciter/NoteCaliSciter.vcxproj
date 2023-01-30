@@ -177,14 +177,29 @@
     <ClInclude Include="library\SimpleIni.h" />
     <ClInclude Include="LineSeparator.h" />
     <ClInclude Include="mLines.h" />
+    <ClInclude Include="ObjectDefinitions.h" />
     <ClInclude Include="SettingsObject.h" />
     <ClInclude Include="settWin.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="textMath.h" />
+    <ClInclude Include="ttmath\ttmath.h" />
+    <ClInclude Include="ttmath\ttmathbig.h" />
+    <ClInclude Include="ttmath\ttmathdec.h" />
+    <ClInclude Include="ttmath\ttmathint.h" />
+    <ClInclude Include="ttmath\ttmathmisc.h" />
+    <ClInclude Include="ttmath\ttmathobjects.h" />
+    <ClInclude Include="ttmath\ttmathparser.h" />
+    <ClInclude Include="ttmath\ttmaththreads.h" />
+    <ClInclude Include="ttmath\ttmathtypes.h" />
+    <ClInclude Include="ttmath\ttmathuint.h" />
+    <ClInclude Include="ttmath\ttmathuint_noasm.h" />
+    <ClInclude Include="ttmath\ttmathuint_x86.h" />
+    <ClInclude Include="ttmath\ttmathuint_x86_64.h" />
     <ClInclude Include="ui\inputElements.js" />
     <ClInclude Include="variableLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ttmath\ttmathuint_x86_64_msvc.asm" />
+    <None Include="ttmath\win64_assemble.bat" />
     <None Include="ui\add-variable.svg" />
     <None Include="ui\add.svg" />
     <None Include="ui\angle-left.svg" />
@@ -228,6 +243,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="poznámky.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="ttmath\ttmathuint_x86_64_msvc.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

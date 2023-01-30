@@ -1,5 +1,6 @@
+#include "ObjectDefinitions.h"
 #include "SettingsObject.h"
-#include "mLines.h"
+//#include "mLines.h"
 
 #include "variableLoader.h"
 #include "calcualtionAlg.h"
@@ -95,7 +96,7 @@ int Controler::doCommand(std::wstring cmd) {
 int Controler::doCommandLine(mline * cmdLine) { // find and execute system comand from text  // if comand is not recognized is ignered becouse can modify line calculation process
 	cmdLine->isComandDone = true;
 
-	if (cmdLine->lineModifier == L"setset" && cmdLine->isEnded == true) {
+	if (cmdLine->command == L"setset" && cmdLine->isEnded == true) {
 		int i = 0;
 		wstring cmd = cmdLine->line;
 		wstring func = L"";
@@ -112,16 +113,16 @@ int Controler::doCommandLine(mline * cmdLine) { // find and execute system coman
 		const std::string o(value.begin(), value.end());
 
 		if( !settings.setSetting(s, o) ){
-			cmdLine->lineModifier = L"";
+			cmdLine->command = L"";
 			cmdLine->line = L"setingsSotFound!";
 			return LINE_WITH_RESPONSE;
 		}
 	}
-	else if (cmdLine->lineModifier == L"saveset" )                      { settings.saveSettings();       }
-	else if (cmdLine->lineModifier == L"applset")                       { calculatorWin->updateStyles(); }
-	else if (cmdLine->lineModifier == L"clear")                         { calculatorWin->setText(L"");                                   return LINE_ENDING_CALCULATION_PROCESS; }
-	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"1") { cmdLine->lineModifier = L"";  cmdLine->line = L"Helo World!";  return LINE_WITH_RESPONSE; }
-	else if (cmdLine->lineModifier == L"test" && cmdLine->line == L"2") { cmdLine->solution = L"solus";                                  return LINE_NOT_NULLING_CMD; }
+	else if (cmdLine->command == L"saveset" )                      { settings.saveSettings();       }
+	else if (cmdLine->command == L"applset")                       { calculatorWin->updateStyles(); }
+	else if (cmdLine->command == L"clear")                         { calculatorWin->setText(L"");                                   return LINE_ENDING_CALCULATION_PROCESS; }
+	else if (cmdLine->command == L"test" && cmdLine->line == L"1") { cmdLine->command = L"";  cmdLine->line = L"Helo World!";  return LINE_WITH_RESPONSE; }
+	else if (cmdLine->command == L"test" && cmdLine->line == L"2") { cmdLine->solution = L"solus";                                  return LINE_NOT_NULLING_CMD; }
 
 	else { cmdLine->isComandDone = false; return NOT_CMD; } // if not any comad works
 	return LINE_NULLING_CMD;
@@ -132,8 +133,9 @@ int Controler::procesChangedInput(std::wstring dta) {
 	debugLOG(">> Starting Processing Text Input <<");
 	lineSeparator.procesInput(&dta);
 	bool refreshAfterCmd = false;
+	debugLOG("-------8");
 	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
-		if (lineSeparator.lines.at(i).lineModifier != L"") { // když obsahuje nejaký pøíkaz zavolá doCommand aby ho popøípadì zpustil
+		if (lineSeparator.lines.at(i).command != L"") { // když obsahuje nejaký pøíkaz zavolá doCommand aby ho popøípadì zpustil
 			int linePostOperationID = doCommandLine(&lineSeparator.lines.at(i));
 			if (linePostOperationID == LINE_NULLING_CMD) { // remove comand line and must refresh text area
 				lineSeparator.lines.erase(lineSeparator.lines.begin() + i);
@@ -166,8 +168,7 @@ int Controler::start() {
 	calculatorWin->expand();
 	calculatorWin->updateStyles();
 
-
-
+	mathSolver.begin();
 
 	return 1;
 };

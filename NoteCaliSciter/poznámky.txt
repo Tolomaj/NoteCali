@@ -1,2 +1,27 @@
 pøidání naaèítání a ukládání konstant z nastavovacího okna
-pøidat algoritmus poèítání kalkulaèky
+
+to style
++ show variable name
++ show variable simbol
++ load picture <- experimental not now
+
+to interface
++add clear shortcut <-- mabey only baner
+
+ukazat když dojde k zaokrouhlení
+
+settings
+- showVariableName:ShowWariableIcon:DontShowVariableIndiators
+
+and others
+
+add variable loading
+add custom functions
+solve closing err in settings
+add var def ignore height
+
+add resizin bar
+
+po dokonèení napsat autorovy ttmath a caligator
+
+error caling

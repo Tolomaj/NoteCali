@@ -83,6 +83,8 @@ public:
         string stro = "_";
 
         if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
+
+        
         debugLOG("something with:" + std::to_string(params.cmd )  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro  + " - " + sciterStrToStr(elementId));
 
         switch (params.cmd) {
@@ -115,6 +117,10 @@ public:
                     loadSettingsInWindow(); // naète styli pro kategorii z aktuálnho nastravení stylù
                     return true; // handled
                 }
+                if (target.test("button#closeB")) { // nastav kategorii / auto dark light custom
+                    close();
+                    return true; // handled
+                }
         }
         return false;
     }
@@ -128,7 +134,11 @@ public:
 void SettingsWin::numberInputEvent(sciter::dom::element target) {
     string setName = sciterStrToStr(target.get_attribute("id")); // get setting name atributte from setting hl element
     setName = setName.substr(0, setName.size() - 3);
-    settings.setSingleSettingsbyName(setName, (double)target.get_value().get(0.0f));
+    if (!settings.setSingleSettingsbyName(setName, (double)target.get_value().get(0.0f))) {
+        debugLOG("triing INT");
+        settings.setSingleSettingsbyName(setName, (int)round(target.get_value().get(0.0f)));
+    };
+
     controler->processSettingsChange(); // refresh styles
     debugLOG("setSet: " + setName + " - " + to_string((double)target.get_value().get(0.0f)));
 }
@@ -163,11 +173,36 @@ void SettingsWin::loadSettingsInWindow() {
     ((element)root.get_element_by_id("dividerLineColorCLR")).set_style_attribute("background-color", StrToWstr(settings.dividerLineColor).c_str());
 
     ((element)root.get_element_by_id("fontColorCLR")).set_style_attribute("background-color", StrToWstr(settings.fontColor).c_str());
+    ((element)root.get_element_by_id("titleColorCLR")).set_style_attribute("background-color", StrToWstr(settings.titleColor).c_str());
+    ((element)root.get_element_by_id("solutionFontColorCLR")).set_style_attribute("background-color", StrToWstr(settings.solutionFontColor).c_str());
 
-    ((element)root.get_element_by_id("countingOnLineEndSW")).set_value(sciter::value(settings.countingOnLineEnd));
-    ((element)root.get_element_by_id("isAllLinesSuperlinesSW")).set_value(sciter::value(settings.isAllLinesSuperlines));
-    ((element)root.get_element_by_id("showLineNumbersSW")).set_value(sciter::value(settings.showLineNumbers));
+   // ((element)root.get_element_by_id("countingOnLineEndSW")).set_value(sciter::value(settings.countingOnLineEnd)); // not done
+   // ((element)root.get_element_by_id("isAllLinesSuperlinesSW")).set_value(sciter::value(settings.isAllLinesSuperlines));
+   // ((element)root.get_element_by_id("showLineNumbersSW")).set_value(sciter::value(settings.showLineNumbers));
     ((element)root.get_element_by_id("clickToCopySW")).set_value(sciter::value(settings.clickToCopy));
+
+    ((element)root.get_element_by_id("useRadiansSW")).set_value(sciter::value(settings.useRadians));
+    ((element)root.get_element_by_id("useMetricsSW")).set_value(sciter::value(settings.useMetrics));
+    ((element)root.get_element_by_id("ignoreHightDiferenceSW")).set_value(sciter::value(settings.ignoreHightDiference));
+    ((element)root.get_element_by_id("allowLineJumpSW")).set_value(sciter::value(settings.allowLineJump));
+    ((element)root.get_element_by_id("corectParenthesisSW")).set_value(sciter::value(settings.corectParenthesis));
+
+    ((element)root.get_element_by_id("useSientificSW")).set_value(sciter::value(settings.useSientific));
+
+    ((element)root.get_element_by_id("numberGroupingINP")).set_value(sciter::value(settings.numberGrouping));
+    ((element)root.get_element_by_id("roundToDecINP")).set_value(sciter::value(settings.roundToDec));
+
+    string arg;
+    for (size_t i = 0; i < variableTable.table.size(); i++){
+        arg = arg + variableTable.table.at(i).varName + ";" + variableTable.table.at(i).number + ";";
+    }
+    arg.pop_back();
+
+    
+    this->call_function("loadVariables",arg);
+    
+
+    
 
     // add loading more settings     ///TODO
 }

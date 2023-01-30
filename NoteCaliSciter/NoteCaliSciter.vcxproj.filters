@@ -65,13 +65,52 @@
     <ClInclude Include="library\exprtk.hpp">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
-    <ClInclude Include="textMath.h">
-      <Filter>Hlavičkové soubory</Filter>
-    </ClInclude>
     <ClInclude Include="ui\inputElements.js">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
     <ClInclude Include="variableLoader.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmath.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathbig.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathdec.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathint.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathmisc.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathobjects.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathparser.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmaththreads.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathtypes.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathuint.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathuint_noasm.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathuint_x86.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ttmath\ttmathuint_x86_64.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectDefinitions.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
   </ItemGroup>
@@ -100,6 +139,12 @@
     <None Include="ui\settings.css" />
     <None Include="ui\tooltipsAndMenuButtons.js" />
     <None Include="ui\colorPicker.js" />
+    <None Include="ttmath\ttmathuint_x86_64_msvc.asm">
+      <Filter>Zdrojové soubory</Filter>
+    </None>
+    <None Include="ttmath\win64_assemble.bat">
+      <Filter>Zdrojové soubory</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\inria-sans.otf" />
@@ -125,5 +170,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="poznámky.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="ttmath\ttmathuint_x86_64_msvc.obj" />
   </ItemGroup>
 </Project>

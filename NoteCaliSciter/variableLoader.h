@@ -3,15 +3,15 @@
 #define CANT_OPEN_FILE 2
 #define CANT_CLOSE_FILE 3
 
-struct Variable {
+struct TextVariable {
 	string varName = "";
-	double number = 0;
-	Variable(string name, double num) { varName = name; number = num; };
+	string number = "";
+	TextVariable(string name, string num) { varName = name; number = num; };
 };
 
 class VariablesTable {
 public:
-	vector<Variable> table; // mabey recrete as list
+	vector<TextVariable> table; // mabey recrete as list
 
 	int loadVariables();
 
@@ -36,18 +36,8 @@ int VariablesTable::loadVariables(){ // naète promìneé ze souboru
 	for (CSimpleIniA::Entry x : list) {
 		bool fine = true;
 		string s = ini.GetValue("constants", x.pItem, "0");
-		double val;
-		try {
-			val = atof(s.c_str());
-		}catch (exception& err) {
-			debugLOG("cannot convert:" + s); // nefunguje nastaví promìnou na 0.00 asi nevadí nièemu
-			fine = false;
-		}
-		if (fine) {
-			Variable var(string(x.pItem), val);
-			table.push_back(var);
-		}
-
+		TextVariable var(string(x.pItem), s);
+		table.push_back(var);
 	}
 
 	for (size_t i = 0; i < table.size(); i++) { debugLOG(table[i].number); debugLOG(" - " + table[i].varName,false); } // otazkojd
@@ -71,7 +61,4 @@ int VariablesTable::saveRawComposite(wstring s){
 	appDataFile << s.c_str();
 	appDataFile.close();
 
-	SI_Error rc = ini.LoadFile("customTheme.ntheme");
-	if (rc < 0) { debugLOG("master error on opening file"); return CANT_OPEN_FILE; } // probably masterErro
-	loadVariables();
 }; //set file content to text // budoucí pouzití okno nastanei bude vracet raw text pole pri prenastaveni
