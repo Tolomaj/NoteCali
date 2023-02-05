@@ -28,8 +28,6 @@ public:
 	
 	int toggleSettings();
 
-	int doCommand(std::wstring cmd);
-
 	int doCommandLine(mline * cmdLine);
 
 	int start();
@@ -50,38 +48,6 @@ public:
 #include "settWin.h"
 #include "calcWin.h"
 
-int Controler::doCommand(std::wstring cmd) {
-	std::wstring func;
-	std::wstring value;
-
-	debugLOG(cmd);
-
-	if (cmd.substr(0,7) == L"setset ") {
-		int i = 7;
-		for (1; i < cmd.length(); i++){
-			if (cmd.at(i) == ' ' || cmd.at(i) == '\n') { i++; break; }
-			func += cmd.at(i);
-			debugLOG(func);
-		}
-		for (1; i < cmd.length(); i++) {
-			if (cmd.at(i) == ' ' || cmd.at(i) == '\n') { break; }
-			value += cmd.at(i);
-		}
-		const std::string s(func.begin(), func.end());
-		const std::string o(value.begin(), value.end());
-		settings.setSetting(s,o);
-		debugLOG(func + L" -o- " + value);
-	}
-
-	if (cmd.substr(0, 7) == L"saveset") { settings.saveSettings(); }
-
-	if (cmd.substr(0, 7) == L"applset") { calculatorWin->updateStyles(); }
-
-	if (cmd.substr(0, 6) == L"test 1") { calculatorWin->setText(L"Hello World"); }
-	
-	
-	return 1;
-};
 
 #define NOT_CMD 0
 #define LINE_NULLING_CMD 1
@@ -96,7 +62,10 @@ int Controler::doCommand(std::wstring cmd) {
 int Controler::doCommandLine(mline * cmdLine) { // find and execute system comand from text  // if comand is not recognized is ignered becouse can modify line calculation process
 	cmdLine->isComandDone = true;
 
-	if (cmdLine->command == L"setset" && cmdLine->isEnded == true) {
+	if (cmdLine->command == L"clear" ) { calculatorWin->setText(L""); return LINE_ENDING_CALCULATION_PROCESS; }
+	else if (cmdLine->command == L"hello") { cmdLine->command = L"";  cmdLine->line = L"Hi!";  return LINE_WITH_RESPONSE; }
+#if DEBUG
+	else if (cmdLine->command == L"setset" && cmdLine->isEnded == true) {
 		int i = 0;
 		wstring cmd = cmdLine->line;
 		wstring func = L"";
@@ -120,20 +89,17 @@ int Controler::doCommandLine(mline * cmdLine) { // find and execute system coman
 	}
 	else if (cmdLine->command == L"saveset" )                      { settings.saveSettings();       }
 	else if (cmdLine->command == L"applset")                       { calculatorWin->updateStyles(); }
-	else if (cmdLine->command == L"clear")                         { calculatorWin->setText(L"");                                   return LINE_ENDING_CALCULATION_PROCESS; }
-	else if (cmdLine->command == L"test" && cmdLine->line == L"1") { cmdLine->command = L"";  cmdLine->line = L"Helo World!";  return LINE_WITH_RESPONSE; }
-	else if (cmdLine->command == L"test" && cmdLine->line == L"2") { cmdLine->solution = L"solus";                                  return LINE_NOT_NULLING_CMD; }
-
+	else if (cmdLine->command == L"test" && cmdLine->line == L"2") { cmdLine->solution = L"solus";                             return LINE_NOT_NULLING_CMD; }
+#endif
 	else { cmdLine->isComandDone = false; return NOT_CMD; } // if not any comad works
 	return LINE_NULLING_CMD;
 };
 
 
 int Controler::procesChangedInput(std::wstring dta) {
-	debugLOG(">> Starting Processing Text Input <<");
+	//debugLOG(">> Starting Processing Text Input <<");
 	lineSeparator.procesInput(&dta);
 	bool refreshAfterCmd = false;
-	debugLOG("-------8");
 	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
 		if (lineSeparator.lines.at(i).command != L"") { // když obsahuje nejaký pøíkaz zavolá doCommand aby ho popøípadì zpustil
 			int linePostOperationID = doCommandLine(&lineSeparator.lines.at(i));
@@ -153,13 +119,12 @@ int Controler::procesChangedInput(std::wstring dta) {
 	mathSolver.solve(&lineSeparator.lines);
 
 	calculatorWin->publish(lineSeparator.lines);
-	debugLOG(">> Text input Procesed <<");
+	//debugLOG(">> Text input Procesed <<");
 	return 0;
 };
 
 int Controler::start() {
 	settings.loadSettings();
-	debugLOG("loaded!");
 	variableTable.loadVariables();
 
 	sciter::archive::instance().open(aux::elements_of(resources));
@@ -178,7 +143,7 @@ int Controler::toggleSettings() {
 	} else {
 		settingsWin = new SettingsWin(this);
 		settingsWin->load(L"this://app/settings.htm");
-		SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP | SW_ENABLE_DEBUG);
+		SetWindowPos(settingsWin->get_hwnd(), 0, CalculateValidPositionX(), CalculateValidPositionY(), SETTINGS_WIN_WIDTH, SETTINGS_WIN_HEIGHT, SW_POPUP);
 		settingsWin->expand();
 		//settingsWin->updateStyles();
 		settingsWin->loadSettingsInWindow();
@@ -194,8 +159,7 @@ int Controler::CalculateValidPositionX() {
 	bool winFits = rect.left > SETTINGS_WIN_WIDTH + WIN_MARGIN || MONITOR_WIDTH - rect.right > SETTINGS_WIN_WIDTH + WIN_MARGIN;
 	if (winFits) {
 		return (rect.left + rect.right - SETTINGS_WIN_WIDTH) / 2 + ((rect.right - rect.left + SETTINGS_WIN_WIDTH) / 2 + WIN_MARGIN) * (isLeftSideBigger ? -1 : 1);
-	}
-	else {
+	} else {
 		return (MONITOR_WIDTH - SETTINGS_WIN_WIDTH) / 2;
 	}
 }

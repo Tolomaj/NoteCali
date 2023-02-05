@@ -26,6 +26,9 @@
 #define IGNORE_HIGHT_DIFERENCE_DEFAULT false
 #define PARENTHESIS_CORECTION_DEFAULT false
 #define SHOW_ERR_TEXT_DEFAULT false
+#define USE_MODIFIERS_DEFAULT false
+#define POITER_IS_NOROUND_DEFAULT true
+
 
 
 #define BACKGROUND_COLOR_DEFAULT "#d9d9d9"
@@ -54,6 +57,11 @@
 
 
 //exit codes END//
+
+#define DATAFILE 1
+#define STYLEFILE 2
+#define BOATH 0
+#define PRINT_SETINGS_SETT false
 
 
 
@@ -86,14 +94,18 @@ public:
 	bool useSientific = USE_SIENCE_DEFAULT;
 	bool showErrText = SHOW_ERR_TEXT_DEFAULT;
 
+	bool useLineModifiers = USE_MODIFIERS_DEFAULT;
+	bool useNoroundPointers = POITER_IS_NOROUND_DEFAULT;
+
 private:
 
-	#define BOOL_VAR_NUM 16 // idk jak jinak to dìlat ve foru
-	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 , true                    , true               , true               , true                          , true                          ,true              , true};
-	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  , &allowLineJump          , &useRadians        , &useMetrics        , &ignoreHightDiference         , &corectParenthesis            ,&useSientific     , &showErrText };
-	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"};
-	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT};
-	#define INT_VAR_NUM 3 // idk jak jinak to dìlat ve foru
+	#define BOOL_VAR_NUM 18 // idk jak jinak to dìlat ve foru
+	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 , true                    , true               , true               , true                          , true                          ,true              , true                 ,true                  ,true                      };
+	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  , &allowLineJump          , &useRadians        , &useMetrics        , &ignoreHightDiference         , &corectParenthesis            ,&useSientific     , &showErrText         ,&useLineModifiers     ,&useNoroundPointers       };
+	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"        ,"useLineModifiers"    ,"useNoroundPointers"      };
+	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT,USE_MODIFIERS_DEFAULT ,POITER_IS_NOROUND_DEFAULT };
+	
+#define INT_VAR_NUM 3 // idk jak jinak to dìlat ve foru
 	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            };
 	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping };
 	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping"};
@@ -199,7 +211,7 @@ wstring SettingsOBJ::getSettingAsWstring(std::string name) {
 			return StrToWstr(*textValPointers[i]);
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name);
+	//debugLOG("Setting Not Found by name! Name: " + name);
 	return L"none";
 };
 
@@ -217,7 +229,7 @@ bool SettingsOBJ::setSetting(std::string name, std::string value) {
 		}
 	}
 	for (size_t i = 0; i < INT_VAR_NUM; i++) {
-		debugLOG(systemIntVariableNames[i] + " : " + name);
+		//debugLOG(systemIntVariableNames[i] + " : " + name);
 		if (systemIntVariableNames[i] == name) {
 			*systemIntValPointers[i] = std::stoi(value);
 			return true;
@@ -229,7 +241,7 @@ bool SettingsOBJ::setSetting(std::string name, std::string value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->ALL_TYPES");
+	//debugLOG("Setting Not Found by name! Name: " + name + " ->ALL_TYPES");
 	return false;
 }
 
@@ -242,7 +254,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name,bool value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_TYPE");
+	//debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_TYPE");
 	return false;
 };
 
@@ -253,7 +265,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, double value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->DOUBLE_TYPE");
+	//debugLOG("Setting Not Found by name! Name: " + name + " ->DOUBLE_TYPE");
 	return false;
 
 };
@@ -265,7 +277,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, int value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->INT_TYPE");
+	//debugLOG("Setting Not Found by name! Name: " + name + " ->INT_TYPE");
 	return false;
 
 };
@@ -277,7 +289,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, std::string value) {
 			return true;
 		}
 	}
-	debugLOG("Setting Not Found by name! Name: " + name + " ->STRING_TYPE");
+	//debugLOG("Setting Not Found by name! Name: " + name + " ->STRING_TYPE");
 	return false;
 };
 
@@ -300,27 +312,34 @@ bool SettingsOBJ::resetSettingsToDefault() {
 	return 0;
 };
 
-#define DATAFILE 1
-#define STYLEFILE 2
-#define BOATH 0
+
 
 bool SettingsOBJ::resetSettingsFiles(int file  = 0) { // DATAFILE,STYLEFILE,BOATH
-	debugLOG("resetingSettings");
+	//debugLOG("resetingSettings");
+
+	// add folder cretion
+
+	mkdir((getenv("APPDATA") + string("\\NoteCali")).c_str()); // try create folder / if folder exist nothimng hapends
+
 	std::string defaultLightTheme = "showLineNumbers = false\ntransparencity = 100.000000\nfontSize = 18.000000\nfontPadding = 2.000000\nbackgroudColor = #d9d9d9\ndividerLineColor = #10819A\nfontColor = #1F2937\nsolutionFontColor = #0E2235\nclickColor = #2F71AF\nhowerColor = #1C456B\n";
 	if (file == 0 || file == DATAFILE) {
-		std::string defaultDarkTheme = "showLineNumbers = false\ntransparencity = 100.000000\nfontSize = 18.000000\nfontPadding = 2.000000\nbackgroudColor = #d9d9d9\ndividerLineColor = #10819A\nfontColor = #1F2937\nsolutionFontColor = #0E2235\nclickColor = #2F71AF\nhowerColor = #1C456B\n";
-		std::ofstream appDataFile("appData.ini");
+		std::string defaultDarkTheme = "showLineNumbers = false\ntransparencity = 100.000000\nbackgroudColor = #262929\ndividerLineColor = #6d8a8a\nfontColor = #919191\nsolutionFontColor = #587575\nclickColor = #2F71AF\nhowerColor = #1C456B\nbarIconColor = #ffffff\ntitleColor = #6f7575\n";
+
+		string appDataPath = getenv("APPDATA") + string("\\NoteCali\\appData.ini");
+		std::ofstream appDataFile(appDataPath.c_str());
 		if (appDataFile.fail()) {
 			appDataFile.close();
 			debugLOG("cant crete data file ! MATER ERROR = CLOSING");
 			exit(1);
 		}
 
-		appDataFile << "[settings]\nstylescheme = 0\nmathType = 1\n[defaultDarkTheme]\n" + defaultLightTheme + "\n[defaultLightTheme]\n" + defaultDarkTheme;
+		appDataFile << "[settings]\nstylescheme = 0\nmathType = 1\nroundToDec = 3\nnumberGrouping = 0\nshowAppName = true\nhighliteERR = true\nhighliteVAR = true\nhighliteSUPER = true\nclickToCopy = true\nshowLineEnd = false\nisAllLinesSuperlines = false\ncountingOnLineEnd = false\nallowLineJump = true\nuseRadians = false\nuseMetrics = false\nignoreHightDiference = true\ncorectParenthesis = false\nuseSientific = false\nshowErrText = false\nfontSize = 18.000000\nfontPadding = 10.000000\n\n[defaultDarkTheme]\n" + defaultLightTheme + "\n[defaultLightTheme]\n" + defaultDarkTheme;
 		appDataFile.close();
 	}
 	if (file == 0 || file == STYLEFILE) {
-		std::ofstream CustomThemeFile("customTheme.ntheme");
+
+		string customthemePath = getenv("APPDATA") + string("\\NoteCali\\customTheme.ntheme");
+		std::ofstream CustomThemeFile(customthemePath.c_str());
 		if (CustomThemeFile.fail()) {
 			CustomThemeFile.close();
 			debugLOG("cant crete theme file ! MATER ERROR = CLOSING");
@@ -343,12 +362,14 @@ int SettingsOBJ::loadSystemSettings() {
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
-	SI_Error rc = ini.LoadFile("appData.ini"); // file for system setings settings 
+	string appDataPath = getenv("APPDATA") + string("\\NoteCali\\appData.ini");
+
+	SI_Error rc = ini.LoadFile(appDataPath.c_str()); // file for system setings settings 
 
 	if (rc < 0) {
 		debugLOG("failed to open file. Reseting Settings!");
 		resetSettingsFiles(DATAFILE);
-		SI_Error rc = ini.LoadFile("appData.ini");					//try load data second time / default data expected 
+		SI_Error rc = ini.LoadFile(appDataPath.c_str());					//try load data second time / default data expected 
 		if (rc < 0) { debugLOG("master error on opening file");  return SETINGS_FILE_NOT_FOUND; } // probably masterError
 	};
 
@@ -381,23 +402,26 @@ int SettingsOBJ::loadSettings(){
 	std::string styleDestinatio;
 
 	if (stylescheme == CUSTOM) {
-		SI_Error rc = ini.LoadFile("customTheme.ntheme"); // file for custom theme 
+		string Path = getenv("APPDATA") + string("\\NoteCali\\customTheme.ntheme");
+		SI_Error rc = ini.LoadFile(Path.c_str()); // file for custom theme 
 		debugLOG(rc);
 
 		if (rc < 0) {
 			debugLOG("failed to open file");
 			resetSettingsFiles(STYLEFILE); // probìhne ale neprobìhne nvm co to je // nic nevypíše a nedá return ale soubor vytvorí. // ????
-			SI_Error rc = ini.LoadFile("customTheme.ntheme");
+			SI_Error rc = ini.LoadFile(Path.c_str());
 			if (rc < 0) { debugLOG("master error on opening file");  return SETINGS_FILE_NOT_FOUND; } // probably masterError
 		};
 		styleDestinatio = "theme";
 	}
 	else {
-		SI_Error rc = ini.LoadFile("appData.ini"); // file for custom theme 
+		string appDataPath = getenv("APPDATA") + string("\\NoteCali\\appData.ini");
+
+		SI_Error rc = ini.LoadFile(appDataPath.c_str()); // file for custom theme 
 		if (rc < 0) {
 			debugLOG("failed to open file");
 			resetSettingsFiles(STYLEFILE); // probìhne ale neprobìhne nvm co to je // nic nevypíše a nedá return ale soubor vytvorí. // ????
-			SI_Error rc = ini.LoadFile("appData.ini");
+			SI_Error rc = ini.LoadFile(appDataPath.c_str());
 			if (rc < 0) { debugLOG("master error on opening file");  return SETINGS_FILE_NOT_FOUND; } // probably masterError
 		};
 		styleDestinatio = is_light_theme() ? "defaultLightTheme" : "defaultDarkTheme";
@@ -407,7 +431,7 @@ int SettingsOBJ::loadSettings(){
 	}
 
 	// add forsedc 
-	debugLOG("loading from : " + styleDestinatio);
+	//debugLOG("loading from : " + styleDestinatio);
 	for (size_t i = 0; i < BOOL_VAR_NUM; i++) {
 		if (!systemBoolValue[i]) {
 			*boolValPointers[i] = ini.GetBoolValue(styleDestinatio.c_str(), boolVariableNames[i].c_str(), boolValDefault[i]);
@@ -427,13 +451,14 @@ int SettingsOBJ::loadSettings(){
 	return 0;
 };
 
-#define PRINT_SETINGS_SETT true
 bool SettingsOBJ::SaveSystemSettings() {
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
-	debugLOG(" -:SavingSystemSettings");
-	SI_Error rc = ini.LoadFile("appData.ini");
+	//debugLOG(" -:SavingSystemSettings");
+	string appDataPath = getenv("APPDATA") + string("\\NoteCali\\appData.ini");
+
+	SI_Error rc = ini.LoadFile(appDataPath.c_str());
 	for (size_t i = 0; i < INT_VAR_NUM; i++) {
 		if (systemIntValue[i]) {
 			ini.SetValue("settings", systemIntVariableNames[i].c_str(), std::to_string(*systemIntValPointers[i]).c_str());
@@ -467,7 +492,7 @@ bool SettingsOBJ::SaveSystemSettings() {
 		}
 	}
 
-	ini.SaveFile("appData.ini");
+	ini.SaveFile(appDataPath.c_str());
 
 	return 0;
 }
@@ -477,7 +502,7 @@ bool SettingsOBJ::SaveThemeSettings() {
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
-	debugLOG(" -:SavingThemeSettings");
+	//debugLOG(" -:SavingThemeSettings");
 	if (stylescheme == CUSTOM) { // only custom theme can be saved // saves all settings
 		for (size_t i = 0; i < INT_VAR_NUM; i++) {
 			if (!systemIntValue[i]) {
@@ -511,8 +536,9 @@ bool SettingsOBJ::SaveThemeSettings() {
 				#endif	
 			}
 		}
-		ini.SaveFile("customTheme.ntheme");
-		debugLOG("saving CustomTheme");
+		string Path = getenv("APPDATA") + string("\\NoteCali\\customTheme.ntheme");
+		ini.SaveFile(Path.c_str());
+		//debugLOG("saving CustomTheme");
 	}
 	else {
 		debugLOG("cantSaveNonCustomSettings");
@@ -539,7 +565,7 @@ bool SettingsOBJ::is_light_theme() {
 		RRF_RT_REG_DWORD /* expected value type*/, nullptr,buffer.data(),&cbData);
 
 	if (res != ERROR_SUCCESS) {
-		debugLOG("problem vuth loading light thme!"); return 0;
+		debugLOG("problem vith loading light thme!"); return 0;
 	}
 
 	// convert bytes written to our buffer to an int, assuming little-endian

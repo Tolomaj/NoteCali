@@ -59,15 +59,36 @@ private:
     Controler* controler;
 
 public:
-    SettingsWin(Controler* controler) : window(SW_POPUP | SW_ENABLE_DEBUG | SW_HIDE, { 0, 0 , 600, 500 }) {
+    SettingsWin(Controler* controler) : window(SW_POPUP, { 0, 0 , 600, 500 }) {
         this->controler = controler;
     }
 
     SOM_PASSPORT_BEGIN(SettingsWin)
-        SOM_FUNCS( SOM_FUNC(setSet) )
+        SOM_FUNCS(SOM_FUNC(setSet)
+            , SOM_FUNC(openFile)
+            , SOM_FUNC(reloadVariables))
         SOM_PASSPORT_END
 
     void setSet(sciter::string variable, sciter::string value, sciter::string complete);
+
+    void openFile(sciter::string file) {
+        string s = (getenv("APPDATA") + string("\\NoteCali\\" ));
+        wstring ws = wstring(s.begin(), s.end()) + file;
+        debugLOG(ws);
+        ShellExecute(NULL, L"open", (wstring(s.begin(), s.end()) + file).c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
+
+    void reloadVariables() {
+        variableTable.loadVariables();
+        string arg;
+        for (size_t i = 0; i < variableTable.table.size(); i++) {
+            arg = arg + variableTable.table.at(i).varName + ";" + variableTable.table.at(i).number + ";";
+        }
+        arg.pop_back();
+
+
+        this->call_function("loadVariables", arg);
+    }
 
     void loadSettingsInWindow();
 
@@ -85,10 +106,13 @@ public:
         if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
 
         
-        debugLOG("something with:" + std::to_string(params.cmd )  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro  + " - " + sciterStrToStr(elementId));
+        //debugLOG("something with:" + std::to_string(params.cmd )  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro  + " - " + sciterStrToStr(elementId));
 
         switch (params.cmd) {
-            case 23: debugLOG("NumberEventInput");  numberInputEvent(target);  break;
+            case 23: 
+                //debugLOG("NumberEventInput");  
+                numberInputEvent(target);  
+                break;
                     
             case 161: // není v dokumentaci, odpozorováno. zavoláno dvakrát jednou reson je 1 podrzhé 0
                 if (target.test("switch.inp") && params.reason == 0) { // switch / bool event
@@ -99,13 +123,13 @@ public:
                 }
 
                 if (target.test("input.inp") && params.reason == 0) {
-                    debugLOG(L"##hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps1: " + std::to_wstring(params.reason));
+                    //debugLOG(L"##hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps1: " + std::to_wstring(params.reason));
                     return true; // handled
                 }
 
                 if (target.test("caption") && params.reason == 0) {  
                     numberInputEvent(target.parent()); 
-                    debugLOG("mocenos");
+                    //debugLOG("mocenos");
                     return true; 
                 }
 
@@ -140,7 +164,7 @@ void SettingsWin::numberInputEvent(sciter::dom::element target) {
     };
 
     controler->processSettingsChange(); // refresh styles
-    debugLOG("setSet: " + setName + " - " + to_string((double)target.get_value().get(0.0f)));
+    //debugLOG("setSet: " + setName + " - " + to_string((double)target.get_value().get(0.0f)));
 }
 
 void SettingsWin::setSet(sciter::string variable, sciter::string value, sciter::string complete) {
@@ -148,7 +172,7 @@ void SettingsWin::setSet(sciter::string variable, sciter::string value, sciter::
     var = var.substr(0, var.size() - 3);
     string val = sciterStrToStr(value);
 
-    debugLOG(" Seting seting : " + var + " to value : " + val + " resfresh is: " + sciterStrToStr(complete));
+    //debugLOG(" Seting seting : " + var + " to value : " + val + " resfresh is: " + sciterStrToStr(complete));
 
     settings.setSingleSettingsbyName(var, val);
 
@@ -180,17 +204,19 @@ void SettingsWin::loadSettingsInWindow() {
    // ((element)root.get_element_by_id("isAllLinesSuperlinesSW")).set_value(sciter::value(settings.isAllLinesSuperlines));
    // ((element)root.get_element_by_id("showLineNumbersSW")).set_value(sciter::value(settings.showLineNumbers));
     ((element)root.get_element_by_id("clickToCopySW")).set_value(sciter::value(settings.clickToCopy));
-
     ((element)root.get_element_by_id("useRadiansSW")).set_value(sciter::value(settings.useRadians));
     ((element)root.get_element_by_id("useMetricsSW")).set_value(sciter::value(settings.useMetrics));
     ((element)root.get_element_by_id("ignoreHightDiferenceSW")).set_value(sciter::value(settings.ignoreHightDiference));
     ((element)root.get_element_by_id("allowLineJumpSW")).set_value(sciter::value(settings.allowLineJump));
     ((element)root.get_element_by_id("corectParenthesisSW")).set_value(sciter::value(settings.corectParenthesis));
-
     ((element)root.get_element_by_id("useSientificSW")).set_value(sciter::value(settings.useSientific));
-
+    ((element)root.get_element_by_id("useLineModifiersSW")).set_value(sciter::value(settings.useLineModifiers));
+    ((element)root.get_element_by_id("showErrTextSW")).set_value(sciter::value(settings.showErrText));
+    ((element)root.get_element_by_id("useNoroundPointersSW")).set_value(sciter::value(settings.useNoroundPointers));
+    
     ((element)root.get_element_by_id("numberGroupingINP")).set_value(sciter::value(settings.numberGrouping));
     ((element)root.get_element_by_id("roundToDecINP")).set_value(sciter::value(settings.roundToDec));
+    
 
     string arg;
     for (size_t i = 0; i < variableTable.table.size(); i++){

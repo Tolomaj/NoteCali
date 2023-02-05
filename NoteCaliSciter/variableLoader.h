@@ -17,19 +17,20 @@ public:
 
 	int saveVariables();
 
-	int saveRawComposite(wstring s); //set file content to text // budoucí pouzití okno nastanei bude vracet raw text pole pri prenastaveni
+	int saveRawComposite(string s); //set file content to text // budoucí pouzití okno nastanei bude vracet raw text pole pri prenastaveni
 
 
 }variableTable;
 
 int VariablesTable::loadVariables(){ // naète promìneé ze souboru
-	debugLOG("LoadingVariables:");
+	//debugLOG("LoadingVariables:");
 	CSimpleIniA ini;
-	SI_Error rc = ini.LoadFile("constants.nConst"); // file for custom theme 
-
+	string s = getenv("APPDATA") + string("\\NoteCali") + string("\\constants.nConst");
+	SI_Error rc = ini.LoadFile(s.c_str()); // file for custom theme 
+	table.clear();
 	if (rc < 0) {
 		debugLOG("failed to open file");
-		saveRawComposite(L"[constants]\npi = 3.141592\nsqrttwo = 1.4142\neuler = 2.71828182846");
+		saveRawComposite("[constants]\nzero = 0\none = 1\nsqrttwo = 1.4142\n");
 	};
 	std::list<CSimpleIniA::Entry> list;
 	ini.GetAllKeys("constants", list);
@@ -45,13 +46,13 @@ int VariablesTable::loadVariables(){ // naète promìneé ze souboru
 };
 
 int VariablesTable::saveVariables(){
-	// asi nebude potøeba
+	// 
 	return 0;
 };
 
-int VariablesTable::saveRawComposite(wstring s){
+int VariablesTable::saveRawComposite(string s){
 	CSimpleIniA ini;
-	std::ofstream appDataFile("constants.nConst");
+	std::ofstream appDataFile((getenv("APPDATA") + string("\\NoteCali") + string("\\constants.nConst")).c_str());
 	if (appDataFile.fail()) {
 		appDataFile.close();
 		debugLOG("cant crete data file ! MATER ERROR = CLOSING");

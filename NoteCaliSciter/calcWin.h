@@ -17,7 +17,7 @@ private:
     const wstring peventedAlias[PREV_CHARS_NUM] = { L"&lt;",L"&gt;",L"&amp;" }; // alias pro preventovany znak
 
 public:
-    CalculatrWin(Controler * controler, LineRegister* lineSeparator) : window(SW_POPUP | SW_ENABLE_DEBUG, { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {
+    CalculatrWin(Controler * controler, LineRegister* lineSeparator) : window(SW_POPUP , { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {
         this->controler = controler;
         this->lineSeparator = lineSeparator;
     }
@@ -40,6 +40,8 @@ public:
 
     void publish(std::vector<mline> lines); // publish solutions and highlights
 
+    void focus();
+
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
@@ -50,6 +52,8 @@ public:
             highites = getElementById("highlights");
             mathInput = getElementById("mathInput");
             mathOutput = getElementById("mathOutput");
+            mathInput.eval(aux::utf2w("this.focus();"));
+
             firstEvent = false;
         }
 
@@ -122,7 +126,7 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >");
         solutionString.append(lines.at(i).solutionModifier + L" ");
         if (lines.at(i).localVariableName != L"") {
-            solutionString.append(lines.at(i).localVariableName + L":");
+            solutionString.append(lines.at(i).localVariableName);
         }
         if (lines.at(i).error.type <= 0 || settings.showErrText) { // dont print errors
             solutionString.append(lines.at(i).solution); // composite non copiable part with copiable part of solution

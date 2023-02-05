@@ -84,7 +84,10 @@
     <IntDir>$(SolutionDir)\SolutionDebug</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\SDKs\ginac-1.8.4;D:\SDKs\cln-1.3.6\include;C:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\SolutionRelease</OutDir>
+    <IntDir>$(SolutionDir)\SolutionReleasePRECOMPILEDMABEY</IntDir>
+    <TargetName>NoteCali</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -149,6 +152,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,8 +181,8 @@
     <ClInclude Include="library\ini.h" />
     <ClInclude Include="library\SimpleIni.h" />
     <ClInclude Include="LineSeparator.h" />
-    <ClInclude Include="mLines.h" />
     <ClInclude Include="ObjectDefinitions.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="SettingsObject.h" />
     <ClInclude Include="settWin.h" />
     <ClInclude Include="stdafx.h" />
@@ -202,8 +207,6 @@
     <None Include="ttmath\win64_assemble.bat" />
     <None Include="ui\add-variable.svg" />
     <None Include="ui\add.svg" />
-    <None Include="ui\angle-left.svg" />
-    <None Include="ui\angle-right.svg" />
     <None Include="ui\calculator.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
@@ -215,7 +218,6 @@
     <None Include="ui\functions.svg" />
     <None Include="ui\gear.svg" />
     <None Include="ui\keyboard.svg" />
-    <None Include="ui\memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4taVIGxA.woff2" />
     <None Include="ui\menu.svg" />
     <None Include="ui\minimalize.svg" />
     <None Include="ui\save.svg" />
@@ -232,12 +234,13 @@
   <ItemGroup>
     <Font Include="ui\inria-sans-bold.otf" />
     <Font Include="ui\inria-sans.otf" />
-    <Font Include="ui\kvoc.otf" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="ui\icon.ico" />
+    <Image Include="ui\icon2.ico" />
+    <Image Include="ui\iconSmall.ico" />
     <Image Include="ui\left-arrow.png" />
     <Image Include="ui\right-arrow.png" />
-    <Image Include="ui\sci_fi_city_cities_artwork_art_futuristic_5120x4096.jpg" />
     <Image Include="ui\switch.png" />
     <Image Include="ui\transpa.png" />
   </ItemGroup>
@@ -246,6 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <Object Include="ttmath\ttmathuint_x86_64_msvc.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NoteCaliSciter.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

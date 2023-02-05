@@ -1,7 +1,5 @@
 #define WIN_VERSION true
-#define DEBUG true
-
-
+#define DEBUG false
 
 #include <sciter-x.h>
 #include <sciter-x-window.hpp>
@@ -9,6 +7,7 @@
 #include "ttmath/ttmath.h"
 #include <chrono>
 
+#include <direct.h>
 
 #if WIN_VERSION
 #include <Uxtheme.h>
@@ -41,6 +40,11 @@ int uimain(std::function<int()> run) {
     startDebugConsole();
 #endif
 
+    /*
+        string s = getenv("APPDATA") + string("\\NoteCali") + string("\\ini.ini");
+        getenv("APPDATA") + string("\\NoteCali") + string("\\ini.ini");
+        mkdir((getenv("APPDATA") + string("\\NoteCali")).c_str());
+    */
 
     Controler controler;
 

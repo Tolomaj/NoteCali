@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\projekty\allVisualStudio\NoteCaliSciter Controler\SolutionRelease\NoteCaliSciter.exe</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>D:\projekty\allVisualStudio\NoteCaliSciter Controler\NoteCaliSciter\ui\calculator.htm</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>D:\projekty\allVisualStudio\NoteCaliSciter Controler\NoteCaliSciter\ui\settings.htm</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

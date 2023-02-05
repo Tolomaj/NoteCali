@@ -24,9 +24,9 @@ function selectTab(btnName, tabName, tooltipisOn, description = "neni") { // ote
 
 
 document.getElementById("styleBtn").onclick = function () { selectTab("styleBtn", "styleTab", true, "Here is style settings.<br>If you want custom colors you must select custom profile."); }
-document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true, "This tab describes haw to comunicate with calculator. And calculator Features"); }
+document.getElementById("interfaceBtn").onclick = function () { selectTab("interfaceBtn", "interfaceTab", true, "This tab describes haw to comunicate with calculator.<br> And calculator Features"); }
 document.getElementById("systemBtn").onclick = function () { selectTab("systemBtn", "systemTab", true, "Here you can set system settings. All bohavior can by changed there"); }
-document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true, "Here is your variales<br>You can add more Variables in file on programfolder named constants.nConst<br>Restart Requaire"); }
+document.getElementById("variableBtn").onclick = function () { selectTab("variableBtn", "variablesTab", true, "Here is your variales<br>You can add more Variables in file opened by button down there<br>For wariables to work you must hit reload button or restart aplication"); }
 document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true, "There you can set Functions"); }
 document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false); }
 document.getElementById("updatesBtn").onclick = function () { selectTab("updatesBtn", "updatesTab", false); }
@@ -44,7 +44,6 @@ for (const hasTipElement of document.getElementsByClassName("hasTip")) { // všem
         setStyleToolTip(TipName, e.currentTarget.getAttribute("tip"));
     }, false);
     hasTipElement.addEventListener("mouseleave", (e) => {
-        console.log(selectedTabName, tabDescription);
         setStyleToolTip(selectedTabName, tabDescription);
     }, false);
 }

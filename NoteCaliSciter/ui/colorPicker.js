@@ -56,8 +56,6 @@ function mouseEventResponse(e) {
         lastL = 100 - yCoords * 100;
         lastS = xCoords * 100;
 
-        console.log(lastL, lastS);
-
         setColot();
     }
 }

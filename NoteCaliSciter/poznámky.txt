@@ -1,27 +1,41 @@
+
+
+<------------------------nejdùležitìjší -------------------------------->
+pøidat možnost copy without rounding
+
+
+
+<------------------------- pùl dùležité --------------->
+
+add click script to end of line << click to go line
+
+pøidat 
+h;		<-- hide solution pro mezivýpoèty
+
+
 pøidání naaèítání a ukládání konstant z nastavovacího okna
-
-to style
-+ show variable name
-+ show variable simbol
-+ load picture <- experimental not now
-
-to interface
-+add clear shortcut <-- mabey only baner
 
 ukazat když dojde k zaokrouhlení
 
-settings
-- showVariableName:ShowWariableIcon:DontShowVariableIndiators
-
-and others
-
-add variable loading
-add custom functions
-solve closing err in settings
-add var def ignore height
-
 add resizin bar
 
-po dokonèení napsat autorovy ttmath a caligator
+error caling - pøidat errorové hlášení které by zpùsobilo pád programu
 
-error caling
+record position to open position
+
+<-------------------- ménì dùležité  -------------------------->
+vyøešit velikosti ikoni (aplikace - ikona velká) (táskbar - ikona malá)
+
+napsat autorovy ttmath a caligator
+
+add custom functions
+
+to interface
+	+add clear shortcut <-- mabey only baner into feature tab
+
+to Style:
+	+ load picture <- experimental not now
+	+ showVariableName:ShowWariableIcon:DontShowVariableIndiators
+
+opravit stránky pro mobili (dovnload tlaèítka) // možná že pro mobil to není stažitelné
+možná celkovì pøekopat stránky aby nevypadaly tak odpadnì

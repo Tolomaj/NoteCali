@@ -2,6 +2,8 @@
 #include <string>
 #include <sstream> 
 
+#pragma once
+
 std::string sciterStrToStr(sciter::string s){
 	return std::string(s.begin(), s.end());
 }

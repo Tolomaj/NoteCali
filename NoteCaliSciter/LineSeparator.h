@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <string>
+#include "debugConsole.h"
+#include "ObjectDefinitions.h"
 
 using namespace std;
 
@@ -13,15 +15,21 @@ class LineRegister {
         mline separatedLine;
         separatedLine.isEnded = isCompleted;
         if ((iline->size() > 0 && iline->at(0) != L';') || iline->size() == 0) { // neobsahuje ; na prvním a není tudíš command
+            if (settings.useLineModifiers) {
+                size_t modificator = iline->find(L";");
+                size_t modifcorection = iline->find(L"(");
 
-            size_t modificator = iline->find(L";");
-            // má modifikátopr ?
-            if (modificator != string::npos ) {
-                separatedLine.lineModifier = iline->substr(0, modificator);
-                separatedLine.line = iline->substr(modificator + 1, iline->length());
-                lines.push_back(separatedLine);
-                return;
+
+                bool modificationIsvalid = (modificator != string::npos) && ((modifcorection == string::npos) || (modificator < modifcorection));//aby se nepoèítaly ; v závorkách
+
+                if (modificationIsvalid) {
+                    separatedLine.lineModifier = iline->substr(0, modificator);
+                    separatedLine.line = iline->substr(modificator + 1, iline->length());
+                    lines.push_back(separatedLine);
+                    return;
+                }
             }
+
 
             separatedLine.line = *iline;
             lines.push_back(separatedLine);
@@ -59,7 +67,6 @@ public:
         wstring a = L"";
         while ((pos = str->find(L"\n", prev)) != string::npos) {
             long posN = pos - prev - 1;
-            debugLOG((int)posN);
             if (posN < 0) {
                 mline l;
                 l.isComandDone = true;
@@ -71,12 +78,14 @@ public:
             registerLine(&a);
             prev = pos + 1;
         }
-        debugLOG("motobyke");
+
         if (prev < str->length()) {
             a = str->substr(prev);
             registerLine(&a, false);
         }
+        #if DEBUG
         printLines();
+        #endif
     };
 
 

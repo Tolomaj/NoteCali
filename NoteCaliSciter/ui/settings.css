@@ -225,6 +225,11 @@ switch {
     padding-bottom:20px;
 }
 
+.scrolableArea {
+    overflow-y: auto;
+    vertical-scrollbar: simpleScroll;
+}
+
 .toolTip {
     margin: 20px 10px;
     height: 120px;
@@ -272,6 +277,7 @@ switch {
         filter: invert(1);
     }
 
+
 #versionTitle {
     flow: horizontal;
     color: white;
@@ -293,8 +299,8 @@ switch {
 #versionLog {
     background-color: #aebcc3;
     border-radius: 10px;
-    font-size: 18px;
-    margin: 5px 30px;
+    font-size: 16px;
+    margin: 5px 30px 20px 30px;
     width: calc(100% - 100px);
     padding: 5px 20px;
 }
@@ -417,7 +423,7 @@ textarea:focus, input:focus {
         width: 20px;
     }
 
-#varAddBTN {
+#varAddBTN , #varLoadBTN {
     padding: 10px;
     background-color: #678ba0;
     width: 40px;

@@ -28,6 +28,7 @@ class MatematicalSolver {
     ttmath::Objects systemVariableTable;
     ttmath::Objects functionTable;//not used jet
     ttmath::Conv ConvertionRole;
+    bool lineUsingMetrics;
 
     vector<mline>* procesedLines;
 
@@ -37,7 +38,7 @@ class MatematicalSolver {
 
     int findEqualition(wstring* line);// vrátí true když opsahuje samostatné = ,index je hejo pozice
 
-    int solveLine(wstring line, wstring* solution, wstring* errorText); // vyřeší linku která neobsahuje žádné custom věci // později budwe řešit proměné a funkce
+    int solveLine(wstring line, wstring* solution, wstring* solutionNoRound,wstring* errorText); // vyřeší linku která neobsahuje žádné custom věci // později budwe řešit proměné a funkce
 
     bool isValidVariableName(wstring name);
 
@@ -81,11 +82,11 @@ void MatematicalSolver::begin() {
 
 int MatematicalSolver::solve(vector<mline>* lines) { // TODO
     procesedLines = lines;
-    debugLOG("\nStarting line Calculations \n\n\n");
+    //debugLOG("\nStarting line Calculations \n\n\n");
+#if DEBUG
     ios_base::sync_with_stdio(false); // aby se debug log zapsal ihned // pro debug only
-
+#endif
     setDefaultMathRules();
-
 
     if (settings.useMetrics) {
         addMetricsToTable();
@@ -103,7 +104,7 @@ int MatematicalSolver::solve(vector<mline>* lines) { // TODO
     */
 
     for (size_t i = 0; i < lines->size(); i++) {
-        if (modifyMathRules(&lines->at(i).lineModifier) == END_LINE_SOLVING) {
+        if (settings.useLineModifiers && modifyMathRules(&lines->at(i).lineModifier) == END_LINE_SOLVING) {
             continue;
         };
 
@@ -114,7 +115,7 @@ int MatematicalSolver::solve(vector<mline>* lines) { // TODO
 
         if (lines->at(i).command != L"") { //is comand
             executeMathComand(&lines->at(i));
-            debugLOG("executing math function"); // do functions
+            //debugLOG("executing math function"); // do functions
         }
         
         if (lines->at(i).completlySolved ) { continue; }  // if comand solve line then is no need to do math
@@ -124,8 +125,8 @@ int MatematicalSolver::solve(vector<mline>* lines) { // TODO
         if (eqPos >= 0) { //is variable 
             solveVariableLine(&lines->at(i),eqPos);
         } else { // is not variable
-            wstring error = L"Math Err";
-            if (solveLine(lines->at(i).line, &lines->at(i).solution, &error) != 0) { //error check
+            wstring error = L"Line Unsolvable";
+            if (solveLine(lines->at(i).line, &lines->at(i).solution, &lines->at(i).solutionNoRound, &error) != 0) { //error check
                 creteErrorLineSolution(&lines->at(i), error, MATHERR_INVALID_NUMBER_FOR_OPERARTION);
             }else {
                 lines->at(i).completlySolved = true;
@@ -137,18 +138,18 @@ int MatematicalSolver::solve(vector<mline>* lines) { // TODO
 
         //MathError tmp = solveBasicLine(&line); // dbg solve simple line
     }
-    
+    lineUsingMetrics = false;
     varTable = systemVariableTable;
-    debugLOG("Calculation ended.");
+    //debugLOG("Calculation ended.");
    
     return 0;
 }
 
 
-int MatematicalSolver::solveLine(wstring line, wstring* solution,wstring * errorText) { // vyřeší linku která neobsahuje žádné custom věci // později budwe řešit proměné a funkce
+int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solutionNoRound,wstring * errorText) { // vyřeší linku která neobsahuje žádné custom věci // později budwe řešit proměné a funkce
     
     
-    if (settings.useMetrics) { // check to somethink
+    if (settings.useMetrics || lineUsingMetrics) { // check to somethink
         int ocur = line.find(L" to ");
         while (ocur != wstring::npos){
             line = L"(" + line;
@@ -196,7 +197,11 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution,wstring * error
                             *errorText = L"Invalid Line Jump";
                             return MATHERR_INVALID_LINE_JUMP_NUM;
                         }
-                        line = line.substr(0, lastSeenEq) + L"(" + procesedLines->at(lineId).solution + L")" + line.substr(i + 1, line.length() - i);
+                        if (settings.useNoroundPointers) {
+                            line = line.substr(0, lastSeenEq) + L"(" + procesedLines->at(lineId).solutionNoRound + L")" + line.substr(i + 1, line.length() - i);
+                        } else {
+                            line = line.substr(0, lastSeenEq) + L"(" + procesedLines->at(lineId).solution + L")" + line.substr(i + 1, line.length() - i);
+                        }
                     }
                     catch (exception& err) {
                         *errorText = L"No Line Jump Number";
@@ -218,8 +223,9 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution,wstring * error
     ttmath::ErrorCode err = parser.Parse(line); // actuali solve line
     if (err == 0) {
         *solution = parser.stack[0].value.ToWString(ConvertionRole);
+        *solutionNoRound = parser.stack[0].value.ToWString();
     }else {
-        *errorText = L"Cant Solve Line";
+        *errorText = L"Line Unsolvable";
     }
 
     return err;
@@ -302,6 +308,11 @@ void MatematicalSolver::addMetricsToTable() { // zkontrolovat převod (:
         varTable.Add("dag", "10");
         varTable.Add("kg", "1000");
         varTable.Add("t", "1000000");
+
+
+        //přidat měny
+
+
     }
     
 }
@@ -342,7 +353,6 @@ bool MatematicalSolver::solveVariableLine(mline* line, int eqPos) {
     removeBeforeAfterSpaces(&beforeEQ);
 
     wstring afterEQ = line->line.substr(eqPos + 1, line->line.length());
-    debugLOG(L"tus2|" + beforeEQ + L"|");
 
     if (!isValidVariableName(beforeEQ)) { //ošetření neplatného jména
         creteErrorLineSolution(line, L"Variable Name contains Forbident simbols", MATHERR_INVALID_VARIABLE_NAME);
@@ -351,19 +361,25 @@ bool MatematicalSolver::solveVariableLine(mline* line, int eqPos) {
 
     wstring errorText = L"Math Err";
 
-    if (solveLine(afterEQ, &line->solution, &errorText) != 0) { // is is error
+    if (solveLine(afterEQ, &line->solution,&line->solutionNoRound, &errorText) != 0) { // is is error
         creteErrorLineSolution(line, errorText, MATHERR_INVALID_NUMBER_FOR_OPERARTION);
         return false;
     }
     else {
-        debugLOG(L"tus|" + beforeEQ + L"|");
         line->completlySolved = true;
-        line->localVariableName = beforeEQ;
+        line->localVariableName = L"📋";// beforeEQ; 
+
+        wstring solutionVtext;
+        if (settings.useNoroundPointers) {
+            solutionVtext = line->solutionNoRound;
+        }else {
+            solutionVtext = line->solution;
+        }
 
         if (varTable.IsDefined(beforeEQ)) {
-            varTable.EditValue(beforeEQ, line->solution);
+            varTable.EditValue(beforeEQ, solutionVtext);
         } else {
-            varTable.Add(beforeEQ, line->solution);
+            varTable.Add(beforeEQ, solutionVtext);
         };
     }
 }
@@ -419,8 +435,27 @@ void MatematicalSolver::executeMathComand(mline* line) {
             line->completlySolved = true;
         }
     }
+    else if (line->command == L"rand") {
+        double i = (float)rand() / (RAND_MAX);
+        line->line = to_wstring(i) + line->line;
+        line->isComandDone = true;
+        line->completlySolved = false;
+    }
+    else if (line->command == L"randi") {
+        int i = rand();
+        line->line = to_wstring(i) + line->line;
+        line->isComandDone = true;
+        line->completlySolved = false;
+    }
+    else if (line->command == L"randn") {
+        float i = ((float)rand() / (RAND_MAX) - 0.5)*2;
+        line->line = to_wstring(i) + line->line;
+        line->isComandDone = true;
+        line->completlySolved = false;
+    }
     else if (line->command == L"metrics") {
         addMetricsToTable();
+        lineUsingMetrics = true;
         line->solution = L"Metrics Added";
         line->isComandDone = true;
         line->completlySolved = true;
@@ -456,10 +491,16 @@ int MatematicalSolver::findEqualition(wstring* line) { // vrátí true když ops
     size_t lastSeenEq = line->find(L"=");
 
     while (lastSeenEq != string::npos) {
+
+        // line contains -> (  line->at(lastSeenEq + 1) == L'=' ||  )
+        //test = behind
+        // test alos before
+
         if (lastSeenEq + 1 < line->length() && line->at(lastSeenEq + 1) != L'=') {
-            if (lastSeenEq - 1 >= 0 && line->at(lastSeenEq - 1) != L'=') {
+            if (lastSeenEq - 1 >= 0 && line->at(lastSeenEq - 1) != L'<' && line->at(lastSeenEq - 1) != L'<' && line->at(lastSeenEq - 1) != L'!') { // check if = is not operation
                 return lastSeenEq;  // vrtí pozici =
             }
+
         }
         lastSeenEq = line->find(L"=", ++lastSeenEq);
     }

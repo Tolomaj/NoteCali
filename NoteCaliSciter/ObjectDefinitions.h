@@ -23,6 +23,7 @@ struct mline { // mabey add solution preponder
 
 	wstring localVariableName = L"";
 	wstring solution = L""; // copiable solution to line
+	wstring solutionNoRound = L""; // copiable solution to line
 	wstring solutionModifier = L""; // not copiable coment to solution
 
 	MathError error;

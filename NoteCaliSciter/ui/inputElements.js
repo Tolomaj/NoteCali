@@ -32,3 +32,5 @@ for (let i = 0; i < numberIncresers.length; i++) {
         addToNumInput(e.target.parentElement.parentElement.getElementsByTagName("input")[0], 1);
     }, false);
 }
+
+

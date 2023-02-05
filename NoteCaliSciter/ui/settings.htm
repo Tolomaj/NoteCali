@@ -1,4 +1,4 @@
-﻿<html custom-frame=solid-with-shadow window-resizable>
+﻿<html custom-frame=solid-with-shadow window-icon="icon.ico" window-resizable >
 <head>
     <title>noteCali settings</title>
     <link rel="stylesheet" type="text/css" href="settings.css" />
@@ -11,10 +11,18 @@
         function loadVariables(variableLines) {
             var varArr = variableLines.split(';');
             var vararea = document.getElementById("varArea");
+            vararea.innerHTML = '<div class="var"><div class="name">system : pi</div><div class="value">3.141...</div></div><div class="var"><div class="name">system : e</div><div class="value">2.718...</div></div>'
             for (let i = 0; i < varArr.length; i = i + 2) {
                 vararea.innerHTML += '<div class="var"> <div class="name">' + varArr[i] + '</div> <div class="value">' + varArr[i + 1] + '</div> <!--<img class="destroy" src="trash.svg"></img>--> </div>'; // trashcan icon is comemnted
             }
         }
+        document.getElementById("varAddBTN").onclick = function () {
+            Window.this.SettingsWin.openFile("constants.nConst");
+        }
+        document.getElementById("varLoadBTN").onclick = function () {
+            Window.this.SettingsWin.reloadVariables();
+        }
+
     </script>
 
 </head>
@@ -114,24 +122,17 @@
                         <div class="oLable">Show app name</div>
                         <switch class="inp" id="showAppNameSW" /> <!-- showAppName + SW -->
                     </div>
-                    <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
-                        <div class="oLable">Transparencity</div>
-                        <span class="inp numInput">
-                            <span class="rDwnB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP"><!-- transparecity + INP -->
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
-                        </span>
-                    </div>
-                    <div class="option customPa hasTip" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
+
+                    <div class="option customPa hasTip" tip="Set background color.">
                         <div class="oLable">Background Color</div>
                         <div class="inp colorpicker" id="backgroudColorCLR"></div>
                     </div>
-                    <div class="option customPa hasTip" tip="Set background Color. Transparencity not work if Transperencity option is not turned on.">
+                    <div class="option customPa hasTip" tip="Set color of divider line.">
                         <div class="oLable">DividerLine Color</div>
                         <div class="inp colorpicker" id="dividerLineColorCLR"></div>
                     </div>
-                    <div class="option customPa hasTip" tip="Set text Color.">
-                        <div class="oLable">Text Color</div>
+                    <div class="option customPa hasTip" tip="Set text color.">
+                        <div class="oLable">Text color</div>
                         <div class="inp colorpicker" id="fontColorCLR"></div>
                     </div>
                     <div class="option customPa hasTip" tip="Set color of solutions.">
@@ -139,40 +140,51 @@
                         <div class="inp colorpicker" id="solutionFontColorCLR"></div>
                     </div>
                     <div class="option customPa hasTip" tip="Set title color.">
-                        <div class="oLable">Title Color</div>
+                        <div class="oLable">Title color</div>
                         <div class="inp colorpicker" id="titleColorCLR"></div>
                     </div>
-                    <!-- not implemented !! <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
-                    <div class="oLable">Background Image</div>
-                    <switch class="inp" />
+                    <!-- not implemented !!
+                            <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
+        <div class="oLable">Transparencity</div>
+        <span class="inp numInput">
+            <span class="rDwnB"><img src="left-arrow.png" /></span>
+            <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
+                    <span class="rUpB"><img src="right-arrow.png" /></span>
+                    </span>
                 </div>
-                <div class="option customPa hasTip" tip="Color of error highliting">
-                    <div class="oLable">Error Highlite</div>
-                    <div class="inp colorpicker" id="highliteERRCLR"></div>
-                </div>
-                <div class="option customPa hasTip" tip="Color of variable highliting.">
-                    <div class="oLable">Variable Highlite</div>
-                    <div class="inp colorpicker" id="highliteVARCLR"></div>
-                </div>
-                <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
-                    <div class="oLable">SuperLine Highlite</div>
-                    <div class="inp colorpicker" id="highliteSUPERCLR"></div>
+                        <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
+            <div class="oLable">Background Image</div>
+            <switch class="inp" />
+        </div>
+        <div class="option customPa hasTip" tip="Color of error highliting">
+            <div class="oLable">Error Highlite</div>
+            <div class="inp colorpicker" id="highliteERRCLR"></div>
+        </div>
+        <div class="option customPa hasTip" tip="Color of variable highliting.">
+            <div class="oLable">Variable Highlite</div>
+            <div class="inp colorpicker" id="highliteVARCLR"></div>
+        </div>
+        <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
+            <div class="oLable">SuperLine Highlite</div>
+            <div class="inp colorpicker" id="highliteSUPERCLR"></div>
+        </div>
+            <div class="option customPa hasTip">
+                <div class="oLable oLong">Padding Between Lines</div>
+                <span class="inp numInput">
+                    <span class="rDwnB"><img src="left-arrow.png" /></span>
+                    <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
+                    <span class="rUpB"><img src="right-arrow.png" /></span>
+                    </span>
                 </div>-->
-                    <div class="option customPa hasTip">
-                        <div class="oLable oLong">Padding Between Lines</div>
-                        <span class="inp numInput">
-                            <span class="rDwnB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP"><!-- id = variableName + "INP" -->
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
-                        </span>
-                    </div>
-                </div>
+            </div>
             </div>
 
             <div class="tabArea" id="interfaceTab">
                 <div class="feature"> <div class="name">€[lineNumber]</div> <div class="value">Pointer to line</div> </div>
                 <div class="feature"> <div class="name">5m + 6mm to cm</div> <div class="value">Unit conversion example</div> </div>
+                <div class="feature"> <div class="name">;sum</div>        <div class="value">Sum all the numbers above</div> </div>
                 <div class="feature"> <div class="name">&0010 </div>      <div class="value">Using biar numbers</div> </div>
+                <div class="feature"> <div class="name">#ab1</div>        <div class="value">Using hexadecimal numbers</div> </div>
                 <div class="feature"> <div class="name">%</div>           <div class="value">Operation percent</div> </div>
                 <div class="feature"> <div class="name">^</div>           <div class="value">Operation power</div> </div>
                 <div class="feature"> <div class="name">*</div>           <div class="value">Operation multiply</div> </div>
@@ -221,17 +233,23 @@
                 <div class="feature"> <div class="name">gamma(x)</div>     <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">sqrt(x)</div>      <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">root(x,index)</div><div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">mod(x,y)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">if(cond,t,f)</div> <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">mod(x,y)</div>     <div class="value">Function Modulo</div> </div>
+                <div class="feature"> <div class="name">if(cond,t,f)</div> <div class="value">If condition 1:t 0:f</div> </div>
                 <div class="feature"> <div class="name">or(x,y)</div>      <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">and(x,y)</div>     <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">not(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">bitor(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">bitand(x)</div>    <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitor(x,y)</div>   <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitand(x;y)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitxor(x,y)</div>  <div class="value">Function</div> </div>
 
-                <div class="feature"> <div class="name">r[x];</div>    <div class="value">before line change rouonding settings for line</div> </div>
-                <div class="feature"> <div class="name">b[x];</div>    <div class="value">before line change number base settings for line</div> </div>
-                <div class="feature"> <div class="name">c;</div>    <div class="value">before line prevent line from solving</div> </div>
+                <div class="feature"> <div class="name">;clear</div>    <div class="value">Clear text in calculator</div> </div>
+                <div class="feature"> <div class="name">;rand</div>     <div class="value">Random number 0 to 1</div> </div>
+                <div class="feature"> <div class="name">;randi</div>     <div class="value">Random integer </div> </div>
+                <div class="feature"> <div class="name">;randn</div>     <div class="value">Random number -1 - 1 </div> </div>
+
+                <div class="feature"> <div class="name">r[x];</div>     <div class="value">before line change rouonding settings for line</div> </div>
+                <div class="feature"> <div class="name">b[x];</div>     <div class="value">before line change number base settings for line</div> </div>
+                <div class="feature"> <div class="name">c;</div>        <div class="value">before line prevent line from solving</div> </div>
 
             </div>
             <div class="tabArea" id="systemTab">
@@ -272,6 +290,12 @@
                         <switch class="inp" id="useSientificSW" />
                     </div>
 
+                    <div class="option hasTip" tip="Use line arguments before ;<br>For example r3; this round number to 3 dec places.">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Use lineModifiers</div>
+                        <switch class="inp" id="useLineModifiersSW" />
+                    </div>
+
                     <div class="option hasTip" tip="Allow you to click and by that copy solution.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Click To Copy</div>
@@ -310,6 +334,12 @@
                         <switch class="inp" id="corectParenthesisSW" /> <!-- add to variable list  -> setings-->
                     </div>
 
+                    <div class="option hasTip" tip="Round rules is not applied variables and € pointers.">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Dont Round Pointers</div>
+                        <switch class="inp" id="useNoroundPointersSW" /> <!-- add to variable list  -> setings-->
+                    </div>
+
                 </div>
             </div>
 
@@ -317,15 +347,15 @@
                 <div class="tabAreaCentred" id="varArea">
                     <div class="var">
                         <div class="name">system : pi</div>
-                        <div class="value">3.141592...</div>
+                        <div class="value">3.141...</div>
                     </div>
                     <div class="var">
                         <div class="name">system : e</div>
-                        <div class="value">1.41421...</div>
+                        <div class="value">2.718...</div>
                     </div>
                 </div>
-                <!-- <img id="varAddBTN" src="add.svg"></img>
-            <img id="varAddBTN" src="save.svg"></img>-->
+                <img id="varAddBTN" src="pen.svg"></img>
+                <img id="varLoadBTN" src="refresh.svg" ></img>
             </div>
             <div class="tabArea" id="functionsTab">
                 <div class="tabAreaCentred">
@@ -361,24 +391,64 @@
             <div id="TopicSendButton">Send</div>
         </div>
 
-        <div class="tabArea" id="updatesTab">
+        <div class="tabArea scrolableArea" id="updatesTab">
+
+
             <div id="uptudateBanner">
                 <img src="update.svg" />
                 <div class="msg">APP version</div>
-                <div class="version">v0.1</div>
+                <div class="version">v0.3</div>
             </div>
-            <div id="versionChangelog">
+
+
+            <div class="versionChangelog">
                 <div id="versionTitle">
-                    <div class="version">0.01</div>
+                    <div class="version">v0.3</div>
+                    <div class="type">FULL RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    Now Variables And Line Pointers is not rounded (can be changed in settings).<br>
+                    Recreated Aplication Icon.<br>
+                    <br>
+                    Still Auto Update is not awaiable in this version.<br>
+                    And still you feedback is needed.<br>
+                    Please send to email adress.<br>
+                    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
+                </div>
+            </div>
+
+            <div class="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.2</div>
+                    <div class="type">FULL RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    Fixed variable bugs.<br>
+                    Fixed Settings saving.<br>
+                    Fixed operations containing '=' char.<br>
+                    Now Settings is located in appData.<br>
+                    <br>
+                    Still Auto Update is not awaiable in this version.<br>
+                    And still you feedback is needed.<br>
+                    Please send to email adress.<br>
+                    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
+                </div>
+            </div>
+
+
+            <div class="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.1</div>
                     <div class="type">FULL RELEASE</div>
                 </div>
                 <div id="versionLog">
                     App first released.<br>
                     Auto Update is not awaiable in this version.<br>
                     Please aend feedback to email adress.<br>
-                    <a href="mailto:abc@example.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
+                    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
                 </div>
             </div>
+
         </div>
 
 

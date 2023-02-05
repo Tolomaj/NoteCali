@@ -56,9 +56,6 @@
     <ClInclude Include="LineSeparator.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
-    <ClInclude Include="mLines.h">
-      <Filter>Hlavičkové soubory</Filter>
-    </ClInclude>
     <ClInclude Include="library\exprtk.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
@@ -113,12 +110,13 @@
     <ClInclude Include="ObjectDefinitions.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ui\add.svg" />
     <None Include="ui\add-variable.svg" />
-    <None Include="ui\angle-left.svg" />
-    <None Include="ui\angle-right.svg" />
     <None Include="ui\calculator.htm" />
     <None Include="ui\close.svg" />
     <None Include="ui\color-palette.svg" />
@@ -127,7 +125,6 @@
     <None Include="ui\functions.svg" />
     <None Include="ui\gear.svg" />
     <None Include="ui\keyboard.svg" />
-    <None Include="ui\memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4taVIGxA.woff2" />
     <None Include="ui\menu.svg" />
     <None Include="ui\minimalize.svg" />
     <None Include="ui\save.svg" />
@@ -149,12 +146,8 @@
   <ItemGroup>
     <Font Include="ui\inria-sans.otf" />
     <Font Include="ui\inria-sans-bold.otf" />
-    <Font Include="ui\kvoc.otf" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="ui\sci_fi_city_cities_artwork_art_futuristic_5120x4096.jpg">
-      <Filter>Soubory zdrojů</Filter>
-    </Image>
     <Image Include="ui\switch.png">
       <Filter>Soubory zdrojů</Filter>
     </Image>
@@ -167,11 +160,25 @@
     <Image Include="ui\right-arrow.png">
       <Filter>Soubory zdrojů</Filter>
     </Image>
+    <Image Include="ui\icon.ico">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\icon2.ico">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\iconSmall.ico">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="poznámky.txt" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="ttmath\ttmathuint_x86_64_msvc.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="NoteCaliSciter.rc">
+      <Filter>Soubory zdrojů</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
