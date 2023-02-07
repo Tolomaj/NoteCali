@@ -95,6 +95,7 @@ public:
     void updateStyles() { }
 
     void numberInputEvent(sciter::dom::element target);
+    
 
 
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) { 
@@ -106,7 +107,7 @@ public:
         if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
 
         
-        //debugLOG("something with:" + std::to_string(params.cmd )  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro  + " - " + sciterStrToStr(elementId));
+        debugLOG("something with:" + std::to_string(params.cmd )  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro  + " - " + sciterStrToStr(elementId));
 
         switch (params.cmd) {
             case 23: 
@@ -190,8 +191,8 @@ void SettingsWin::loadSettingsInWindow() {
     sciter::dom::element root = sciter::dom::element::root_element(get_hwnd());
     ((element)root.get_element_by_id("showAppNameSW")).set_value(sciter::value(settings.showAppName));
     ((element)root.get_element_by_id("fontSizeINP")).set_value(sciter::value(settings.fontSize));
-    ((element)root.get_element_by_id("fontPaddingINP")).set_value(sciter::value(settings.fontPadding));
-    ((element)root.get_element_by_id("transparencityINP")).set_value(sciter::value(settings.transparencity));
+    //((element)root.get_element_by_id("fontPaddingINP")).set_value(sciter::value(settings.fontPadding)); //not done 
+    //((element)root.get_element_by_id("transparencityINP")).set_value(sciter::value(settings.transparencity)); //not done 
 
     ((element)root.get_element_by_id("backgroudColorCLR")).set_style_attribute("background-color", StrToWstr(settings.backgroudColor).c_str());
     ((element)root.get_element_by_id("dividerLineColorCLR")).set_style_attribute("background-color", StrToWstr(settings.dividerLineColor).c_str());

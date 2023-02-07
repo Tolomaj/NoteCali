@@ -4,6 +4,12 @@
 
 #pragma once
 
+//add print error (opens window that show error hlasku )
+
+void debugERROR(std::wstring a) {
+	MessageBox(NULL, a.c_str(), L"Fatal Error", MB_ICONWARNING | MB_OK);
+}
+
 std::string sciterStrToStr(sciter::string s){
 	return std::string(s.begin(), s.end());
 }

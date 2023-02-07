@@ -7,6 +7,11 @@ pøidat možnost copy without rounding
 
 <------------------------- pùl dùležité --------------->
 
+to interface
+	+add clear shortcut <-- mabey only baner into feature tab
+
+on_dataload() <-- provìøit jestli se nedá použít pro naètení prvnotních HELEMTÙ
+
 add click script to end of line << click to go line
 
 pøidat 
@@ -17,21 +22,31 @@ pøidání naaèítání a ukládání konstant z nastavovacího okna
 
 ukazat když dojde k zaokrouhlení
 
-add resizin bar
+add resizin barv nastavení % bar
+preovizornì dát nastavení procent do nastavení 
 
-error caling - pøidat errorové hlášení které by zpùsobilo pád programu
+
+error caling - pøidat errorové hlášení které by zpùsobilo pád programu // trochu dotové pro naèítájí souborù
 
 record position to open position
+
+ pøidat možnost always on top 
+
+
+ pøidat program : time souèet 00:55 , 00:20 -> 1:15
+
+ vydat aplikaci na microsoft store << stojí 400 kè nejspíš
+
+ vytvoøit script na nahrazení defaultní kalkulaèky mou kalkulaèkou aby lidi nemuseli hrabat do registrù
+
+ udìlat si graf programu pro zorientování
+
 
 <-------------------- ménì dùležité  -------------------------->
 vyøešit velikosti ikoni (aplikace - ikona velká) (táskbar - ikona malá)
 
 napsat autorovy ttmath a caligator
 
-add custom functions
-
-to interface
-	+add clear shortcut <-- mabey only baner into feature tab
 
 to Style:
 	+ load picture <- experimental not now
@@ -39,3 +54,9 @@ to Style:
 
 opravit stránky pro mobili (dovnload tlaèítka) // možná že pro mobil to není stažitelné
 možná celkovì pøekopat stránky aby nevypadaly tak odpadnì
+
+
+<------------------------ relativnì dùležité ale nároèné ----------------------------->
+použít ninja2 na generování souborù nastavení
+
+add custom functions

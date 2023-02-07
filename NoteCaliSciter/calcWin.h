@@ -1,5 +1,6 @@
 #include <cctype>
 
+#define KEY_PRESED_DOWN 32769
 
 class CalculatrWin : public sciter::window {
 private:
@@ -11,10 +12,12 @@ private:
     sciter::dom::element mathInput; //odkaz na èasto používané elementy
     sciter::dom::element mathOutput; //odkaz na èasto používané elementy
 
-
     #define PREV_CHARS_NUM 3    //poèet preventovaných znaku v html
-    const wchar peventedC[PREV_CHARS_NUM] = { L'<'   ,L'>'   ,L'&' };   //preventovane znaky
+    const wchar peventedC[PREV_CHARS_NUM] =       { L'<'   ,L'>'   ,L'&' };   //preventovane znaky
     const wstring peventedAlias[PREV_CHARS_NUM] = { L"&lt;",L"&gt;",L"&amp;" }; // alias pro preventovany znak
+
+
+
 
 public:
     CalculatrWin(Controler * controler, LineRegister* lineSeparator) : window(SW_POPUP , { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {
@@ -42,17 +45,45 @@ public:
 
     void focus();
 
+    virtual bool on_key(HELEMENT he, HELEMENT target, UINT event_type, UINT code, UINT keyboardStates) { 
+
+        if (keyboardStates == 1 && event_type == KEY_PRESED_DOWN){ // keyboardStates == 1 is ctrl
+
+            debugLOG("key - " + to_string((int)code) + " - " + to_string((int)keyboardStates) + " - " + to_string((int)event_type)); ///create shortcuts
+
+
+
+        }
+
+        if (keyboardStates == 4 && event_type == KEY_PRESED_DOWN) { // keyboardStates == 4 is alt
+            if (code == 86) {
+                return true;
+            }
+            debugLOG("key - " + to_string((int)code) + " - " + to_string((int)keyboardStates) + " - " + to_string((int)event_type)); ///create shortcuts
+
+
+
+        }
+
+        return false;
+    }
+
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
 
+       
+
+        debugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + sciterStrToStr(elementId));
+
+       
         if (params.cmd == 193) { this->close(); PostQuitMessage(WM_QUIT); return true;  }// handlování zavøení okna
 
         if (firstEvent && params.cmd == DOCUMENT_READY) { //naètení èasto používaných obìktù
             highites = getElementById("highlights");
             mathInput = getElementById("mathInput");
             mathOutput = getElementById("mathOutput");
-            mathInput.eval(aux::utf2w("this.focus();"));
+            mathInput.eval(aux::utf2w("this.focus();")); // not work probably
 
             firstEvent = false;
         }

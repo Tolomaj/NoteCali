@@ -56,6 +56,7 @@ int VariablesTable::saveRawComposite(string s){
 	if (appDataFile.fail()) {
 		appDataFile.close();
 		debugLOG("cant crete data file ! MATER ERROR = CLOSING");
+		debugERROR(L"Cant find file at" + StrToWstr(getenv("APPDATA") + string("\\NoteCali") + string("\\constants.nConst")) + L". And cant file create.\n(You can try crete thys file by hand)");//only one handle
 		return CANT_CLOSE_FILE;
 	}
 

@@ -330,6 +330,7 @@ bool SettingsOBJ::resetSettingsFiles(int file  = 0) { // DATAFILE,STYLEFILE,BOAT
 		if (appDataFile.fail()) {
 			appDataFile.close();
 			debugLOG("cant crete data file ! MATER ERROR = CLOSING");
+			debugERROR(L"Cant find file at" + StrToWstr(appDataPath) + L". And cant file create.\n(You can try crete thys file by hand)");//only one handle
 			exit(1);
 		}
 
@@ -343,6 +344,8 @@ bool SettingsOBJ::resetSettingsFiles(int file  = 0) { // DATAFILE,STYLEFILE,BOAT
 		if (CustomThemeFile.fail()) {
 			CustomThemeFile.close();
 			debugLOG("cant crete theme file ! MATER ERROR = CLOSING");
+			debugERROR(L"Cant find file at" + StrToWstr(customthemePath) + L". And cant file create.\n(You can try crete thys file by hand)");//only one handle
+
 			exit(1);
 		}
 		CustomThemeFile << "[theme]\n" + defaultLightTheme;
@@ -370,7 +373,10 @@ int SettingsOBJ::loadSystemSettings() {
 		debugLOG("failed to open file. Reseting Settings!");
 		resetSettingsFiles(DATAFILE);
 		SI_Error rc = ini.LoadFile(appDataPath.c_str());					//try load data second time / default data expected 
-		if (rc < 0) { debugLOG("master error on opening file");  return SETINGS_FILE_NOT_FOUND; } // probably masterError
+		if (rc < 0) { 
+			debugLOG("master error on opening file");  
+			return SETINGS_FILE_NOT_FOUND; 
+		} // probably masterError
 	};
 
 	for (size_t i = 0; i < INT_VAR_NUM; i++) {	// load

@@ -1,5 +1,5 @@
 #define WIN_VERSION true
-#define DEBUG false
+#define DEBUG true
 
 #include <sciter-x.h>
 #include <sciter-x-window.hpp>
