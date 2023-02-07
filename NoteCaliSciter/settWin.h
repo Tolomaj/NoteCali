@@ -217,7 +217,8 @@ void SettingsWin::loadSettingsInWindow() {
     
     ((element)root.get_element_by_id("numberGroupingINP")).set_value(sciter::value(settings.numberGrouping));
     ((element)root.get_element_by_id("roundToDecINP")).set_value(sciter::value(settings.roundToDec));
-    
+    ((element)root.get_element_by_id("dividerLinePosINP")).set_value(sciter::value(settings.dividerLinePos));
+
 
     string arg;
     for (size_t i = 0; i < variableTable.table.size(); i++){

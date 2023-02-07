@@ -7,9 +7,6 @@ pøidat možnost copy without rounding
 
 <------------------------- pùl dùležité --------------->
 
-to interface
-	+add clear shortcut <-- mabey only baner into feature tab
-
 on_dataload() <-- provìøit jestli se nedá použít pro naètení prvnotních HELEMTÙ
 
 add click script to end of line << click to go line
@@ -21,10 +18,6 @@ h;		<-- hide solution pro mezivýpoèty
 pøidání naaèítání a ukládání konstant z nastavovacího okna
 
 ukazat když dojde k zaokrouhlení
-
-add resizin barv nastavení % bar
-preovizornì dát nastavení procent do nastavení 
-
 
 error caling - pøidat errorové hlášení které by zpùsobilo pád programu // trochu dotové pro naèítájí souborù
 

@@ -110,6 +110,15 @@
                     <button class="categoryButton hasTip" value="3" tip="Set your own style">CUSTOM</button>
                 </div>
                 <div id="settingsArea" style="height: calc(100% - 60px);">
+                    <div class="option hasTip" tip="Position of dividing line in %">
+                        <div class="oLable">Line Position</div>
+                        <span class="inp numInput">
+                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <input class="inp" type="number" step="1" value="0" max="100" min="0" id="dividerLinePosINP"><!-- id = variableName + "INP" -->
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                        </span>
+                    </div>
+
                     <div class="option hasTip" tip="Size of font.">
                         <div class="oLable">Font Size</div>
                         <span class="inp numInput">
@@ -144,39 +153,39 @@
                         <div class="inp colorpicker" id="titleColorCLR"></div>
                     </div>
                     <!-- not implemented !!
-                            <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
-        <div class="oLable">Transparencity</div>
-        <span class="inp numInput">
-            <span class="rDwnB"><img src="left-arrow.png" /></span>
-            <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
-                    <span class="rUpB"><img src="right-arrow.png" /></span>
-                    </span>
-                </div>
-                        <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
-            <div class="oLable">Background Image</div>
-            <switch class="inp" />
-        </div>
-        <div class="option customPa hasTip" tip="Color of error highliting">
-            <div class="oLable">Error Highlite</div>
-            <div class="inp colorpicker" id="highliteERRCLR"></div>
-        </div>
-        <div class="option customPa hasTip" tip="Color of variable highliting.">
-            <div class="oLable">Variable Highlite</div>
-            <div class="inp colorpicker" id="highliteVARCLR"></div>
-        </div>
-        <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
-            <div class="oLable">SuperLine Highlite</div>
-            <div class="inp colorpicker" id="highliteSUPERCLR"></div>
-        </div>
-            <div class="option customPa hasTip">
-                <div class="oLable oLong">Padding Between Lines</div>
-                <span class="inp numInput">
-                    <span class="rDwnB"><img src="left-arrow.png" /></span>
-                    <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
-                    <span class="rUpB"><img src="right-arrow.png" /></span>
-                    </span>
-                </div>-->
+                        <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
+    <div class="oLable">Transparencity</div>
+    <span class="inp numInput">
+        <span class="rDwnB"><img src="left-arrow.png" /></span>
+        <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
+                <span class="rUpB"><img src="right-arrow.png" /></span>
+                </span>
             </div>
+                    <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
+        <div class="oLable">Background Image</div>
+        <switch class="inp" />
+    </div>
+    <div class="option customPa hasTip" tip="Color of error highliting">
+        <div class="oLable">Error Highlite</div>
+        <div class="inp colorpicker" id="highliteERRCLR"></div>
+    </div>
+    <div class="option customPa hasTip" tip="Color of variable highliting.">
+        <div class="oLable">Variable Highlite</div>
+        <div class="inp colorpicker" id="highliteVARCLR"></div>
+    </div>
+    <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
+        <div class="oLable">SuperLine Highlite</div>
+        <div class="inp colorpicker" id="highliteSUPERCLR"></div>
+    </div>
+        <div class="option customPa hasTip">
+            <div class="oLable oLong">Padding Between Lines</div>
+            <span class="inp numInput">
+                <span class="rDwnB"><img src="left-arrow.png" /></span>
+                <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
+                <span class="rUpB"><img src="right-arrow.png" /></span>
+                </span>
+            </div>-->
+                </div>
             </div>
 
             <div class="tabArea" id="interfaceTab">
@@ -250,6 +259,8 @@
                 <div class="feature"> <div class="name">r[x];</div>     <div class="value">before line change rouonding settings for line</div> </div>
                 <div class="feature"> <div class="name">b[x];</div>     <div class="value">before line change number base settings for line</div> </div>
                 <div class="feature"> <div class="name">c;</div>        <div class="value">before line prevent line from solving</div> </div>
+              
+                <div class="feature"> <div class="name">CTRL + F</div>  <div class="value">Flush all text from calculator</div> </div>
 
             </div>
             <div class="tabArea" id="systemTab">

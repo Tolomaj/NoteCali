@@ -45,6 +45,7 @@
 #define FONT_SIZE_DEFAULT 18
 #define FONT_PADDING_DEFAULT 2
 #define ROUND_DEC_NUM_DEFAULT 4
+#define DIVIDER_LINE_POS_DEFAULT 70 
 
 #define USE_SIENCE_DEFAULT false
 #define GROUP_DEFAULT 0
@@ -76,6 +77,7 @@ public:
 	int stylescheme = AUTO;
 	int roundToDec = ROUND_DEC_NUM_DEFAULT;
 	int numberGrouping = GROUP_DEFAULT;
+	int dividerLinePos = DIVIDER_LINE_POS_DEFAULT;
 	
 	bool showAppName = SHOW_APP_NAME_DEFAULT; 
 	bool highliteERR = HIGHLITE_ERR_DEFAULT;
@@ -105,11 +107,11 @@ private:
 	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"        ,"useLineModifiers"    ,"useNoroundPointers"      };
 	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT,USE_MODIFIERS_DEFAULT ,POITER_IS_NOROUND_DEFAULT };
 	
-#define INT_VAR_NUM 3 // idk jak jinak to dìlat ve foru
-	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            };
-	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping };
-	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping"};
-	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , ROUND_DEC_NUM_DEFAULT, GROUP_DEFAULT   };
+#define INT_VAR_NUM 4 // idk jak jinak to dìlat ve foru
+	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            ,true                     };
+	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping ,&dividerLinePos          };
+	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping","dividerLinePos"         };
+	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , ROUND_DEC_NUM_DEFAULT, GROUP_DEFAULT   ,DIVIDER_LINE_POS_DEFAULT };
 
 
 

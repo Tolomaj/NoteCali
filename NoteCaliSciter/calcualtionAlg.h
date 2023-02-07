@@ -284,6 +284,8 @@ bool MatematicalSolver::setDefaultMathRules() {
     ConvertionRole.group = ' ' * (bool)settings.numberGrouping;
     ConvertionRole.group_digits = settings.numberGrouping;
     ConvertionRole.scient = settings.useSientific;
+    ConvertionRole.base_round = false;
+    ConvertionRole.scient_from = 100; //pokud je nad 100 míst použije se sience number i když je vyplé (kvuli tomu aby se nepoužívalo dřív)
     ConvertionRole.base = 10;
     return true;
 };

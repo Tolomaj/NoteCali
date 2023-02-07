@@ -1,6 +1,9 @@
 #include <cctype>
 
 #define KEY_PRESED_DOWN 32769
+#define LEFT_ALT 4
+#define RIGHT_ALT 5
+#define CTRL 1
 
 class CalculatrWin : public sciter::window {
 private:
@@ -42,31 +45,32 @@ public:
     void preventFuncChars(mline* line);   //upravi linie tak aby neobsahovani funkcni zanky pro html jejich pseudonymi
 
     void publish(std::vector<mline> lines); // publish solutions and highlights
-
+    
     void focus();
 
     virtual bool on_key(HELEMENT he, HELEMENT target, UINT event_type, UINT code, UINT keyboardStates) { 
+        if (keyboardStates == RIGHT_ALT && code == 86) { // prevent rightAlt+v
+            return true;
+        }
 
-        if (keyboardStates == 1 && event_type == KEY_PRESED_DOWN){ // keyboardStates == 1 is ctrl
-
-            debugLOG("key - " + to_string((int)code) + " - " + to_string((int)keyboardStates) + " - " + to_string((int)event_type)); ///create shortcuts
 
 
+        if (keyboardStates == CTRL && event_type == KEY_PRESED_DOWN){ // keyboardStates == 1 is ctrl
+            if (code == 70) { // ctrl + f
+                mathInput.set_text(L"");
+                mathOutput.set_text(L"");
+            }
 
         }
 
-        if (keyboardStates == 4 && event_type == KEY_PRESED_DOWN) { // keyboardStates == 4 is alt
-            if (code == 86) {
-                return true;
-            }
-            debugLOG("key - " + to_string((int)code) + " - " + to_string((int)keyboardStates) + " - " + to_string((int)event_type)); ///create shortcuts
-
-
-
+        if (keyboardStates == LEFT_ALT && event_type == KEY_PRESED_DOWN) { // keyboardStates == 4 is alt
+           // debugLOG("keyWithALT - " + to_string((int)code));
         }
 
         return false;
     }
+
+    
 
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
         sciter::dom::element target = params.heTarget;
@@ -136,7 +140,7 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         htmlin.append(lines.at(i).line + L"<le id=\"le" + std::to_wstring(i) + L"\">i</le>\n");
     }
     aux::w2utf utf8(htmlin);
-    //highites.set_html((LPCBYTE)utf8, utf8.length());
+    highites.set_html((LPCBYTE)utf8, utf8.length());
     highites.update();
 
 
@@ -146,11 +150,11 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
     for (size_t i = 0; i < lines.size(); i++) {
         sciter::dom::element lineEnd = highites.get_element_by_id((L"le" + std::to_wstring(i)).c_str()); //vezme linku k teré patøí øešení a vezme její pozici
         int LineEndPosX = lineEnd.get_location(PADDING_BOX).bottom - highites.get_location(PADDING_BOX).top + getScroll(&highites).y;
-        int LineCount = (int)round((LineEndPosX - prevousLineEndPosX) / (settings.fontSize + 2.0f * settings.fontPadding)); // vypoèítá kolik linek pøíklad zabrá aby vysledek byl stejnì vysoký
+        int LineCount = (int)round((LineEndPosX - prevousLineEndPosX) / (settings.fontSize + settings.fontPadding)); // vypoèítá kolik linek pøíklad zabrá aby vysledek byl stejnì vysoký
 
         wstring type = settings.clickToCopy ? L"button" : L"p"; // sets if is clck copiable
         double paddingBtwLines = 0;
-        double solutionLineHeight = settings.fontSize + 4; // <- zahynu
+        double solutionLineHeight = (settings.fontSize + 4) * LineCount; // <- zahynu
                        
 
                                                            //V / must be selectable if is span !!! // TODO
@@ -161,6 +165,8 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         }
         if (lines.at(i).error.type <= 0 || settings.showErrText) { // dont print errors
             solutionString.append(lines.at(i).solution); // composite non copiable part with copiable part of solution
+            debugLOG("solution:");
+            debugLOG(lines.at(i).solution);
         }
         solutionString.append( L"</" + type + L">"); // composite non copiable part with copiable part of solution
 
@@ -215,8 +221,15 @@ void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
    si += "document.style.variable('BackgroundColor', '" + settings.backgroudColor + "'); ";
    si += "document.style.variable('dividerLineColor','" + settings.dividerLineColor + "');";
    si += "document.style.variable('TitleColor','" + settings.titleColor + "');";
-   string s = (settings.showLineEnd ? "0px');" : "10px');");
-   si += "document.style.variable('LineEndSze','" + s;
+
+   si += "document.style.variable('dividerLinePos','" + to_string(settings.dividerLinePos) + "%');";
+   si += "document.style.variable('dividerLineInvPos','" + to_string(100 - settings.dividerLinePos) + "%');";
+   
+#if DEBUG
+   si += "document.style.variable('LineEndSze','10px');";
+#else
+   si += "document.style.variable('LineEndSze','0px');";
+#endif
 
    eval(aux::chars(si.c_str(), si.length()));   //spustení js na UI stranì
 
