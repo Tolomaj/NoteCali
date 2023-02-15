@@ -1,4 +1,4 @@
-﻿<html custom-frame=solid-with-shadow window-icon="icon.ico" window-resizable >
+﻿<html custom-frame=solid-with-shadow window-icon="icon.ico" window-resizable>
 <head>
     <title>noteCali settings</title>
     <link rel="stylesheet" type="text/css" href="settings.css" />
@@ -75,7 +75,8 @@
                 <img src="variable.svg" />
                 <div class="CLabel">Variables</div>
             </button>
-            <button class="tabButton" id="functionBtn" style="display:none"> <!-- hide from menu -->
+            <button class="tabButton" id="functionBtn" style="display:none">
+                <!-- hide from menu -->
                 <img src="functions.svg" />
                 <div class="CLabel">Functions</div>
             </button>
@@ -85,7 +86,8 @@
             </button>
 
             <div id="bottomMenu">
-                <button class="tabButton" id="feedbackBtn" style="display:none"> <!-- hide from menu -->
+                <button class="tabButton" id="feedbackBtn" style="display:none">
+                    <!-- hide from menu -->
                     <img src="feedback.svg" />
                     <div class="CLabel">FeedBack</div>
                 </button>
@@ -153,38 +155,38 @@
                         <div class="inp colorpicker" id="titleColorCLR"></div>
                     </div>
                     <!-- not implemented !!
-                        <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
-    <div class="oLable">Transparencity</div>
-    <span class="inp numInput">
-        <span class="rDwnB"><img src="left-arrow.png" /></span>
-        <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
-                <span class="rUpB"><img src="right-arrow.png" /></span>
-                </span>
-            </div>
-                    <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
-        <div class="oLable">Background Image</div>
-        <switch class="inp" />
-    </div>
-    <div class="option customPa hasTip" tip="Color of error highliting">
-        <div class="oLable">Error Highlite</div>
-        <div class="inp colorpicker" id="highliteERRCLR"></div>
-    </div>
-    <div class="option customPa hasTip" tip="Color of variable highliting.">
-        <div class="oLable">Variable Highlite</div>
-        <div class="inp colorpicker" id="highliteVARCLR"></div>
-    </div>
-    <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
-        <div class="oLable">SuperLine Highlite</div>
-        <div class="inp colorpicker" id="highliteSUPERCLR"></div>
-    </div>
-        <div class="option customPa hasTip">
-            <div class="oLable oLong">Padding Between Lines</div>
-            <span class="inp numInput">
-                <span class="rDwnB"><img src="left-arrow.png" /></span>
-                <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
-                <span class="rUpB"><img src="right-arrow.png" /></span>
-                </span>
-            </div>-->
+                                        <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
+                    <div class="oLable">Transparencity</div>
+                    <span class="inp numInput">
+                        <span class="rDwnB"><img src="left-arrow.png" /></span>
+                        <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
+                                <span class="rUpB"><img src="right-arrow.png" /></span>
+                                </span>
+                            </div>
+                                    <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
+                        <div class="oLable">Background Image</div>
+                        <switch class="inp" />
+                    </div>
+                    <div class="option customPa hasTip" tip="Color of error highliting">
+                        <div class="oLable">Error Highlite</div>
+                        <div class="inp colorpicker" id="highliteERRCLR"></div>
+                    </div>
+                    <div class="option customPa hasTip" tip="Color of variable highliting.">
+                        <div class="oLable">Variable Highlite</div>
+                        <div class="inp colorpicker" id="highliteVARCLR"></div>
+                    </div>
+                    <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
+                        <div class="oLable">SuperLine Highlite</div>
+                        <div class="inp colorpicker" id="highliteSUPERCLR"></div>
+                    </div>
+                        <div class="option customPa hasTip">
+                            <div class="oLable oLong">Padding Between Lines</div>
+                            <span class="inp numInput">
+                                <span class="rDwnB"><img src="left-arrow.png" /></span>
+                                <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
+                                <span class="rUpB"><img src="right-arrow.png" /></span>
+                                </span>
+                            </div>-->
                 </div>
             </div>
 
@@ -259,24 +261,24 @@
                 <div class="feature"> <div class="name">r[x];</div>     <div class="value">before line change rouonding settings for line</div> </div>
                 <div class="feature"> <div class="name">b[x];</div>     <div class="value">before line change number base settings for line</div> </div>
                 <div class="feature"> <div class="name">c;</div>        <div class="value">before line prevent line from solving</div> </div>
-              
+
                 <div class="feature"> <div class="name">CTRL + F</div>  <div class="value">Flush all text from calculator</div> </div>
 
             </div>
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
                     <!-- not done ! <div class="option">
-        <div class="oLable">Counting On Line End</div>
-        <switch class="inp" id="countingOnLineEndSW" />
-    </div>
-    <div class="option">
-        <div class="oLable">All lines Are Superines</div>
-        <switch class="inp" id="isAllLinesSuperlinesSW" />
-    </div>
-    <div class="option">
-        <div class="oLable">Show Line Numbers</div>
-        <switch class="inp" id="showLineNumbersSW" />
-    </div>-->
+                        <div class="oLable">Counting On Line End</div>
+                        <switch class="inp" id="countingOnLineEndSW" />
+                    </div>
+                    <div class="option">
+                        <div class="oLable">All lines Are Superines</div>
+                        <switch class="inp" id="isAllLinesSuperlinesSW" />
+                    </div>
+                    <div class="option">
+                        <div class="oLable">Show Line Numbers</div>
+                        <switch class="inp" id="showLineNumbersSW" />
+                    </div>-->
                     <div class="option hasTip" tip="Default count of deciaml places.">
                         <div class="oLable">Round to</div>
                         <span class="inp numInput">
@@ -366,7 +368,7 @@
                     </div>
                 </div>
                 <img id="varAddBTN" src="pen.svg"></img>
-                <img id="varLoadBTN" src="refresh.svg" ></img>
+                <img id="varLoadBTN" src="refresh.svg"></img>
             </div>
             <div class="tabArea" id="functionsTab">
                 <div class="tabAreaCentred">
@@ -412,57 +414,37 @@
             </div>
 
 
-            <div class="versionChangelog">
+
+            <div id="versionChangelog">
                 <div id="versionTitle">
                     <div class="version">v0.3</div>
                     <div class="type">FULL RELEASE</div>
                 </div>
                 <div id="versionLog">
-                    Now Variables And Line Pointers is not rounded (can be changed in settings).<br>
-                    Recreated Aplication Icon.<br>
-                    <br>
-                    Still Auto Update is not awaiable in this version.<br>
-                    And still you feedback is needed.<br>
-                    Please send to email adress.<br>
-                    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
+                    Now Variables And Line Pointers is not rounded (can be changed in settings).<br>	Recreated Aplication Icon.<br>	Still Auto Update is not awaiable in this version.<br>    And still you feedback is needed.<br>    Please send to email adress.<br>    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
                 </div>
-            </div>
 
-            <div class="versionChangelog">
-                <div id="versionTitle">
-                    <div class="version">v0.2</div>
-                    <div class="type">FULL RELEASE</div>
+                <div id="versionChangelog">
+                    <div id="versionTitle">
+                        <div class="version">v0.2</div>
+                        <div class="type">FULL RELEASE</div>
+                    </div>
+                    <div id="versionLog">
+                        Fixed variable bugs.<br>	Fixed Settings saving.<br>	Fixed operations containing '=' char.<br>	Now Settings is located in appData.<br>	Still Auto Update is not awaiable in this version.<br>	And still you feedback is needed.<br>	Please send to email adress.<br>	<a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
+                    </div>
+
+                    <div id="versionChangelog">
+                        <div id="versionTitle">
+                            <div class="version">v0.1 </div>
+                            <div class="type"> FULL RELEASE</div>
+                        </div>
+                        <div id="versionLog">
+                            App first released.<br>	Auto Update is not awaiable in this version.<br>	Please aend feedback to email adress.<br>	<a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
+                        </div>
+                       
+                    </div>
+
+
                 </div>
-                <div id="versionLog">
-                    Fixed variable bugs.<br>
-                    Fixed Settings saving.<br>
-                    Fixed operations containing '=' char.<br>
-                    Now Settings is located in appData.<br>
-                    <br>
-                    Still Auto Update is not awaiable in this version.<br>
-                    And still you feedback is needed.<br>
-                    Please send to email adress.<br>
-                    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
-                </div>
-            </div>
-
-
-            <div class="versionChangelog">
-                <div id="versionTitle">
-                    <div class="version">v0.1</div>
-                    <div class="type">FULL RELEASE</div>
-                </div>
-                <div id="versionLog">
-                    App first released.<br>
-                    Auto Update is not awaiable in this version.<br>
-                    Please aend feedback to email adress.<br>
-                    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a>
-                </div>
-            </div>
-
-        </div>
-
-
-    </div>
-    </body>
-    </html>
+</body>
+</html>

@@ -7,13 +7,14 @@ pøidat možnost copy without rounding
 
 <------------------------- pùl dùležité --------------->
 
-on_dataload() <-- provìøit jestli se nedá použít pro naètení prvnotních HELEMTÙ
+pøi kopírování možost zapnout kopírování bez jedotek a kopírování v základní jednotce
 
 add click script to end of line << click to go line
 
 pøidat 
 h;		<-- hide solution pro mezivýpoèty
 
+r4;sum <-- not work
 
 pøidání naaèítání a ukládání konstant z nastavovacího okna
 
@@ -35,11 +36,14 @@ record position to open position
  udìlat si graf programu pro zorientování
 
 
+
 <-------------------- ménì dùležité  -------------------------->
+
+po zvolení barvy se ukazatel barvy v pickeru nenastaví na barvu momentálnì pickované barvy
+
 vyøešit velikosti ikoni (aplikace - ikona velká) (táskbar - ikona malá)
 
 napsat autorovy ttmath a caligator
-
 
 to Style:
 	+ load picture <- experimental not now

@@ -26,6 +26,8 @@ struct mline { // mabey add solution preponder
 	wstring solutionNoRound = L""; // copiable solution to line
 	wstring solutionModifier = L""; // not copiable coment to solution
 
+	wstring solutionUnits = L"";
+
 	MathError error;
 };
 
