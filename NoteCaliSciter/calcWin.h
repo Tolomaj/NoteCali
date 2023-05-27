@@ -5,8 +5,14 @@
 #define RIGHT_ALT 5
 #define CTRL 1
 
+#define COLOR_WARNING L"#E57C23"
+#define COLOR_ERROR L"#DF2E38"
+#define COLOR_MSG L"#10819A"
+#define COLOR_OK L"#36852c"
+
 class CalculatrWin : public sciter::window {
 private:
+    bool windowIsTopMOST = false;
     Controler *controler;   // odkaz na controler pro volání eventù
     LineRegister* lineSeparator;
 
@@ -18,8 +24,6 @@ private:
     #define PREV_CHARS_NUM 3    //poèet preventovaných znaku v html
     const wchar peventedC[PREV_CHARS_NUM] =       { L'<'   ,L'>'   ,L'&' };   //preventovane znaky
     const wstring peventedAlias[PREV_CHARS_NUM] = { L"&lt;",L"&gt;",L"&amp;" }; // alias pro preventovany znak
-
-
 
 
 public:
@@ -48,19 +52,16 @@ public:
     
     void focus();
 
+    void showNotification(wstring NotificationText, wstring bColor);
+
     virtual bool on_key(HELEMENT he, HELEMENT target, UINT event_type, UINT code, UINT keyboardStates) { 
-        if (keyboardStates == RIGHT_ALT && code == 86) { // prevent rightAlt+v
-            return true;
-        }
-
-
+        if (keyboardStates == RIGHT_ALT && code == 86) { return true; } // prevent rightAlt+v kvuli @ když je vloženo levím ctrl
 
         if (keyboardStates == CTRL && event_type == KEY_PRESED_DOWN){ // keyboardStates == 1 is ctrl
             if (code == 70) { // ctrl + f
                 mathInput.set_text(L"");
                 mathOutput.set_text(L"");
             }
-
         }
 
         if (keyboardStates == LEFT_ALT && event_type == KEY_PRESED_DOWN) { // keyboardStates == 4 is alt
@@ -76,33 +77,45 @@ public:
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
 
+        //debugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + sciterStrToStr(elementId));
        
-
-        debugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + sciterStrToStr(elementId));
-
-       
-        if (params.cmd == 193) { this->close(); PostQuitMessage(WM_QUIT); return true;  }// handlování zavøení okna
+        if (params.cmd == 193) { debugLOG("EV - Closing Program."); this->close(); PostQuitMessage(WM_QUIT); return true; }// handlování zavøení okna
 
         if (firstEvent && params.cmd == DOCUMENT_READY) { //naètení èasto používaných obìktù
+            debugLOG("EV - CALC - HTML loaded. Geting Main Elements Objects.");
             highites = getElementById("highlights");
             mathInput = getElementById("mathInput");
             mathOutput = getElementById("mathOutput");
-            mathInput.eval(aux::utf2w("this.focus();")); // not work probably
-
+            mathInput.eval(aux::utf2w("this.focus();")); // not work probably TODO
             firstEvent = false;
         }
 
         if (params.cmd == EDIT_VALUE_CHANGED) {  // zmenilo se pole zadání vypocitat ho a publishnout
+            debugLOG("EV - CALC - Text Value Changed");
             controler->procesChangedInput(sciterStrToWStr(target.get_value().to_string())); return true; 
         }
   
         if (((params.cmd == 32928 || params.cmd == 160) && target.get_element_uid() == mathInput.get_element_uid()) || params.cmd == EDIT_VALUE_CHANGED) {
+            debugLOG("EV - CALC - Scroll.");
             handleScroll(); return true;  // øesení scrollovaní
         }
         
-        if (params.cmd == BUTTON_CLICK) {
+        if (params.cmd == BUTTON_CLICK) {// set window top most
+            debugLOG(wstring(L"EV - CALC - Click. elemID: ") + elementId);
             if (target.get_attribute("class") == L"mathOutputLine") { toClipboard(get_hwnd(), sciterStrToStr(target.get_attribute("val", L"0"))); return true; } // copy to click. zkopírování hodnoty do clipboardu
-            if (elementId == L"closeB") { this->close(); PostQuitMessage(WM_QUIT); return true; } //zavreni okna
+            if (elementId == L"closeB") {  this->close(); PostQuitMessage(WM_QUIT); return true; } //zavreni okna
+            if (elementId == L"pinB") {
+                SetWindowPos(get_hwnd(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                getElementById("pinB").set_style_attribute("display", L"none");
+                getElementById("unpinB").set_style_attribute("display", L"block");
+                return true; 
+            }
+            if (elementId == L"unpinB") { // unset window top most
+                SetWindowPos(get_hwnd(), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+                getElementById("pinB").set_style_attribute("display", L"block");
+                getElementById("unpinB").set_style_attribute("display", L"none");
+                return true;
+            }
             if (elementId == L"meuB") { controler->toggleSettings(); return true; } //otevreni/ zavreni nastaveni
         }
         return false;
@@ -111,12 +124,20 @@ public:
  
 };
 
+void CalculatrWin::showNotification(wstring NotificationText, wstring bColor) {
+    getElementById("notification").set_text(NotificationText.c_str());
+    getElementById("notification").set_style_attribute("background-color", bColor.c_str()); // orange color
+
+    eval(const_chars("setTimeout(function() {document.getElementById('notification').style.display = 'block';document.getElementById('notification').style.opacity = 100}, 500);"));
+    eval(const_chars("setTimeout(function() { document.getElementById('notification').style.opacity = 0 }, 4000);"));
+    eval(const_chars("setTimeout(function() { document.getElementById('notification').style.display = 'none' }, 4500);"));
+};
+
 
 void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and highlights 
     for (int i = 0; i < lines.size(); i++) { // char preventing < > &
         preventFuncChars(&lines.at(i));
     }
-
 
     std::wstring htmlin = L"";
 
@@ -157,7 +178,7 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         double solutionLineHeight = (settings.fontSize + 4) * LineCount; // <- zahynu
                        
 
-                                                           //V / must be selectable if is span !!! // TODO
+        //V / must be selectable if is span !!! // TODO
         solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >");
         solutionString.append(lines.at(i).solutionModifier + L" ");
         if (lines.at(i).localVariableName != L"") {
@@ -227,11 +248,9 @@ void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
    
 #if DEBUG
    si += "document.style.variable('LineEndSze','10px');";
-#else
-   si += "document.style.variable('LineEndSze','0px');";
 #endif
 
-   eval(aux::chars(si.c_str(), si.length()));   //spustení js na UI stranì
+   eval(aux::chars(si.c_str(), si.length()));   //spustení js na UI stranì a nastavý styli
 
    if (!firstEvent) { // for input styles
        controler->procesChangedInput(sciterStrToWStr(mathInput.get_value().to_string()));   //pøepoèítání pøíkladu // TODO -> jen updatnout styly
@@ -239,8 +258,6 @@ void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
 
    handle_size( sciter::dom::element::root_element(get_hwnd())   ); // refreshnout vse spojené s velikostí okna
 
-
-   
 };
 
 sciter::dom::element CalculatrWin::getElementById(std::string id) {

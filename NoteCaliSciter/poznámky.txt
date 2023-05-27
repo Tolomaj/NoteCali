@@ -1,11 +1,34 @@
 
 
 <------------------------nejdùležitìjší -------------------------------->
-pøidat možnost copy without rounding
+spravit update check (ukaztuje konzoli) a (èekání na odezvu serveru by mohlo fungovat paralernì k procesu protože èeká docela dost èasu)// celkovì zlepèit update check (aby byl asinchroní)
+
+nastavit otáèení se koleèka pøi naèítání.
+
+opravit click to copy nebo oddìlat tu možnost a nechat jen click to copy (nefunguje kopírování a vypadá to divnì)
 
 
+vyøešit problém s opìtovným naèítáním nastavení v moment co se naèítájí nastavení do nastavení
+
+nefunguje otevøení souboru s konstantamy (pøedìlat na button)
+
+pøidat kliknutí pro switch který zavolá funkci set 
 
 <------------------------- pùl dùležité --------------->
+
+zresponzivnìt talèítka u number input!!
+
+add variable settings adding !!
+
+pøidat výpis všeho pro debug
+
+pøidat barvy do debug hlášeni
+
+zeptat se na sciter foru jestli jde apperience vepsat do html
+
+pøidat možnost copy without rounding
+
+optimalizace kódu. zjišování update verze má duplicitní kód
 
 pøi kopírování možost zapnout kopírování bez jedotek a kopírování v základní jednotce
 
@@ -24,9 +47,6 @@ error caling - pøidat errorové hlášení které by zpùsobilo pád programu // trochu
 
 record position to open position
 
- pøidat možnost always on top 
-
-
  pøidat program : time souèet 00:55 , 00:20 -> 1:15
 
  vydat aplikaci na microsoft store << stojí 400 kè nejspíš
@@ -34,8 +54,6 @@ record position to open position
  vytvoøit script na nahrazení defaultní kalkulaèky mou kalkulaèkou aby lidi nemuseli hrabat do registrù
 
  udìlat si graf programu pro zorientování
-
-
 
 <-------------------- ménì dùležité  -------------------------->
 

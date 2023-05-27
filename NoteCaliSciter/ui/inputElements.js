@@ -1,10 +1,21 @@
-var options = document.getElementsByClassName("option"); // nastavení chování možností
-for (let i = 0; i < options.length; i++) {
-    options[i].addEventListener("click", (e) => {
+
+//pøipojení handlerù na SWITCH
+function bindSwitch(element) {
+    element.addEventListener("click", (e) => {
         var sw = e.currentTarget.getElementsByClassName("inp")[0];
-        if (e.target.tagName != "SWITCH") { sw.checked = !sw.checked; sw.focus(); }
+        sw.checked = !sw.checked;
+        Window.this.SettingsWin.setSwitch(sw.id, sw.checked);
+        sw.focus();
     }, false);
 }
+var options = document.getElementsByClassName("option"); // nastavení chování možností
+for (let i = 0; i < options.length; i++) {
+    var inpE = options[i].getElementsByClassName("inp");
+    if (inpE != 0 && inpE[0].tagName == "SWITCH") {
+        bindSwitch(options[i]);
+    }
+}
+
 
 
 function addToNumInput(inputObject, modifier) {
@@ -17,6 +28,8 @@ function addToNumInput(inputObject, modifier) {
         inputObject.value = inputObject.getAttribute("max")
     }
     inputObject.focus();
+    Window.this.SettingsWin.setNumInput(inputObject.id, inputObject.value);
+    //pøidat callback to c++
 }
 
 var numberDecreasers = document.getElementsByClassName("rDwnB");

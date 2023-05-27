@@ -5,12 +5,12 @@
     <style>
         @font-face {
             font-family: inria-sans;
-            src: url('inria-sans.otf');
+            src: url('src/inria-sans.otf');
         }
 
         @font-face {
             font-family: inria-sans-b;
-            src: url('inria-sans-bold.otf');
+            src: url('src/inria-sans-bold.otf');
         }
 
         html {
@@ -36,7 +36,7 @@
             font-family: inria-sans;
         }
 
-        #header {
+        #hdr {
             width: 100%;
             height: 30px;
             flow: horizontal;
@@ -45,7 +45,7 @@
         #appName {
             font-size: 19px;
             height: 100%;
-            width: calc(100%-90px);
+            width: calc(100%-120px);
             color: var(TitleColor);
             vertical-align: middle;
             text-align: center;
@@ -67,8 +67,6 @@
                 width: 100%;
                 height: 100%;
             }
-
-
 
         #UserArea {
             width: 100%;
@@ -200,7 +198,6 @@
             context-menu: selector(menu#for-htmlarea);
         }
 
-
         button.mathOutputLine:hover {
             color: var(HowerColor);
             cursor: copy;
@@ -210,14 +207,31 @@
             transition: color 0s;
             color: var(ClickColor);
         }
+
+        #notification {
+            font-size: 14px;
+            position: absolute;
+            bottom: 5px;
+            color: lightgray;
+            background-color: #e89538;
+            padding: 5px 10px 5px 4px;
+            border-radius: 0 15px 15px 0;
+            display: none;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
+            box-shadow: 0px 0px 13px 7px rgba(0,0,0,0.1);
+        }
+
     </style>
 </head>
 <body>
-    <div id="header">
-        <button id="meuB" "><img src="menu.svg" /></button>
+    <div id="hdr">
+        <button id="meuB" "><img src="src/menu.svg" /></button>
+        <button id="pinB"><img src="src/pin.svg" /></button>
+        <button id="unpinB" style="display:none"><img src="src/unpin.svg" /></button>
         <div id="appName" role="window-caption">NoteCali 📝</div>
-        <button role="window-minimize"><img src="minimalize.svg" /></button>
-        <button id="closeB"><img src="close.svg" /></button>
+        <button role="window-minimize"><img src="src/minimalize.svg" /></button>
+        <button id="closeB"><img src="src/close.svg" /></button>
     </div>
 
     <div id="UserArea">
@@ -229,5 +243,8 @@
         <div id="mathOutput">
         </div>
     </div>
+
+    <div id="notification"> ON WEB IS NEW VERSION 🥳 </div>
+
 </body>
 </html>

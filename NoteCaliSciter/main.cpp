@@ -1,5 +1,12 @@
 #define WIN_VERSION true
-#define DEBUG true
+
+#ifdef _DEBUG
+    #define DEBUG true
+#else
+    #define DEBUG false
+#endif // !_DEBUG
+
+
 
 #include <sciter-x.h>
 #include <sciter-x-window.hpp>
@@ -27,6 +34,8 @@
 
 #define WIN_MARGIN 10
 
+#define VERSION 0.33
+
 using namespace std;
 #include "Controler.h"
 
@@ -35,11 +44,14 @@ using namespace std;
 int uimain(std::function<int()> run) {
 
 #if DEBUG
+    #define _CRTDBG_MAP_ALLOC
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
     SciterSetOption(nullptr, SCITER_SET_DEBUG_MODE, true);
     SciterSetOption(NULL, SCITER_SET_SCRIPT_RUNTIME_FEATURES, ALLOW_FILE_IO | ALLOW_SOCKET_IO | ALLOW_EVAL | ALLOW_SYSINFO);
     startDebugConsole();
 #endif
-
+    //CURLtest();
     /*
         string s = getenv("APPDATA") + string("\\NoteCali") + string("\\ini.ini");
         getenv("APPDATA") + string("\\NoteCali") + string("\\ini.ini");

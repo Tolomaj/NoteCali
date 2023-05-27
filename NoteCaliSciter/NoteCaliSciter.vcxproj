@@ -181,6 +181,7 @@
     <ClInclude Include="library\ini.h" />
     <ClInclude Include="library\SimpleIni.h" />
     <ClInclude Include="LineSeparator.h" />
+    <ClInclude Include="netUpdater.h" />
     <ClInclude Include="ObjectDefinitions.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="SettingsObject.h" />

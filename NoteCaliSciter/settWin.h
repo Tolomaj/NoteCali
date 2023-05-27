@@ -66,37 +66,47 @@ public:
     SOM_PASSPORT_BEGIN(SettingsWin)
         SOM_FUNCS(SOM_FUNC(setSet)
             , SOM_FUNC(openFile)
-            , SOM_FUNC(reloadVariables))
+            , SOM_FUNC(setSwitch)
+            , SOM_FUNC(setNumInput)
+            , SOM_FUNC(reloadVariables)
+            , SOM_FUNC(chckVer))
         SOM_PASSPORT_END
 
     void setSet(sciter::string variable, sciter::string value, sciter::string complete);
 
-    void openFile(sciter::string file) {
-        string s = (getenv("APPDATA") + string("\\NoteCali\\" ));
-        wstring ws = wstring(s.begin(), s.end()) + file;
-        debugLOG(ws);
-        ShellExecute(NULL, L"open", (wstring(s.begin(), s.end()) + file).c_str(), NULL, NULL, SW_SHOWNORMAL);
+    void setSwitch(sciter::string variable, sciter::string value) {
+        debugLOG("varus: " + sciterStrToStr(variable) + " -- " + to_string((int)(value == L"true")));
+        string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "SW"
+        settings.setSingleSettingsbyName(name.substr(0, name.size() - 2), (bool)(value == L"true")); // odstraní z id "SW" a nastaví hodnotou
+        controler->processSettingsChange();
+        //return true; // handled
     }
 
-    void reloadVariables() {
-        variableTable.loadVariables();
-        string arg;
-        for (size_t i = 0; i < variableTable.table.size(); i++) {
-            arg = arg + variableTable.table.at(i).varName + ";" + variableTable.table.at(i).number + ";";
-        }
-        arg.pop_back();
-
-
-        this->call_function("loadVariables", arg);
+    void setNumInput(sciter::string variable, int value) {
+        string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "INP"
+        debugLOG("intus: " + name.substr(0, name.size() - 3) + " -- " + to_string(value));
+        settings.setSingleSettingsbyName(name.substr(0, name.size() - 3), value); // odstraní z id "SW" a nastaví hodnotou
+        controler->processSettingsChange();
+        //return true; // handled
     }
+
+    void updateVersionBanner(wstring backgroundColor, wstring BorderColor, wstring text, bool nConect, bool nActual);
+
+    void showVerisonStartus(int versionStatus);
+
+    void chckVer();
+
+    void openFile(sciter::string file);
+
+    void reloadVariables();
 
     void loadSettingsInWindow();
 
-    void updateStyles() { }
+    void updateStyles() {}
+
+    void handle_size(HELEMENT he);
 
     void numberInputEvent(sciter::dom::element target);
-    
-
 
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) { 
         sciter::dom::element target = params.heTarget;
@@ -105,41 +115,39 @@ public:
         string stro = "_";
 
         if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
+        if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
+       
+        //bugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro + " - " + sciterStrToStr(elementId));
 
-        
-        debugLOG("something with:" + std::to_string(params.cmd )  + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro  + " - " + sciterStrToStr(elementId));
-
+       
         switch (params.cmd) {
-            case 23: 
-                //debugLOG("NumberEventInput");  
-                numberInputEvent(target);  
+            case EDIT_VALUE_CHANGED:
+                debugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro + " - " + sciterStrToStr(elementId));
+                setNumInput(elementId, target.get_value().get(0));
                 break;
-                    
-            case 161: // není v dokumentaci, odpozorováno. zavoláno dvakrát jednou reson je 1 podrzhé 0
-                if (target.test("switch.inp") && params.reason == 0) { // switch / bool event
+
+                break;
+            case BUTTON_CLICK:
+                debugLOG("Button/Switch Click");
+               /* if (target.test("switch.inp")) {
                     string name = sciterStrToStr(target.get_attribute("id")); // vezme Id elementu. to je název settings + "SW"
                     settings.setSingleSettingsbyName(name.substr(0, name.size() - 2), (bool)target.get_value().get(0)); // odstraní z id "SW" a nastaví hodnotou
                     controler->processSettingsChange();
                     return true; // handled
-                }
+                }*/
 
-                if (target.test("input.inp") && params.reason == 0) {
-                    //debugLOG(L"##hvent catch with 161:" + std::to_wstring(params.cmd) + L" - " + std::to_wstring(target.get_value().get(0)) + L" -daps1: " + std::to_wstring(params.reason));
-                    return true; // handled
-                }
-
-                if (target.test("caption") && params.reason == 0) {  
-                    numberInputEvent(target.parent()); 
-                    //debugLOG("mocenos");
-                    return true; 
-                }
-
-                break;
-            case BUTTON_CLICK:
                 if (target.test("button.categoryButton")) { // nastav kategorii / auto dark light custom
                     settings.stylescheme = _wtoi(target.get_attribute("value").c_str());      // nastavi categorii  
                     controler->processSettingsChange(RELOAD_FROM_FILE, SAVE_SYTEM_ONLY_FILE); // naète nastavení pro kategorii
                     loadSettingsInWindow(); // naète styli pro kategorii z aktuálnho nastravení stylù
+                    return true; // handled
+                }
+                if (target.test("button.updateButton")) { // nastav kategorii / auto dark light custom
+                    settings.loadVersionStatusOn = _wtoi(target.get_attribute("value").c_str());      // nastavi categorii 
+                    settings.saveSettings();
+                    if (settings.loadVersionStatusOn != ON_NEVER) {
+                        chckVer(); // zkontrolovat verzi
+                    }
                     return true; // handled
                 }
                 if (target.test("button#closeB")) { // nastav kategorii / auto dark light custom
@@ -154,7 +162,74 @@ public:
 };
 
 
+void SettingsWin::updateVersionBanner(wstring backgroundColor, wstring BorderColor, wstring text, bool nConect, bool nActual) {
+    sciter::dom::element root = sciter::dom::element::root_element(get_hwnd()); //get root element
+    ((element)root.get_element_by_id("uptudateBanner")).set_style_attribute("background-color", backgroundColor.c_str()); // set background volor of version baner
+    ((element)root.get_element_by_id("uptudateBanner")).set_style_attribute("border", (wstring(L"2px solid") + BorderColor).c_str()); // change version baner border color
+    ((element)root.get_element_by_id("actualizationMesage")).set_text(text.c_str()); // set version tenxt
 
+    ((element)root.get_element_by_id("nonConectedBanner")).set_style_attribute("display", nConect ? L"block" : L"none"); // show/hide not conected baner
+    ((element)root.get_element_by_id("nonActualBanner")).set_style_attribute("display", nActual ? L"block" : L"none"); // show/hide not actual banner
+}
+
+void SettingsWin::showVerisonStartus(int versionStatus) {
+    sciter::dom::element root = sciter::dom::element::root_element(get_hwnd());
+
+    bool isUpdatesON = (settings.loadVersionStatusOn != ON_NEVER);
+
+    if (versionStatus == IS_ACTUAL) {
+        updateVersionBanner(L"#92c680", L"#b4c9ad", L"APP up to date", false, false);
+    }
+    else if (versionStatus == IS_NOT_ACTUAL) {
+        updateVersionBanner(L"#942f3b", L"#691d26", L"APP out dated", false, isUpdatesON);
+    }
+    else {
+        updateVersionBanner(L"#e09136", L"#ffb13d", L"APP status unknow", isUpdatesON, false);
+    }
+}
+
+void SettingsWin::chckVer() {
+    settings.isActual = checkForUpdate();
+    showVerisonStartus(settings.isActual);
+}
+
+void SettingsWin::openFile(sciter::string file) {
+    debugLOG(L"OpeningFile: ");
+    debugLOG(L"OpeningFile: " + file);
+    string s = (getenv("APPDATA") + string("\\NoteCali\\"));
+    wstring ws = wstring(s.begin(), s.end()) + file;
+    debugLOG(ws);
+    ShellExecute(NULL, L"open", (wstring(s.begin(), s.end()) + file).c_str(), NULL, NULL, SW_SHOWNORMAL);
+}
+
+void SettingsWin::reloadVariables() {
+    debugLOG("ReloadingVariables");
+    variableTable.loadVariables();
+    string arg;
+    for (size_t i = 0; i < variableTable.table.size(); i++) {
+        arg = arg + variableTable.table.at(i).varName + ";" + variableTable.table.at(i).number + ";";
+    }
+    arg.pop_back();
+
+    this->call_function("loadVariables", arg);
+}
+
+void SettingsWin::handle_size(HELEMENT he) {
+    debugLOG(" Handling Size");
+    RECT rect;
+    GetWindowRect(get_hwnd(), &rect);
+    std::string si = "sizeChanged('" + to_string(rect.right - rect.left) + "','" + to_string(rect.bottom - rect.top) + "');";
+    //eval(aux::chars(si.c_str(), si.length()));
+    //this->call_function("sizeChanged", rect.right - rect.left,rect.bottom - rect.top);
+    //set_attribute(const char* name, const WCHAR * value)
+    sciter::dom::element root = sciter::dom::element::root_element(get_hwnd());
+    if (rect.right - rect.left < 500) {
+        ((element)root.get_element_by_id("body")).set_attribute("size", L"narrow");
+    } else {
+        ((element)root.get_element_by_id("body")).set_attribute("size", L"wide");
+    }
+
+}
 
 void SettingsWin::numberInputEvent(sciter::dom::element target) {
     string setName = sciterStrToStr(target.get_attribute("id")); // get setting name atributte from setting hl element
@@ -165,7 +240,7 @@ void SettingsWin::numberInputEvent(sciter::dom::element target) {
     };
 
     controler->processSettingsChange(); // refresh styles
-    //debugLOG("setSet: " + setName + " - " + to_string((double)target.get_value().get(0.0f)));
+    debugLOG("setSet: " + setName + " - " + to_string((double)target.get_value().get(0.0f)));
 }
 
 void SettingsWin::setSet(sciter::string variable, sciter::string value, sciter::string complete) {
@@ -173,7 +248,7 @@ void SettingsWin::setSet(sciter::string variable, sciter::string value, sciter::
     var = var.substr(0, var.size() - 3);
     string val = sciterStrToStr(value);
 
-    //debugLOG(" Seting seting : " + var + " to value : " + val + " resfresh is: " + sciterStrToStr(complete));
+    debugLOG(" Seting seting : " + var + " to value : " + val + " resfresh is: " + sciterStrToStr(complete));
 
     settings.setSingleSettingsbyName(var, val);
 
@@ -187,8 +262,15 @@ void SettingsWin::setSet(sciter::string variable, sciter::string value, sciter::
 
 
 void SettingsWin::loadSettingsInWindow() {
-    call_function("SetOpenedCategory", settings.stylescheme);
+    // zkusit naèítání pomocí exec() jestli nebude rychlejší TODO 
+    debugLOG("Starting loading to window.");
     sciter::dom::element root = sciter::dom::element::root_element(get_hwnd());
+
+    showVerisonStartus(settings.isActual); 
+    debugLOG("Loading 1/5");
+    call_function("SetOpenedCategory", settings.stylescheme);
+    call_function("SetUpdateOPT", settings.loadVersionStatusOn);
+    debugLOG("Loading 2/5");
     ((element)root.get_element_by_id("showAppNameSW")).set_value(sciter::value(settings.showAppName));
     ((element)root.get_element_by_id("fontSizeINP")).set_value(sciter::value(settings.fontSize));
     //((element)root.get_element_by_id("fontPaddingINP")).set_value(sciter::value(settings.fontPadding)); //not done 
@@ -200,7 +282,7 @@ void SettingsWin::loadSettingsInWindow() {
     ((element)root.get_element_by_id("fontColorCLR")).set_style_attribute("background-color", StrToWstr(settings.fontColor).c_str());
     ((element)root.get_element_by_id("titleColorCLR")).set_style_attribute("background-color", StrToWstr(settings.titleColor).c_str());
     ((element)root.get_element_by_id("solutionFontColorCLR")).set_style_attribute("background-color", StrToWstr(settings.solutionFontColor).c_str());
-
+    debugLOG("Loading 3/5");
    // ((element)root.get_element_by_id("countingOnLineEndSW")).set_value(sciter::value(settings.countingOnLineEnd)); // not done
    // ((element)root.get_element_by_id("isAllLinesSuperlinesSW")).set_value(sciter::value(settings.isAllLinesSuperlines));
    // ((element)root.get_element_by_id("showLineNumbersSW")).set_value(sciter::value(settings.showLineNumbers));
@@ -218,19 +300,17 @@ void SettingsWin::loadSettingsInWindow() {
     ((element)root.get_element_by_id("numberGroupingINP")).set_value(sciter::value(settings.numberGrouping));
     ((element)root.get_element_by_id("roundToDecINP")).set_value(sciter::value(settings.roundToDec));
     ((element)root.get_element_by_id("dividerLinePosINP")).set_value(sciter::value(settings.dividerLinePos));
-
+    debugLOG("Loading 4/5");
 
     string arg;
     for (size_t i = 0; i < variableTable.table.size(); i++){
         arg = arg + variableTable.table.at(i).varName + ";" + variableTable.table.at(i).number + ";";
     }
     arg.pop_back();
-
+    debugLOG("Loading 5/5");
     
     this->call_function("loadVariables",arg);
-    
-
-    
+    debugLOG("Loading End.");
 
     // add loading more settings     ///TODO
 }

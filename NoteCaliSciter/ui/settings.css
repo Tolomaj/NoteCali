@@ -1,12 +1,12 @@
 
 @font-face {
     font-family: inria-sans;
-    src: url('inria-sans.otf');
+    src: url('src/inria-sans.otf');
 }
 
 @font-face {
     font-family: inria-sans-b;
-    src: url('inria-sans-bold.otf');
+    src: url('src/inria-sans-bold.otf');
 }
 
 body {
@@ -85,6 +85,37 @@ button {
         margin: 1* 2px 1* 2px;
     }
 
+body[size=narrow] .tabButton .CLabel {
+    display: none;
+    width: 0;
+}
+body[size=narrow] .tabButton {
+    margin: 5px 1*;
+    width: 35px;
+}
+
+body[size=narrow] #categoriMenu {
+    width: 50px;
+}
+
+body[size=narrow] #styleIcon {
+    margin: 10px 1* 10px 1*;
+    width: 30px;
+    height: 30px;
+}
+
+
+
+body[size=narrow] .tabArea {
+    width: calc(100% - 50px);
+}
+
+body[size=narrow] #tabWithToolTip {
+    width: calc(100% - 50px);
+}
+
+
+
 .CLabel {
     display: inline-block;
     margin: 1* 1* 1* 1*;
@@ -140,7 +171,7 @@ switch {
     overflow: hidden;
     border: 2px solid #d9d9d9;
     border-radius: 20px;
-    background-image: url(switch.png);
+    background-image: url(src/switch.png);
     background-position: -15px 2px;
     background-size: 42px 25px;
     background-repeat: no-repeat;
@@ -256,13 +287,14 @@ switch {
 #uptudateBanner {
     flow: horizontal;
     min-width: 270px;
-    background-color: #92c680;
+    background-color: #e09136;
     border-radius: 15px;
     white-space: nowrap;
     margin: 15px 1*;
     font-size: 20px;
     color: white;
-    border: 2px solid #b4c9ad;
+    border: 2px solid #ffb13d;
+    cursor:pointer;
 }
 
     #uptudateBanner .version {
@@ -278,12 +310,13 @@ switch {
     }
 
 
+
 #versionTitle {
     flow: horizontal;
     color: white;
     background-color: #aebcc3;
-    margin: 0 25px;
-    width: calc(100% - 50px);
+    margin: 0 20px;
+    width: calc(100% - 40px);
     border-radius: 15px;
     font-size: 20px;
 }
@@ -301,9 +334,27 @@ switch {
     border-radius: 10px;
     font-size: 16px;
     margin: 5px 30px 20px 30px;
-    width: calc(100% - 100px);
-    padding: 5px 20px;
+    width: calc(100% - 80px);
+    padding: 5px 10px;
 }
+
+#nonActualBanner {
+    background-color: #942f3b;
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 5px 20px 10px 20px;
+    width: calc(100% - 60px);
+    padding: 5px 10px;
+}
+#nonConectedBanner {
+    background-color: #e09136;
+    border-radius: 10px;
+    font-size: 16px;
+    margin: 5px 20px 10px 20px;
+    width: calc(100% - 60px);
+    padding: 5px 10px;
+}
+
 
 textarea:focus, input:focus {
     outline: none;
@@ -586,7 +637,7 @@ textarea:focus, input:focus {
     width: 100%;
     height: 100%;
     border-radius: 7px;
-    background-image: url(transpa.png);
+    background-image: url(src/transpa.png);
 }
 
 #colorTop {
@@ -688,7 +739,6 @@ textarea:focus, input:focus {
 }
 
 .styleType {
-    
     padding: 4px 4px;
     margin: 4px 1*;
     display: inline-block;
@@ -698,3 +748,20 @@ textarea:focus, input:focus {
     width: 95%;
     cursor: pointer;
 }
+
+.updateButton {
+    background-color: #2B6CA8;
+    padding: 2px 0;
+    margin: 0 1*;
+    border-radius: 5px;
+    height: 15px;
+    width: 28%;
+    display:flex;
+    border: 2px solid #2B6CA8;
+    font-size: 15px;
+    color: white;
+}
+
+    .updateButton.selected {
+        background-color: #205280;
+    }

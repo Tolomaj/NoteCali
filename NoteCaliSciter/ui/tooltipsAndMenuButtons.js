@@ -30,7 +30,9 @@ document.getElementById("variableBtn").onclick = function () { selectTab("variab
 document.getElementById("functionBtn").onclick = function () { selectTab("functionBtn", "functionsTab", true, "There you can set Functions"); }
 document.getElementById("feedbackBtn").onclick = function () { selectTab("feedbackBtn", "feedbackTab", false); }
 document.getElementById("updatesBtn").onclick = function () { selectTab("updatesBtn", "updatesTab", false); }
+document.getElementById("infoBtn").onclick = function () { selectTab("infoBtn", "infoTab", false); }
 
+document.getElementById("uptudateBanner").onclick = function () { Window.this.SettingsWin.chckVer(); }
 
 function setStyleToolTip(name, description) {
     document.getElementById("toolTip").getElementsByClassName("tip")[0].innerHTML = description;
@@ -56,6 +58,20 @@ for (const categoryButton of document.getElementsByClassName("categoryButton")) 
         var displayOU = (e.currentTarget.getAttribute("value") == "3") ? "inline" : "none"; // add notclickable for user to know what hapend
         for (const customOpt of document.getElementsByClassName("customPa")) { customOpt.style.display = displayOU; } // if is custom tab show all buttons if not show only noncustom
     }, false);
+}
+
+for (const categoryButton of document.getElementsByClassName("updateButton")) { // attach event for all buttons // categories
+    categoryButton.addEventListener("click", (e) => {
+        for (const categoryButton of document.getElementsByClassName("updateButton")) { categoryButton.style.background = "#2B6CA8"; } // all buttons to unselected color
+        e.currentTarget.style.background = "#205280"; // self is selected
+    }, false);
+}
+
+function SetUpdateOPT(i) {
+    var categoryButton = document.getElementsByClassName("updateButton");
+    for (const categoryButton of document.getElementsByClassName("updateButton")) { categoryButton.style.background = "#2B6CA8"; } // all buttons to unselected color
+    categoryButton[i].style.background = "#205280"; // self is selected
+
 }
 
 function SetOpenedCategory(i) {

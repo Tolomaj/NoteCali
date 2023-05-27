@@ -23,13 +23,13 @@ public:
 }variableTable;
 
 int VariablesTable::loadVariables(){ // naète promìneé ze souboru
-	//debugLOG("LoadingVariables:");
+	debugLOG("Loading Variables:");
 	CSimpleIniA ini;
 	string s = getenv("APPDATA") + string("\\NoteCali") + string("\\constants.nConst");
 	SI_Error rc = ini.LoadFile(s.c_str()); // file for custom theme 
 	table.clear();
 	if (rc < 0) {
-		debugLOG("failed to open file");
+		debugLOG("Failed to open file. Reseting It.");
 		saveRawComposite("[constants]\nzero = 0\none = 1\nsqrttwo = 1.4142\n");
 	};
 	std::list<CSimpleIniA::Entry> list;
@@ -40,8 +40,9 @@ int VariablesTable::loadVariables(){ // naète promìneé ze souboru
 		TextVariable var(string(x.pItem), s);
 		table.push_back(var);
 	}
-
+	
 	for (size_t i = 0; i < table.size(); i++) { debugLOG(table[i].number); debugLOG(" - " + table[i].varName,false); } // otazkojd
+	debugLOG("Variables loaded.");
 	return 0;
 };
 

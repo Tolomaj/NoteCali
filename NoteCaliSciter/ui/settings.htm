@@ -13,7 +13,7 @@
             var vararea = document.getElementById("varArea");
             vararea.innerHTML = '<div class="var"><div class="name">system : pi</div><div class="value">3.141...</div></div><div class="var"><div class="name">system : e</div><div class="value">2.718...</div></div>'
             for (let i = 0; i < varArr.length; i = i + 2) {
-                vararea.innerHTML += '<div class="var"> <div class="name">' + varArr[i] + '</div> <div class="value">' + varArr[i + 1] + '</div> <!--<img class="destroy" src="trash.svg"></img>--> </div>'; // trashcan icon is comemnted
+                vararea.innerHTML += '<div class="var"> <div class="name">' + varArr[i] + '</div> <div class="value">' + varArr[i + 1] + '</div> <!--<img class="destroy" src="src/trash.svg"></img>--> </div>'; // trashcan icon is comemnted
             }
         }
         document.getElementById("varAddBTN").onclick = function () {
@@ -23,13 +23,24 @@
             Window.this.SettingsWin.reloadVariables();
         }
 
+        function sizeChanged(width, height) {
+            console.log(width, height);
+            if (width < 500) {
+                getElementById("body").attributes["style"] = "narrow";
+                //getElementById("body").setAttribute("size", "narrow");
+            } else {
+                getElementById("body").attributes["style"] = "wide";
+                //getElementById("body").setAttribute("size", "wide");
+            }
+        };
+
     </script>
 
 </head>
-<body>
+<body id="body">
     <div id="titleBar" role="window-caption">
         <div id="titleName">NoteCali Settings</div>
-        <button id="closeB"><img src="close.svg" /></button>
+        <button id="closeB"><img src="src/close.svg" /></button>
     </div>
     <div id="pickerSelection">
         <div id="ColorPicker">
@@ -62,37 +73,41 @@
 
     <div id="botomSection">
         <div id="categoriMenu">
-            <img id="styleIcon" src="filter.svg" />
+            <img id="styleIcon" src="src/filter.svg" />
             <button class="tabButton selected " id="styleBtn">
-                <img src="color-palette.svg" />
+                <img src="src/color-palette.svg" />
                 <div class="CLabel">Style</div>
             </button>
             <button class="tabButton" id="systemBtn">
-                <img src="gear.svg" />
+                <img src="src/gear.svg" />
                 <div class="CLabel">System</div>
             </button>
             <button class="tabButton" id="variableBtn">
-                <img src="variable.svg" />
+                <img src="src/variable.svg" />
                 <div class="CLabel">Variables</div>
             </button>
             <button class="tabButton" id="functionBtn" style="display:none">
                 <!-- hide from menu -->
-                <img src="functions.svg" />
+                <img src="src/functions.svg" />
                 <div class="CLabel">Functions</div>
             </button>
             <button class="tabButton" id="interfaceBtn">
-                <img src="keyboard.svg" />
+                <img src="src/keyboard.svg" />
                 <div class="CLabel">Interface</div>
             </button>
 
             <div id="bottomMenu">
                 <button class="tabButton" id="feedbackBtn" style="display:none">
                     <!-- hide from menu -->
-                    <img src="feedback.svg" />
+                    <img src="src/feedback.svg" />
                     <div class="CLabel">FeedBack</div>
                 </button>
+                <button class="tabButton" id="infoBtn">
+                    <img src="src/info.svg" />
+                    <div class="CLabel">About App</div>
+                </button>
                 <button class="tabButton" id="updatesBtn">
-                    <img src="update.svg" />
+                    <img src="src/update.svg" />
                     <div class="CLabel">Updates</div>
                 </button>
             </div>
@@ -115,23 +130,23 @@
                     <div class="option hasTip" tip="Position of dividing line in %">
                         <div class="oLable">Line Position</div>
                         <span class="inp numInput">
-                            <span class="rDwnB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="1" value="0" max="100" min="0" id="dividerLinePosINP"><!-- id = variableName + "INP" -->
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                            <span class="rDwnB"><img src="src/left-arrow.png" /></span>
+                            <input class="inp" type="number" step="3" value="0" max="100" min="0" id="dividerLinePosINP"><!-- id = variableName + "INP" -->
+                            <span class="rUpB"><img src="src/right-arrow.png" /></span>
                         </span>
                     </div>
 
                     <div class="option hasTip" tip="Size of font.">
                         <div class="oLable">Font Size</div>
                         <span class="inp numInput">
-                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <span class="rDwnB"><img src="src/left-arrow.png" /></span>
                             <input class="inp" type="number" step="0.5" value="18" max="100" min="2" id="fontSizeINP"><!-- id = variableName + "INP" -->
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                            <span class="rUpB"><img src="src/right-arrow.png" /></span>
                         </span>
                     </div>
                     <div class="option hasTip" tip="Just hide app name.">
                         <div class="oLable">Show app name</div>
-                        <switch class="inp" id="showAppNameSW" /> <!-- showAppName + SW -->
+                        <switch class="inp" id="showAppNameSW" disabled/> <!-- showAppName + SW -->
                     </div>
 
                     <div class="option customPa hasTip" tip="Set background color.">
@@ -155,38 +170,38 @@
                         <div class="inp colorpicker" id="titleColorCLR"></div>
                     </div>
                     <!-- not implemented !!
-                                        <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
-                    <div class="oLable">Transparencity</div>
-                    <span class="inp numInput">
-                        <span class="rDwnB"><img src="left-arrow.png" /></span>
-                        <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
-                                <span class="rUpB"><img src="right-arrow.png" /></span>
-                                </span>
-                            </div>
-                                    <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
-                        <div class="oLable">Background Image</div>
-                        <switch class="inp" />
-                    </div>
-                    <div class="option customPa hasTip" tip="Color of error highliting">
-                        <div class="oLable">Error Highlite</div>
-                        <div class="inp colorpicker" id="highliteERRCLR"></div>
-                    </div>
-                    <div class="option customPa hasTip" tip="Color of variable highliting.">
-                        <div class="oLable">Variable Highlite</div>
-                        <div class="inp colorpicker" id="highliteVARCLR"></div>
-                    </div>
-                    <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
-                        <div class="oLable">SuperLine Highlite</div>
-                        <div class="inp colorpicker" id="highliteSUPERCLR"></div>
-                    </div>
-                        <div class="option customPa hasTip">
-                            <div class="oLable oLong">Padding Between Lines</div>
-                            <span class="inp numInput">
-                                <span class="rDwnB"><img src="left-arrow.png" /></span>
-                                <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
-                                <span class="rUpB"><img src="right-arrow.png" /></span>
-                                </span>
-                            </div>-->
+                                    <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
+                <div class="oLable">Transparencity</div>
+                <span class="inp numInput">
+                    <span class="rDwnB"><img src="left-arrow.png" /></span>
+                    <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                            </span>
+                        </div>
+                                <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
+                    <div class="oLable">Background Image</div>
+                    <switch class="inp" />
+                </div>
+                <div class="option customPa hasTip" tip="Color of error highliting">
+                    <div class="oLable">Error Highlite</div>
+                    <div class="inp colorpicker" id="highliteERRCLR"></div>
+                </div>
+                <div class="option customPa hasTip" tip="Color of variable highliting.">
+                    <div class="oLable">Variable Highlite</div>
+                    <div class="inp colorpicker" id="highliteVARCLR"></div>
+                </div>
+                <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
+                    <div class="oLable">SuperLine Highlite</div>
+                    <div class="inp colorpicker" id="highliteSUPERCLR"></div>
+                </div>
+                    <div class="option customPa hasTip">
+                        <div class="oLable oLong">Padding Between Lines</div>
+                        <span class="inp numInput">
+                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
+                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                            </span>
+                        </div>-->
                 </div>
             </div>
 
@@ -268,89 +283,89 @@
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
                     <!-- not done ! <div class="option">
-                        <div class="oLable">Counting On Line End</div>
-                        <switch class="inp" id="countingOnLineEndSW" />
-                    </div>
-                    <div class="option">
-                        <div class="oLable">All lines Are Superines</div>
-                        <switch class="inp" id="isAllLinesSuperlinesSW" />
-                    </div>
-                    <div class="option">
-                        <div class="oLable">Show Line Numbers</div>
-                        <switch class="inp" id="showLineNumbersSW" />
-                    </div>-->
+                    <div class="oLable">Counting On Line End</div>
+                    <switch class="inp" id="countingOnLineEndSW" />
+                </div>
+                <div class="option">
+                    <div class="oLable">All lines Are Superines</div>
+                    <switch class="inp" id="isAllLinesSuperlinesSW" />
+                </div>
+                <div class="option">
+                    <div class="oLable">Show Line Numbers</div>
+                    <switch class="inp" id="showLineNumbersSW" />
+                </div>-->
                     <div class="option hasTip" tip="Default count of deciaml places.">
                         <div class="oLable">Round to</div>
                         <span class="inp numInput">
-                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <span class="rDwnB"><img src="src/left-arrow.png" /></span>
                             <input class="inp" type="number" step="1" value="3" max="25" min="0" id="roundToDecINP"><!-- id = variableName + "INP" -->
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                            <span class="rUpB"><img src="src/right-arrow.png" /></span>
                         </span>
                     </div>
 
                     <div class="option hasTip" tip="Grouping numbers to groups 123 456.<br> 0 means no grouping">
                         <div class="oLable">Group by</div>
                         <span class="inp numInput">
-                            <span class="rDwnB"><img src="left-arrow.png" /></span>
+                            <span class="rDwnB"><img src="src/left-arrow.png" /></span>
                             <input class="inp" type="number" step="1" value="0" max="10" min="0" id="numberGroupingINP"><!-- id = variableName + "INP" -->
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
+                            <span class="rUpB"><img src="src/right-arrow.png" /></span>
                         </span>
                     </div>
 
                     <div class="option hasTip" tip="Use 1.23E+10 format of numbers">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use Sience Numbers</div>
-                        <switch class="inp" id="useSientificSW" />
+                        <switch class="inp" id="useSientificSW" disabled />
                     </div>
 
                     <div class="option hasTip" tip="Use line arguments before ;<br>For example r3; this round number to 3 dec places.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use lineModifiers</div>
-                        <switch class="inp" id="useLineModifiersSW" />
+                        <switch class="inp" id="useLineModifiersSW" disabled/>
                     </div>
 
                     <div class="option hasTip" tip="Allow you to click and by that copy solution.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Click To Copy</div>
-                        <switch class="inp" id="clickToCopySW" />
+                        <switch class="inp" id="clickToCopySW" disabled/>
                     </div>
 
                     <div class="option hasTip" tip="Uses radians for functions like sin()">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use Radians</div>
-                        <switch class="inp" id="useRadiansSW" /> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="useRadiansSW" disabled/> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="See for example h same as H">
                         <!-- variable in c++ name-->
                         <div class="oLable">Ignore Leter Diference</div>
-                        <switch class="inp" id="ignoreHightDiferenceSW" /> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="ignoreHightDiferenceSW" disabled/> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="Shows Full Error on line (in major cases error is biget that working space)">
                         <!-- variable in c++ name-->
                         <div class="oLable">Show Error Text</div>
-                        <switch class="inp" id="showErrTextSW" /> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="showErrTextSW" disabled/> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="Allow using &0 comand <br> <span style='color:#516e78;'> &0 is pointer to first line<span>">
                         <!-- variable in c++ name-->
                         <div class="oLable">Line Jumps</div>
-                        <switch class="inp" id="allowLineJumpSW" /> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="allowLineJumpSW" disabled/> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="Define default metrics in whole calculator like m km cm dm.<br> Experimental feature">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use Metrics</div>
-                        <switch class="inp" id="useMetricsSW" /> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="useMetricsSW" disabled/> <!-- add to variable list  -> setings-->
                     </div>
 
                     <div class="option hasTip" tip="If ( is not ended imaginar ) is added on formula end">
                         <!-- variable in c++ name-->
                         <div class="oLable">Parenthesis corection</div>
-                        <switch class="inp" id="corectParenthesisSW" /> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="corectParenthesisSW" disabled/> <!-- add to variable list  -> setings-->
                     </div>
 
                     <div class="option hasTip" tip="Round rules is not applied variables and € pointers.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Dont Round Pointers</div>
-                        <switch class="inp" id="useNoroundPointersSW" /> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="useNoroundPointersSW" disabled/> <!-- add to variable list  -> setings-->
                     </div>
 
                 </div>
@@ -367,35 +382,36 @@
                         <div class="value">2.718...</div>
                     </div>
                 </div>
-                <img id="varAddBTN" src="pen.svg"></img>
-                <img id="varLoadBTN" src="refresh.svg"></img>
+                <img id="varAddBTN" src="src/pen.svg"></img>
+                <img id="varLoadBTN" src="src/refresh.svg"></img>
             </div>
-            <div class="tabArea" id="functionsTab">
+            <div class="tabArea" id="functionsTab"> <!-- NOT done D Functions Not Working no tab-->
                 <div class="tabAreaCentred">
                     <div class="var">
                         <div class="name">sqrt</div>
                         <div class="inputs">1</div>
                         <div class="value">SYSTEM-RELATED</div>
-                        <img class="destroy" src="trash.svg"></img>
+                        <img class="destroy" src="src/trash.svg"></img>
                     </div>
                     <div class="var">
                         <div class="name">minToH</div>
                         <div class="inputs">2</div>
                         <div class="value">round(A/60) + B </div>
-                        <img class="destroy" src="trash.svg"></img>
+                        <img class="destroy" src="src/trash.svg"></img>
                     </div>
                     <div class="var">
                         <div class="name">minToH</div>
                         <div class="inputs">1</div>
                         <div class="value">round(A/60) </div>
-                        <img class="destroy" src="trash.svg"></img>
+                        <img class="destroy" src="src/trash.svg"></img>
                     </div>
                 </div>
-                <img id="varAddBTN" src="add-variable.svg"></img>
-                <img id="varAddBTN" src="save.svg"></img>
+                <img id="nnotwrk" src="src/add-variable.svg"></img>
+                <img id="nntvork" src="src/save.svg"></img>
             </div>
         </div>
 
+        <!-- TODO -->
         <div class="tabArea" id="feedbackTab">
             <input type="text" id="TopicName" class="inputElement" placeholder="*Topic Name"></input>
             <textarea type="text" id="TopicContent" class="inputElement" placeholder="*Topic.."></textarea>
@@ -404,16 +420,121 @@
             <div id="TopicSendButton">Send</div>
         </div>
 
+        <div class="tabArea scrolableArea" id="infoTab">
+
+            <div id="versionChangelog" style="margin-top:15px"">
+                <div id="versionTitle">
+                    <div class="version">Big Thanks to you 💕</div>
+                </div>
+                <div id="versionLog">
+                    My name vas Ondřej Gross and big thanks to you user for downloading this app. <br>
+                    I hope you are happy about NoteCali. <br>
+                    Iam trying my best to keep NoteCali updated and in best shape. <br>
+                    If you find some bug or want to appraise my vork il be happy for small email about your thoughts. <br>
+                    <a target="@system" href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com. </a><br>
+                    <br>
+                    Thanks again for giving  NoteCali a chance<br>
+                </div>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">About App</div>
+                </div>
+                <div id="versionLog">
+                    NoteCali has a goal to be best calculator.<br>
+                    It trying to be:<br>
+                    &emsp;- Easy to use.<br>
+                    &emsp;- User frendly.<br>
+                    &emsp;- Allow work with multiple data.<br>
+                    &emsp;- And has advanced features mising in other calculators.<br>
+                    <br>
+                    NoteCali Web can be found here:<br>
+                    <a target="@system" href="https://notecali.zironet.cz/">notecali.zironet.cz</a>
+                </div>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">Credits for used librataries</div>
+                </div>
+                <div id="versionLog">
+                    This aplication uses Sciter for creting UI.<br>
+                    Thanks to Andrew Fedoniouk for creting sciter 💕.<br>
+                    Project can be found on site:.<br>
+                    <a target="@system" href="https://sciter.com/">sciter.com</a>
+                    <br>
+                    <br>
+                    Core of this aplication runs on ttmath that do every mathematical hevy lifting.<br>
+                    Thanks to Tomasz Sowa for creting ttmath 💕.<br>
+                    Project can be found on site:.<br>
+                    <a target="@system" href="https://www.ttmath.org/">ttmath.org</a>
+                    <br>
+                    <br>
+                    Last Library used in NoteCali is CURL.</br>
+                    CURL works because contributors big thangs to them for this library.</br>
+                    Project can be found on site:.<br>
+                    <a target="@system" href="https://curl.se/">curl.se</a>
+                </div>
+            </div>
+        </div>
+
         <div class="tabArea scrolableArea" id="updatesTab">
 
 
             <div id="uptudateBanner">
-                <img src="update.svg" />
-                <div class="msg">APP version</div>
-                <div class="version">v0.3</div>
+                <img src="src/update.svg" />
+                <div class="msg" id="actualizationMesage">APP version</div>
+                <div class="version">v0.33</div>
             </div>
 
+            <div id="versionLog" style="padding: 5px 0px; width: calc(100% - 60px); margin-bottom:5px;">
+                <center>Check version on opening :</center>
+                <div class="styleType">
+                    <button class="updateButton" value="0">Dont</button>
+                    <button class="updateButton selected" value="1">Settings</button>
+                    <button class="updateButton" value="2">Calculator</button>
+                </div>
+                <div id="nonActualBanner">
+                    Your aplication is not actual. <br>
+                    If you want new version, please download it form: <br>
+                    <a target="@system" href="https://notecali.zironet.cz/">notecali.zironet.cz</a>
+                </div>
+                <div id="nonConectedBanner">
+                    Cant find actual versin.<br>
+                    You are mabey offline or update site is not reachable.
+                </div>
+            </div>
 
+            <div id="versionLog" style="background-color: #668b9d">
+                This version only contains version checking feature<br>
+                This feature cant install update by self <br>
+                <br>
+                Please send feedback to email adress.<br>
+                <a target="@system" href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.33</div>
+                    <div class="type">DEV RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    BugFix: Switch behavior fixed.<br>
+                    Managing resources like Imges (cleanup).<br>
+                </div>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.32</div>
+                    <div class="type">DEV RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    Added pin button turning on alwais on top<br>
+                    Simple version checking feature added<br>
+                </div>
+            </div>
 
             <div id="versionChangelog">
                 <div id="versionTitle">
@@ -421,30 +542,35 @@
                     <div class="type">FULL RELEASE</div>
                 </div>
                 <div id="versionLog">
-                    Now Variables And Line Pointers is not rounded (can be changed in settings).<br>	Recreated Aplication Icon.<br>	Still Auto Update is not awaiable in this version.<br>    And still you feedback is needed.<br>    Please send to email adress.<br>    <a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
+                    Now Variables And Line Pointers is not rounded (can be changed in settings).<br>
+                    Recreated Aplication Icon.<br>
                 </div>
+            </div>
 
-                <div id="versionChangelog">
-                    <div id="versionTitle">
-                        <div class="version">v0.2</div>
-                        <div class="type">FULL RELEASE</div>
-                    </div>
-                    <div id="versionLog">
-                        Fixed variable bugs.<br>	Fixed Settings saving.<br>	Fixed operations containing '=' char.<br>	Now Settings is located in appData.<br>	Still Auto Update is not awaiable in this version.<br>	And still you feedback is needed.<br>	Please send to email adress.<br>	<a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
-                    </div>
-
-                    <div id="versionChangelog">
-                        <div id="versionTitle">
-                            <div class="version">v0.1 </div>
-                            <div class="type"> FULL RELEASE</div>
-                        </div>
-                        <div id="versionLog">
-                            App first released.<br>	Auto Update is not awaiable in this version.<br>	Please aend feedback to email adress.<br>	<a href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
-                        </div>
-                       
-                    </div>
-
-
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.2</div>
+                    <div class="type">FULL RELEASE</div>
                 </div>
+                <div id="versionLog">
+                    Fixed variable bugs.<br>
+                    Added Settings saving.<br>
+                    Fixed operations containing '=' char.<br>
+                    Now Settings is located in appData.<br>
+                    And custom themes is saved in customTheme.<br>
+                </div>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.1 </div>
+                    <div class="type"> FULL RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    App first released.<br>
+                    Basic implementation of ttmath.<br>
+                </div>
+            </div>
+
 </body>
 </html>

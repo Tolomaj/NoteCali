@@ -62,13 +62,16 @@
 #define DATAFILE 1
 #define STYLEFILE 2
 #define BOATH 0
-#define PRINT_SETINGS_SETT false
+#define PRINT_SETINGS_SETT true
 
 
+#define ON_SETTINGS_OPEN 1
+#define ON_CALCULATOR_OPEN 2
+#define ON_NEVER 0
 
-
-
-
+#define IS_NOT_ACTUAL -1
+#define IS_ACTUAL 1
+#define DOWN_KNOW_ACTUAL 0
 
 class SettingsOBJ {
 public:  
@@ -78,6 +81,9 @@ public:
 	int roundToDec = ROUND_DEC_NUM_DEFAULT;
 	int numberGrouping = GROUP_DEFAULT;
 	int dividerLinePos = DIVIDER_LINE_POS_DEFAULT;
+	int loadVersionStatusOn = ON_SETTINGS_OPEN;
+	int isActual = DOWN_KNOW_ACTUAL;
+
 	
 	bool showAppName = SHOW_APP_NAME_DEFAULT; 
 	bool highliteERR = HIGHLITE_ERR_DEFAULT;
@@ -107,11 +113,11 @@ private:
 	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"        ,"useLineModifiers"    ,"useNoroundPointers"      };
 	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT,USE_MODIFIERS_DEFAULT ,POITER_IS_NOROUND_DEFAULT };
 	
-#define INT_VAR_NUM 4 // idk jak jinak to dìlat ve foru
-	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            ,true                     };
-	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping ,&dividerLinePos          };
-	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping","dividerLinePos"         };
-	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , ROUND_DEC_NUM_DEFAULT, GROUP_DEFAULT   ,DIVIDER_LINE_POS_DEFAULT };
+#define INT_VAR_NUM 5 // idk jak jinak to dìlat ve foru
+	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            ,true                     ,true};
+	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping ,&dividerLinePos          ,&loadVersionStatusOn};
+	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping","dividerLinePos"         ,"loadVersionStatusOn"};
+	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , ROUND_DEC_NUM_DEFAULT, GROUP_DEFAULT   ,DIVIDER_LINE_POS_DEFAULT ,ON_SETTINGS_OPEN};
 
 
 
@@ -364,6 +370,7 @@ bool is_file_exist(const char* fileName){
 
 
 int SettingsOBJ::loadSystemSettings() {
+	debugLOG("Loading System Settings.");
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
@@ -396,17 +403,17 @@ int SettingsOBJ::loadSystemSettings() {
 			*doubleValPointers[i] = ini.GetDoubleValue("settings", doubleVariableNames[i].c_str(), doubleValDefault[i]);
 		}
 	}
+	debugLOG("System Settings loaded sucesfuly.");
 	return 0;
 };
 
 
 
 int SettingsOBJ::loadSettings(){
-
+	
 	loadSystemSettings();
 
 	CSimpleIniA ini;
-
 	std::string styleDestinatio;
 
 	if (stylescheme == CUSTOM) {
@@ -415,7 +422,7 @@ int SettingsOBJ::loadSettings(){
 		debugLOG(rc);
 
 		if (rc < 0) {
-			debugLOG("failed to open file");
+			debugLOG("Failed to open file.");
 			resetSettingsFiles(STYLEFILE); // probìhne ale neprobìhne nvm co to je // nic nevypíše a nedá return ale soubor vytvorí. // ????
 			SI_Error rc = ini.LoadFile(Path.c_str());
 			if (rc < 0) { debugLOG("master error on opening file");  return SETINGS_FILE_NOT_FOUND; } // probably masterError

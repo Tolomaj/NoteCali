@@ -123,10 +123,6 @@ void debugLOG(double num, bool onNewLine = true) {}
 void startDebugConsole() {
 	AllocConsole();
 	debugLOG("Starting console..");
-	debugLOG(12);
-	debugLOG(12,false);
-	debugLOG((float)6.9);
-	debugLOG(4.2);
 }
 
 void printElement(sciter::dom::element target) {
