@@ -6,8 +6,6 @@
     #define DEBUG false
 #endif // !_DEBUG
 
-
-
 #include <sciter-x.h>
 #include <sciter-x-window.hpp>
 #include "sciter-win-main.cpp"
@@ -50,6 +48,7 @@ int uimain(std::function<int()> run) {
     SciterSetOption(nullptr, SCITER_SET_DEBUG_MODE, true);
     SciterSetOption(NULL, SCITER_SET_SCRIPT_RUNTIME_FEATURES, ALLOW_FILE_IO | ALLOW_SOCKET_IO | ALLOW_EVAL | ALLOW_SYSINFO);
     startDebugConsole();
+    ios_base::sync_with_stdio(false); // aby se debug log zapsal ihned // pro debug only
 #endif
     //CURLtest();
     /*

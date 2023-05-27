@@ -19,7 +19,7 @@ const wchar forbidentVariableSimbols[VARIABLE_FORBIDENT_SIMBOLS_LENGHT] = { '[' 
 
 #define FAST_SAME false
 
-#define POINTER_CHAR L"€"
+#define POINTER_CHAR L"@"
 
 class MatematicalSolver {
     typedef ttmath::Big<1, 3> MyBig;
@@ -83,9 +83,6 @@ void MatematicalSolver::begin() {
 int MatematicalSolver::solve(vector<mline>* lines) { // TODO
     procesedLines = lines;
     //debugLOG("\nStarting line Calculations \n\n\n");
-#if DEBUG
-    ios_base::sync_with_stdio(false); // aby se debug log zapsal ihned // pro debug only
-#endif
     setDefaultMathRules();
 
     if (settings.useMetrics) {

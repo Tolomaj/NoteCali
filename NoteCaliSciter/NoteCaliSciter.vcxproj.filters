@@ -118,24 +118,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ui\add.svg" />
-    <None Include="ui\add-variable.svg" />
     <None Include="ui\calculator.htm" />
-    <None Include="ui\close.svg" />
-    <None Include="ui\color-palette.svg" />
-    <None Include="ui\feedback.svg" />
-    <None Include="ui\filter.svg" />
-    <None Include="ui\functions.svg" />
-    <None Include="ui\gear.svg" />
-    <None Include="ui\keyboard.svg" />
-    <None Include="ui\menu.svg" />
-    <None Include="ui\minimalize.svg" />
-    <None Include="ui\save.svg" />
     <None Include="ui\settings.htm" />
-    <None Include="ui\switch.svg" />
-    <None Include="ui\trash.svg" />
-    <None Include="ui\update.svg" />
-    <None Include="ui\variable.svg" />
     <None Include="ui\settings.css" />
     <None Include="ui\tooltipsAndMenuButtons.js" />
     <None Include="ui\colorPicker.js" />
@@ -145,24 +129,33 @@
     <None Include="ttmath\win64_assemble.bat">
       <Filter>Zdrojové soubory</Filter>
     </None>
+    <None Include="ui\src\add.svg" />
+    <None Include="ui\src\add-variable.svg" />
+    <None Include="ui\src\close.svg" />
+    <None Include="ui\src\color-palette.svg" />
+    <None Include="ui\src\feedback.svg" />
+    <None Include="ui\src\filter.svg" />
+    <None Include="ui\src\functions.svg" />
+    <None Include="ui\src\gear.svg" />
+    <None Include="ui\src\info.svg" />
+    <None Include="ui\src\keyboard.svg" />
+    <None Include="ui\src\menu.svg" />
+    <None Include="ui\src\minimalize.svg" />
+    <None Include="ui\src\pen.svg" />
+    <None Include="ui\src\pin.svg" />
+    <None Include="ui\src\refresh.svg" />
+    <None Include="ui\src\save.svg" />
+    <None Include="ui\src\switch.svg" />
+    <None Include="ui\src\trash.svg" />
+    <None Include="ui\src\unpin.svg" />
+    <None Include="ui\src\update.svg" />
+    <None Include="ui\src\variable.svg" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="ui\inria-sans.otf" />
-    <Font Include="ui\inria-sans-bold.otf" />
+    <Font Include="ui\src\inria-sans.otf" />
+    <Font Include="ui\src\inria-sans-bold.otf" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="ui\switch.png">
-      <Filter>Soubory zdrojů</Filter>
-    </Image>
-    <Image Include="ui\transpa.png">
-      <Filter>Soubory zdrojů</Filter>
-    </Image>
-    <Image Include="ui\left-arrow.png">
-      <Filter>Soubory zdrojů</Filter>
-    </Image>
-    <Image Include="ui\right-arrow.png">
-      <Filter>Soubory zdrojů</Filter>
-    </Image>
     <Image Include="ui\icon.ico">
       <Filter>Soubory zdrojů</Filter>
     </Image>
@@ -170,6 +163,18 @@
       <Filter>Soubory zdrojů</Filter>
     </Image>
     <Image Include="ui\iconSmall.ico">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\src\left-arrow.png">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\src\right-arrow.png">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\src\switch.png">
+      <Filter>Soubory zdrojů</Filter>
+    </Image>
+    <Image Include="ui\src\transpa.png">
       <Filter>Soubory zdrojů</Filter>
     </Image>
   </ItemGroup>

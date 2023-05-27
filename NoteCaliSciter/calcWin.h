@@ -152,6 +152,7 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
     //highlights end
 
 
+
     int lineCount = 0;
     for (int i = 0; i < lines.size(); i++) {     //composite lines together with line ends and other things
         if (lines.at(i).command != L"") {
@@ -160,9 +161,13 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         }
         htmlin.append(lines.at(i).line + L"<le id=\"le" + std::to_wstring(i) + L"\">i</le>\n");
     }
+    
+
     aux::w2utf utf8(htmlin);
     highites.set_html((LPCBYTE)utf8, utf8.length());
     highites.update();
+
+
 
 
     std::wstring solutionString = L"";

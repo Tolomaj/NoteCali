@@ -80,13 +80,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>D:\SDKs\ginac-1.8.4;D:\SDKs\cln-1.3.6\include;C:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
     <CustomBuildBeforeTargets />
-    <OutDir>$(SolutionDir)\SolutionFinal</OutDir>
-    <IntDir>$(SolutionDir)\SolutionDebug</IntDir>
+    <OutDir>$(SolutionDir)\SolutionsDATA\SolutionDebug</OutDir>
+    <IntDir>$(SolutionDir)\SolutionsDATA\SolutionData</IntDir>
+    <TargetName>NoteCali</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>D:\SDKs\ginac-1.8.4;D:\SDKs\cln-1.3.6\include;C:\SDKs\sciter-js-sdk\include;$(IncludePath)</IncludePath>
-    <OutDir>$(SolutionDir)\SolutionRelease</OutDir>
-    <IntDir>$(SolutionDir)\SolutionReleasePRECOMPILEDMABEY</IntDir>
+    <OutDir>$(SolutionDir)\SolutionsDATA\SolutionRelease</OutDir>
+    <IntDir>$(SolutionDir)\SolutionsDATA\SolutionData</IntDir>
     <TargetName>NoteCali</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -206,44 +207,49 @@
   <ItemGroup>
     <None Include="ttmath\ttmathuint_x86_64_msvc.asm" />
     <None Include="ttmath\win64_assemble.bat" />
-    <None Include="ui\add-variable.svg" />
-    <None Include="ui\add.svg" />
     <None Include="ui\calculator.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="ui\close.svg" />
-    <None Include="ui\color-palette.svg" />
     <None Include="ui\colorPicker.js" />
-    <None Include="ui\feedback.svg" />
-    <None Include="ui\filter.svg" />
-    <None Include="ui\functions.svg" />
-    <None Include="ui\gear.svg" />
-    <None Include="ui\keyboard.svg" />
-    <None Include="ui\menu.svg" />
-    <None Include="ui\minimalize.svg" />
-    <None Include="ui\save.svg" />
     <None Include="ui\settings.css" />
     <None Include="ui\settings.htm">
       <DeploymentContent>true</DeploymentContent>
     </None>
-    <None Include="ui\switch.svg" />
+    <None Include="ui\src\add-variable.svg" />
+    <None Include="ui\src\add.svg" />
+    <None Include="ui\src\close.svg" />
+    <None Include="ui\src\color-palette.svg" />
+    <None Include="ui\src\feedback.svg" />
+    <None Include="ui\src\filter.svg" />
+    <None Include="ui\src\functions.svg" />
+    <None Include="ui\src\gear.svg" />
+    <None Include="ui\src\info.svg" />
+    <None Include="ui\src\keyboard.svg" />
+    <None Include="ui\src\menu.svg" />
+    <None Include="ui\src\minimalize.svg" />
+    <None Include="ui\src\pen.svg" />
+    <None Include="ui\src\pin.svg" />
+    <None Include="ui\src\refresh.svg" />
+    <None Include="ui\src\save.svg" />
+    <None Include="ui\src\switch.svg" />
+    <None Include="ui\src\trash.svg" />
+    <None Include="ui\src\unpin.svg" />
+    <None Include="ui\src\update.svg" />
+    <None Include="ui\src\variable.svg" />
     <None Include="ui\tooltipsAndMenuButtons.js" />
-    <None Include="ui\trash.svg" />
-    <None Include="ui\update.svg" />
-    <None Include="ui\variable.svg" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="ui\inria-sans-bold.otf" />
-    <Font Include="ui\inria-sans.otf" />
+    <Font Include="ui\src\inria-sans-bold.otf" />
+    <Font Include="ui\src\inria-sans.otf" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="ui\icon.ico" />
     <Image Include="ui\icon2.ico" />
     <Image Include="ui\iconSmall.ico" />
-    <Image Include="ui\left-arrow.png" />
-    <Image Include="ui\right-arrow.png" />
-    <Image Include="ui\switch.png" />
-    <Image Include="ui\transpa.png" />
+    <Image Include="ui\src\left-arrow.png" />
+    <Image Include="ui\src\right-arrow.png" />
+    <Image Include="ui\src\switch.png" />
+    <Image Include="ui\src\transpa.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="poznámky.txt" />
