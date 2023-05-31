@@ -3,7 +3,7 @@
 Aplikace Kalkulačky.\
 Protože ta ve vindows stojí za prd :)\
 \
-Jak kompilovat:\
-add
+Je to uloženo jako Visual studio projekt.
+Projek je nastaven tak že výstup dává do SolutionsDATA složky 
 
 
