@@ -6,23 +6,9 @@
     <script src="tooltipsAndMenuButtons.js"></script>
     <script src="colorPicker.js"></script>
     <script src="inputElements.js"></script>
+    <script src="variables.js"></script>
 
     <script>
-        function loadVariables(variableLines) {
-            var varArr = variableLines.split(';');
-            var vararea = document.getElementById("varArea");
-            vararea.innerHTML = '<div class="var"><div class="name">system : pi</div><div class="value">3.141...</div></div><div class="var"><div class="name">system : e</div><div class="value">2.718...</div></div>'
-            for (let i = 0; i < varArr.length; i = i + 2) {
-                vararea.innerHTML += '<div class="var"> <div class="name">' + varArr[i] + '</div> <div class="value">' + varArr[i + 1] + '</div> <!--<img class="destroy" src="src/trash.svg"></img>--> </div>'; // trashcan icon is comemnted
-            }
-        }
-        document.getElementById("varAddBTN").onclick = function () {
-            Window.this.SettingsWin.openFile("constants.nConst");
-        }
-        document.getElementById("varLoadBTN").onclick = function () {
-            Window.this.SettingsWin.reloadVariables();
-        }
-
         function sizeChanged(width, height) {
             console.log(width, height);
             if (width < 500) {
@@ -146,7 +132,7 @@
                     </div>
                     <div class="option hasTip" tip="Just hide app name.">
                         <div class="oLable">Show app name</div>
-                        <switch class="inp" id="showAppNameSW" disabled/> <!-- showAppName + SW -->
+                        <switch class="inp" id="showAppNameSW" disabled /> <!-- showAppName + SW -->
                     </div>
 
                     <div class="option customPa hasTip" tip="Set background color.">
@@ -170,38 +156,38 @@
                         <div class="inp colorpicker" id="titleColorCLR"></div>
                     </div>
                     <!-- not implemented !!
-                                    <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
-                <div class="oLable">Transparencity</div>
-                <span class="inp numInput">
-                    <span class="rDwnB"><img src="left-arrow.png" /></span>
-                    <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
-                            </span>
-                        </div>
-                                <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
-                    <div class="oLable">Background Image</div>
-                    <switch class="inp" />
-                </div>
-                <div class="option customPa hasTip" tip="Color of error highliting">
-                    <div class="oLable">Error Highlite</div>
-                    <div class="inp colorpicker" id="highliteERRCLR"></div>
-                </div>
-                <div class="option customPa hasTip" tip="Color of variable highliting.">
-                    <div class="oLable">Variable Highlite</div>
-                    <div class="inp colorpicker" id="highliteVARCLR"></div>
-                </div>
-                <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
-                    <div class="oLable">SuperLine Highlite</div>
-                    <div class="inp colorpicker" id="highliteSUPERCLR"></div>
-                </div>
-                    <div class="option customPa hasTip">
-                        <div class="oLable oLong">Padding Between Lines</div>
-                        <span class="inp numInput">
-                            <span class="rDwnB"><img src="left-arrow.png" /></span>
-                            <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
-                            <span class="rUpB"><img src="right-arrow.png" /></span>
-                            </span>
-                        </div>-->
+                        <div class="option customPa hasTip" tip="Allow transparencity for background color. Transparencity level is driven by backgroundColor property.">
+    <div class="oLable">Transparencity</div>
+    <span class="inp numInput">
+        <span class="rDwnB"><img src="left-arrow.png" /></span>
+        <input class="inp" type="number" step="1" value="100" max="100" min="0" id="transparencityINP">
+                <span class="rUpB"><img src="right-arrow.png" /></span>
+                </span>
+            </div>
+                    <div class="option customPa hasTip" settingName="backgroundImage" tip="Image used for background. <br> <span style='color:#c21111;'>!solid color is always faster that image!<span>">
+        <div class="oLable">Background Image</div>
+        <switch class="inp" />
+    </div>
+    <div class="option customPa hasTip" tip="Color of error highliting">
+        <div class="oLable">Error Highlite</div>
+        <div class="inp colorpicker" id="highliteERRCLR"></div>
+    </div>
+    <div class="option customPa hasTip" tip="Color of variable highliting.">
+        <div class="oLable">Variable Highlite</div>
+        <div class="inp colorpicker" id="highliteVARCLR"></div>
+    </div>
+    <div class="option customPa hasTip" tip="Color used for highliting superline if is turned off all lines are superlines.">
+        <div class="oLable">SuperLine Highlite</div>
+        <div class="inp colorpicker" id="highliteSUPERCLR"></div>
+    </div>
+        <div class="option customPa hasTip">
+            <div class="oLable oLong">Padding Between Lines</div>
+            <span class="inp numInput">
+                <span class="rDwnB"><img src="left-arrow.png" /></span>
+                <input class="inp" type="number" step="0.5" value="2" id="fontPaddingINP">
+                <span class="rUpB"><img src="right-arrow.png" /></span>
+                </span>
+            </div>-->
                 </div>
             </div>
 
@@ -258,15 +244,15 @@
                 <div class="feature"> <div class="name">factorial(x)</div> <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">gamma(x)</div>     <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">sqrt(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">root(x,index)</div><div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">mod(x,y)</div>     <div class="value">Function Modulo</div> </div>
-                <div class="feature"> <div class="name">if(cond,t,f)</div> <div class="value">If condition 1:t 0:f</div> </div>
-                <div class="feature"> <div class="name">or(x,y)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">and(x,y)</div>     <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">root(x;index)</div><div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">mod(x;y)</div>     <div class="value">Function Modulo</div> </div>
+                <div class="feature"> <div class="name">if(cond;t;f)</div> <div class="value">If condition 1:t 0:f</div> </div>
+                <div class="feature"> <div class="name">or(x;y)</div>      <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">and(x;y)</div>     <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">not(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">bitor(x,y)</div>   <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitor(x;y)</div>   <div class="value">Function</div> </div>
                 <div class="feature"> <div class="name">bitand(x;y)</div>  <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">bitxor(x,y)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitxor(x;y)</div>  <div class="value">Function</div> </div>
 
                 <div class="feature"> <div class="name">;clear</div>    <div class="value">Clear text in calculator</div> </div>
                 <div class="feature"> <div class="name">;rand</div>     <div class="value">Random number 0 to 1</div> </div>
@@ -283,17 +269,17 @@
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
                     <!-- not done ! <div class="option">
-                    <div class="oLable">Counting On Line End</div>
-                    <switch class="inp" id="countingOnLineEndSW" />
-                </div>
-                <div class="option">
-                    <div class="oLable">All lines Are Superines</div>
-                    <switch class="inp" id="isAllLinesSuperlinesSW" />
-                </div>
-                <div class="option">
-                    <div class="oLable">Show Line Numbers</div>
-                    <switch class="inp" id="showLineNumbersSW" />
-                </div>-->
+        <div class="oLable">Counting On Line End</div>
+        <switch class="inp" id="countingOnLineEndSW" />
+    </div>
+    <div class="option">
+        <div class="oLable">All lines Are Superines</div>
+        <switch class="inp" id="isAllLinesSuperlinesSW" />
+    </div>
+    <div class="option">
+        <div class="oLable">Show Line Numbers</div>
+        <switch class="inp" id="showLineNumbersSW" />
+    </div>-->
                     <div class="option hasTip" tip="Default count of deciaml places.">
                         <div class="oLable">Round to</div>
                         <span class="inp numInput">
@@ -312,6 +298,16 @@
                         </span>
                     </div>
 
+                    <div class="option hasTip" tip="shows button to open snipet list.">
+                        <div class="oLable">Show Snipet</div>
+                        <switch class="inp" id="showSnipetSW" disabled /> <!-- showAppName + SW -->
+                    </div>
+
+                    <div class="option hasTip" tip="Snipet Alwais Visisble.<br><span style='color:#c21111;'>This Affect snippets only if is show Snipet enabled.</span>">
+                        <div class="oLable">Snipet Alwais Visisble</div>
+                        <switch class="inp" id="snipetAlwaisVisibleSW" disabled /> <!-- showAppName + SW -->
+                    </div>
+
                     <div class="option hasTip" tip="Use 1.23E+10 format of numbers">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use Sience Numbers</div>
@@ -321,51 +317,52 @@
                     <div class="option hasTip" tip="Use line arguments before ;<br>For example r3; this round number to 3 dec places.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use lineModifiers</div>
-                        <switch class="inp" id="useLineModifiersSW" disabled/>
+                        <switch class="inp" id="useLineModifiersSW" disabled />
                     </div>
 
-                    <div class="option hasTip" tip="Allow you to click and by that copy solution.">
-                        <!-- variable in c++ name-->
-                        <div class="oLable">Click To Copy</div>
-                        <switch class="inp" id="clickToCopySW" disabled/>
-                    </div>
+                    <!--  DONT WORK -->
+                    <!-- <div class="option hasTip" tip="Allow you to click and by that copy solution.">
+        <div class="oLable">Click To Copy</div>
+        <switch class="inp" id="clickToCopySW" disabled/>
+    </div> -->
+
 
                     <div class="option hasTip" tip="Uses radians for functions like sin()">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use Radians</div>
-                        <switch class="inp" id="useRadiansSW" disabled/> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="useRadiansSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="See for example h same as H">
                         <!-- variable in c++ name-->
                         <div class="oLable">Ignore Leter Diference</div>
-                        <switch class="inp" id="ignoreHightDiferenceSW" disabled/> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="ignoreHightDiferenceSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="Shows Full Error on line (in major cases error is biget that working space)">
                         <!-- variable in c++ name-->
                         <div class="oLable">Show Error Text</div>
-                        <switch class="inp" id="showErrTextSW" disabled/> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="showErrTextSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="Allow using &0 comand <br> <span style='color:#516e78;'> &0 is pointer to first line<span>">
                         <!-- variable in c++ name-->
                         <div class="oLable">Line Jumps</div>
-                        <switch class="inp" id="allowLineJumpSW" disabled/> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="allowLineJumpSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
                     <div class="option hasTip" tip="Define default metrics in whole calculator like m km cm dm.<br> Experimental feature">
                         <!-- variable in c++ name-->
                         <div class="oLable">Use Metrics</div>
-                        <switch class="inp" id="useMetricsSW" disabled/> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="useMetricsSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
 
                     <div class="option hasTip" tip="If ( is not ended imaginar ) is added on formula end">
                         <!-- variable in c++ name-->
                         <div class="oLable">Parenthesis corection</div>
-                        <switch class="inp" id="corectParenthesisSW" disabled/> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="corectParenthesisSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
 
                     <div class="option hasTip" tip="Round rules is not applied variables and € pointers.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Dont Round Pointers</div>
-                        <switch class="inp" id="useNoroundPointersSW" disabled/> <!-- add to variable list  -> setings-->
+                        <switch class="inp" id="useNoroundPointersSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
 
                 </div>
@@ -374,32 +371,39 @@
             <div class="tabArea" id="variablesTab">
                 <div class="tabAreaCentred" id="varArea">
                     <div class="var">
-                        <div class="name">system : pi</div>
-                        <div class="value">3.141...</div>
+                        <input type="text" class="name" value="" placeholder="name" />
+                        <input type="number" class="value" value="" placeholder="value" />
+                        <img class="destroy" src="src/trash.svg" />
                     </div>
-                    <div class="var">
-                        <div class="name">system : e</div>
-                        <div class="value">2.718...</div>
-                    </div>
+
+
+
+                    <!-- sem se načtou proměné používané v kalkulačce -->
+                    <!-- sem se načtou proměné používané v kalkulačce -->
+                    <!-- sem se načtou proměné používané v kalkulačce -->
+
                 </div>
-                <img id="varAddBTN" src="src/pen.svg"></img>
-                <img id="varLoadBTN" src="src/refresh.svg"></img>
+                <div id="varBottomBar">
+                    <button id="varAddBTN" class="hasTip" tip="Add new blank variable line."><img src="src/add.svg"/></button>
+                    <button id="varLoadBTN" class="hasTip" tip="Saves And sort variables.<br> Also realod calculatro to vork vith new variables"><img src="src/saveW.svg"/></button>
+                </div>
+
             </div>
             <div class="tabArea" id="functionsTab"> <!-- NOT done D Functions Not Working no tab-->
                 <div class="tabAreaCentred">
-                    <div class="var">
+                    <div class="func">
                         <div class="name">sqrt</div>
                         <div class="inputs">1</div>
                         <div class="value">SYSTEM-RELATED</div>
                         <img class="destroy" src="src/trash.svg"></img>
                     </div>
-                    <div class="var">
+                    <div class="func">
                         <div class="name">minToH</div>
                         <div class="inputs">2</div>
                         <div class="value">round(A/60) + B </div>
                         <img class="destroy" src="src/trash.svg"></img>
                     </div>
-                    <div class="var">
+                    <div class="func">
                         <div class="name">minToH</div>
                         <div class="inputs">1</div>
                         <div class="value">round(A/60) </div>
@@ -486,7 +490,7 @@
             <div id="uptudateBanner">
                 <img src="src/update.svg" />
                 <div class="msg" id="actualizationMesage">APP version</div>
-                <div class="version">v0.33</div>
+                <div class="version">v0.4</div>
             </div>
 
             <div id="versionLog" style="padding: 5px 0px; width: calc(100% - 60px); margin-bottom:5px;">
@@ -514,6 +518,18 @@
                 <br>
                 Please send feedback to email adress ial be happy for that.<br>
                 <a target="@system" href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.4</div>
+                    <div class="type">FULL RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    Added snipets.<br>
+                    Added user constants better managment in settings.<br>
+                    BugFix: Lining issues.<br>
+                </div>
             </div>
 
             <div id="versionChangelog">

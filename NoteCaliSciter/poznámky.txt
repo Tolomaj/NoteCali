@@ -1,24 +1,29 @@
 
 
 <------------------------nejdùležitìjší -------------------------------->
-spravit update check (ukaztuje konzoli) a (èekání na odezvu serveru by mohlo fungovat paralernì k procesu protože èeká docela dost èasu)// celkovì zlepèit update check (aby byl asinchroní)
-
-nastavit otáèení se koleèka pøi naèítání.
-
-opravit click to copy nebo oddìlat tu možnost a nechat jen click to copy (nefunguje kopírování a vypadá to divnì)
-
+nastavit otáèení se koleèka pøi naèítání. verze
 
 vyøešit problém s opìtovným naèítáním nastavení v moment co se naèítájí nastavení do nastavení
 
-nefunguje otevøení souboru s konstantamy (pøedìlat na button)
+èistìní kódu
 
-pøidat kliknutí pro switch který zavolá funkci set 
+nakreslení grafu
+
+pøidat zkratky
+
+pøidat nastavení pozice spuštìní
+
+opravit otevírání nastavení na druhé obrazovce
+
+pøidat funkce napovídaèe / snippet
+
+pøidat do nastavení jestli snipet ukázat
+
+pøepsat sem vìci z todo z kódu
 
 <------------------------- pùl dùležité --------------->
 
 zresponzivnìt talèítka u number input!!
-
-add variable settings adding !!
 
 pøidat výpis všeho pro debug
 

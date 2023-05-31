@@ -32,7 +32,7 @@
 
 #define WIN_MARGIN 10
 
-#define VERSION 0.33
+#define VERSION 0.4
 
 using namespace std;
 #include "Controler.h"

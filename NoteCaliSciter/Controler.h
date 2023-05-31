@@ -49,6 +49,8 @@ public:
 
 	int doCommandLine(mline * cmdLine);
 
+	void reloadVariables();
+
 	int start();
 
 	int procesChangedInput(std::wstring);
@@ -64,6 +66,12 @@ public:
 #include "resources.cpp" // resources packaged into binary blob.
 #include "settWin.h"
 #include "calcWin.h"
+
+void Controler::reloadVariables() {
+	variableTable.loadVariables(); // load varables to table
+	mathSolver.loadVariablesFromTable(); // loaded into table
+	calculatorWin->reCalculateInput();
+}
 
 int Controler::start() {
 	debugLOG("Starting Program..");

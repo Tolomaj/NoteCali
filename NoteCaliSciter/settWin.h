@@ -69,26 +69,17 @@ public:
             , SOM_FUNC(setSwitch)
             , SOM_FUNC(setNumInput)
             , SOM_FUNC(reloadVariables)
+            , SOM_FUNC(saveVariables)
             , SOM_FUNC(chckVer))
         SOM_PASSPORT_END
 
     void setSet(sciter::string variable, sciter::string value, sciter::string complete);
 
-    void setSwitch(sciter::string variable, sciter::string value) {
-        debugLOG("varus: " + sciterStrToStr(variable) + " -- " + to_string((int)(value == L"true")));
-        string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "SW"
-        settings.setSingleSettingsbyName(name.substr(0, name.size() - 2), (bool)(value == L"true")); // odstraní z id "SW" a nastaví hodnotou
-        controler->processSettingsChange();
-        //return true; // handled
-    }
+    void saveVariables(sciter::string variableList);
 
-    void setNumInput(sciter::string variable, int value) {
-        string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "INP"
-        debugLOG("intus: " + name.substr(0, name.size() - 3) + " -- " + to_string(value));
-        settings.setSingleSettingsbyName(name.substr(0, name.size() - 3), value); // odstraní z id "SW" a nastaví hodnotou
-        controler->processSettingsChange();
-        //return true; // handled
-    }
+    void setSwitch(sciter::string variable, sciter::string value);
+
+    void setNumInput(sciter::string variable, int value);
 
     void updateVersionBanner(wstring backgroundColor, wstring BorderColor, wstring text, bool nConect, bool nActual);
 
@@ -111,6 +102,7 @@ public:
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) { 
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
+        string eID = sciterStrToStr(elementId);
 
         string stro = "_";
 
@@ -123,7 +115,12 @@ public:
         switch (params.cmd) {
             case EDIT_VALUE_CHANGED:
                 debugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro + " - " + sciterStrToStr(elementId));
-                setNumInput(elementId, target.get_value().get(0));
+
+                if (eID.length() > 3 && eID.substr(eID.length() - 3,3) == "INP") { // když se zmìní (jmeno)+"INP" tak mìní
+                    setNumInput(elementId, target.get_value().get(0));
+                }
+               
+                
                 break;
 
                 break;
@@ -160,6 +157,31 @@ public:
 
 
 };
+
+
+void SettingsWin::saveVariables(sciter::string variableList) {
+    debugLOG(L"variable savibng: " + variableList);
+    variableTable.saveRawComposite("[constants]\n" + sciterStrToStr(variableList)); // template: [constants]\nzero = 0\none = 1\nsqrttwo = 1.4142\n
+    controler->reloadVariables();
+    reloadVariables();
+}
+
+void SettingsWin::setSwitch(sciter::string variable, sciter::string value) {
+    debugLOG("varus: " + sciterStrToStr(variable) + " -- " + to_string((int)(value == L"true")));
+    string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "SW"
+    settings.setSingleSettingsbyName(name.substr(0, name.size() - 2), (bool)(value == L"true")); // odstraní z id "SW" a nastaví hodnotou
+    controler->processSettingsChange();
+    //return true; // handled
+}
+
+void SettingsWin::setNumInput(sciter::string variable, int value) {
+    string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "INP"
+    debugLOG("intus: " + name.substr(0, name.size() - 3) + " -- " + to_string(value));
+    settings.setSingleSettingsbyName(name.substr(0, name.size() - 3), value); // odstraní z id "SW" a nastaví hodnotou
+    controler->processSettingsChange();
+    //return true; // handled
+}
+
 
 
 void SettingsWin::updateVersionBanner(wstring backgroundColor, wstring BorderColor, wstring text, bool nConect, bool nActual) {
@@ -286,7 +308,7 @@ void SettingsWin::loadSettingsInWindow() {
    // ((element)root.get_element_by_id("countingOnLineEndSW")).set_value(sciter::value(settings.countingOnLineEnd)); // not done
    // ((element)root.get_element_by_id("isAllLinesSuperlinesSW")).set_value(sciter::value(settings.isAllLinesSuperlines));
    // ((element)root.get_element_by_id("showLineNumbersSW")).set_value(sciter::value(settings.showLineNumbers));
-    ((element)root.get_element_by_id("clickToCopySW")).set_value(sciter::value(settings.clickToCopy));
+    //((element)root.get_element_by_id("clickToCopySW")).set_value(sciter::value(settings.clickToCopy));
     ((element)root.get_element_by_id("useRadiansSW")).set_value(sciter::value(settings.useRadians));
     ((element)root.get_element_by_id("useMetricsSW")).set_value(sciter::value(settings.useMetrics));
     ((element)root.get_element_by_id("ignoreHightDiferenceSW")).set_value(sciter::value(settings.ignoreHightDiference));
@@ -296,6 +318,9 @@ void SettingsWin::loadSettingsInWindow() {
     ((element)root.get_element_by_id("useLineModifiersSW")).set_value(sciter::value(settings.useLineModifiers));
     ((element)root.get_element_by_id("showErrTextSW")).set_value(sciter::value(settings.showErrText));
     ((element)root.get_element_by_id("useNoroundPointersSW")).set_value(sciter::value(settings.useNoroundPointers));
+
+    ((element)root.get_element_by_id("snipetAlwaisVisibleSW")).set_value(sciter::value(settings.snipetAlwaisVisible));
+    ((element)root.get_element_by_id("showSnipetSW")).set_value(sciter::value(settings.showSnipet));
     
     ((element)root.get_element_by_id("numberGroupingINP")).set_value(sciter::value(settings.numberGrouping));
     ((element)root.get_element_by_id("roundToDecINP")).set_value(sciter::value(settings.roundToDec));

@@ -29,6 +29,8 @@
 #define USE_MODIFIERS_DEFAULT false
 #define POITER_IS_NOROUND_DEFAULT true
 
+#define SHOW_SNIPET_DEFAUTL true
+#define SNIPETS_ALWAIS_VISIBLE false
 
 
 #define BACKGROUND_COLOR_DEFAULT "#d9d9d9"
@@ -105,13 +107,16 @@ public:
 	bool useLineModifiers = USE_MODIFIERS_DEFAULT;
 	bool useNoroundPointers = POITER_IS_NOROUND_DEFAULT;
 
+	bool showSnipet = SHOW_SNIPET_DEFAUTL;
+	bool snipetAlwaisVisible = SNIPETS_ALWAIS_VISIBLE;
+
 private:
 
-	#define BOOL_VAR_NUM 18 // idk jak jinak to dìlat ve foru
-	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 , true                    , true               , true               , true                          , true                          ,true              , true                 ,true                  ,true                      };
-	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  , &allowLineJump          , &useRadians        , &useMetrics        , &ignoreHightDiference         , &corectParenthesis            ,&useSientific     , &showErrText         ,&useLineModifiers     ,&useNoroundPointers       };
-	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"        ,"useLineModifiers"    ,"useNoroundPointers"      };
-	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT,USE_MODIFIERS_DEFAULT ,POITER_IS_NOROUND_DEFAULT };
+	#define BOOL_VAR_NUM 20 // idk jak jinak to dìlat ve foru
+	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 , true                    , true               , true               , true                          , true                          ,true              , true                 ,true                  ,true                      ,true               ,true};
+	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  , &allowLineJump          , &useRadians        , &useMetrics        , &ignoreHightDiference         , &corectParenthesis            ,&useSientific     , &showErrText         ,&useLineModifiers     ,&useNoroundPointers       ,&showSnipet        ,&snipetAlwaisVisible };
+	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"        ,"useLineModifiers"    ,"useNoroundPointers"      ,"showSnipet"       ,"snipetAlwaisVisible"};
+	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT,USE_MODIFIERS_DEFAULT ,POITER_IS_NOROUND_DEFAULT ,SHOW_SNIPET_DEFAUTL,SNIPETS_ALWAIS_VISIBLE};
 	
 #define INT_VAR_NUM 5 // idk jak jinak to dìlat ve foru
 	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            ,true                     ,true};

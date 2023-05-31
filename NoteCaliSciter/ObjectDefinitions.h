@@ -17,6 +17,8 @@ struct mline { // mabey add solution preponder
 	bool isComandDone = false;	// comand on this line is done
 	bool completlySolved = false;	// if is there any solution and is proceed
 	// isComandDome || completlySolved || (error.type > 0) means it is peoceed << mabey error is typed as comment
+	wstring originLine = L"";
+
 	wstring command = L"";
 	wstring lineModifier = L""; // comand for program or comand that modify line behavior
 	wstring line = L"";		// line to solve

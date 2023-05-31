@@ -12,6 +12,7 @@
 
 class CalculatrWin : public sciter::window {
 private:
+    bool isSnipetOpen = false;
     bool windowIsTopMOST = false;
     Controler *controler;   // odkaz na controler pro volání eventù
     LineRegister* lineSeparator;
@@ -53,6 +54,12 @@ public:
     void focus();
 
     void showNotification(wstring NotificationText, wstring bColor);
+
+    void togleSnippetHelp();
+
+    void reCalculateInput() {
+        controler->procesChangedInput(sciterStrToWStr(mathInput.get_value().to_string()));
+    }
 
     virtual bool on_key(HELEMENT he, HELEMENT target, UINT event_type, UINT code, UINT keyboardStates) { 
         if (keyboardStates == RIGHT_ALT && code == 86) { return true; } // prevent rightAlt+v kvuli @ když je vloženo levím ctrl
@@ -103,6 +110,26 @@ public:
         if (params.cmd == BUTTON_CLICK) {// set window top most
             debugLOG(wstring(L"EV - CALC - Click. elemID: ") + elementId);
             if (target.get_attribute("class") == L"mathOutputLine") { toClipboard(get_hwnd(), sciterStrToStr(target.get_attribute("val", L"0"))); return true; } // copy to click. zkopírování hodnoty do clipboardu
+            if (elementId == L"shHide") { togleSnippetHelp(); return true; }
+            
+            wstring snip;
+            if (target.get_tag() == "img") {
+                snip = ((element)target.parent()).get_attribute("snip");
+            } else {
+                snip = target.get_attribute("snip");
+            }
+            if (snip != L"") {
+
+                int end = snip.find(L"|");
+                //snip.substr(end, snip.length());
+
+                mathInput.call_method("insertTextEx", snip.substr(0, end), snip.substr(end+1, snip.length()));
+
+                //std::string si = "this.textarea.insertText('" + WstrToStr(snip.substr(0, end)) + "')";
+                //mathInput.eval(aux::utf2w(si));
+
+                return true;
+            }
             if (elementId == L"closeB") {  this->close(); PostQuitMessage(WM_QUIT); return true; } //zavreni okna
             if (elementId == L"pinB") {
                 SetWindowPos(get_hwnd(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
@@ -122,6 +149,17 @@ public:
     }
 
  
+};
+
+void CalculatrWin::togleSnippetHelp() {
+    if (isSnipetOpen) {
+        eval(const_chars("document.getElementById('snipetHelp').style.bottom = '-50px';"));
+        getElementById("shHimg").set_attribute("src", L"src/pushUp.svg");
+    } else {
+        eval(const_chars("document.getElementById('snipetHelp').style.bottom = '10px';"));
+        getElementById("shHimg").set_attribute("src", L"src/pushDown.svg");
+    }
+    isSnipetOpen = !isSnipetOpen;
 };
 
 void CalculatrWin::showNotification(wstring NotificationText, wstring bColor) {
@@ -155,11 +193,7 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
 
     int lineCount = 0;
     for (int i = 0; i < lines.size(); i++) {     //composite lines together with line ends and other things
-        if (lines.at(i).command != L"") {
-            htmlin += L";" + lines.at(i).command;
-            if (lines.at(i).line != L"") { htmlin += L" "; }
-        }
-        htmlin.append(lines.at(i).line + L"<le id=\"le" + std::to_wstring(i) + L"\">i</le>\n");
+        htmlin.append(lines.at(i).originLine + L"<le id=\"le" + std::to_wstring(i) + L"\">i</le>\n");
     }
     
 
@@ -178,13 +212,12 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         int LineEndPosX = lineEnd.get_location(PADDING_BOX).bottom - highites.get_location(PADDING_BOX).top + getScroll(&highites).y;
         int LineCount = (int)round((LineEndPosX - prevousLineEndPosX) / (settings.fontSize + settings.fontPadding)); // vypoèítá kolik linek pøíklad zabrá aby vysledek byl stejnì vysoký
 
-        wstring type = settings.clickToCopy ? L"button" : L"p"; // sets if is clck copiable
         double paddingBtwLines = 0;
         double solutionLineHeight = (settings.fontSize + 4) * LineCount; // <- zahynu
                        
 
-        //V / must be selectable if is span !!! // TODO
-        solutionString.append(L"<" + type + L" id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >");
+        //V / pøidat pøedání nesolvnut=
+        solutionString.append(L"<button id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >");
         solutionString.append(lines.at(i).solutionModifier + L" ");
         if (lines.at(i).localVariableName != L"") {
             solutionString.append(lines.at(i).localVariableName);
@@ -194,7 +227,7 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
             debugLOG("solution:");
             debugLOG(lines.at(i).solution);
         }
-        solutionString.append( L"</" + type + L">"); // composite non copiable part with copiable part of solution
+        solutionString.append( L"</button>"); // composite non copiable part with copiable part of solution
 
         prevousLineEndPosX = LineEndPosX;
     }
@@ -253,7 +286,33 @@ void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
    
 #if DEBUG
    si += "document.style.variable('LineEndSze','10px');";
+   getElementById("highlights").set_style_attribute("opacity", L"1");
 #endif
+
+   if (settings.showSnipet) {
+       getElementById("snipetHelp").set_style_attribute("display", L"inline");
+       getElementById("shHide").set_style_attribute("display", L"inline-flex");
+   } else {
+       getElementById("snipetHelp").set_style_attribute("display", L"none");
+       getElementById("shHide").set_style_attribute("display", L"none");
+   }
+
+   if (settings.snipetAlwaisVisible){
+       getElementById("shHide").set_style_attribute("display", L"none");
+       getElementById("snipetHelp").set_style_attribute("width", L"calc(100% - 24px)");
+       if (isSnipetOpen == false) {
+           togleSnippetHelp();
+       }
+   } else {
+       if (settings.showSnipet) {
+           getElementById("shHide").set_style_attribute("display", L"inline-flex");
+           getElementById("snipetHelp").set_style_attribute("width", L"calc(100% - 70px)");
+           if (isSnipetOpen == true) {
+               togleSnippetHelp();
+           }
+       }
+   }
+
 
    eval(aux::chars(si.c_str(), si.length()));   //spustení js na UI stranì a nastavý styli
 

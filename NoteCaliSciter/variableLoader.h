@@ -26,7 +26,7 @@ int VariablesTable::loadVariables(){ // naète promìneé ze souboru
 	debugLOG("Loading Variables:");
 	CSimpleIniA ini;
 	string s = getenv("APPDATA") + string("\\NoteCali") + string("\\constants.nConst");
-	SI_Error rc = ini.LoadFile(s.c_str()); // file for custom theme 
+	SI_Error rc = ini.LoadFile(s.c_str()); // file for constants
 	table.clear();
 	if (rc < 0) {
 		debugLOG("Failed to open file. Reseting It.");

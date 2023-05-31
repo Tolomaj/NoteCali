@@ -60,13 +60,15 @@ public:
     
     void begin();
 
+    void loadVariablesFromTable();
+
     int solve(vector<mline>* lines);
 
 };
 
-
-void MatematicalSolver::begin() {
+void MatematicalSolver::loadVariablesFromTable() {
     varTable.Clear();
+    systemVariableTable.Clear();
     parser.SetVariables(&varTable);
 
     for (size_t i = 0; i < variableTable.table.size(); i++) {
@@ -75,6 +77,10 @@ void MatematicalSolver::begin() {
     }
 
     varTable = systemVariableTable;
+}
+
+void MatematicalSolver::begin() {
+    loadVariablesFromTable();
 
     //functionTable.Add(L"pof(x)", L"x+4+x*2"); //<not work
     //parser.SetFunctions(&functionTable);
@@ -402,7 +408,7 @@ void MatematicalSolver::executeMathComand(mline* line) {
         ttmath::ErrorCode err = parser.Parse(textnumber);
         if (err == 0) {
             //line->solution = parser.stack[0].value.ToWString();
-            line->line = parser.stack[0].value.ToWString() + line->line;
+            line->line = parser.stack[0].value.ToWString() + L" " + line->line;
             line->isComandDone = true;
             line->completlySolved = false;
         }
@@ -425,7 +431,7 @@ void MatematicalSolver::executeMathComand(mline* line) {
         textnumber.append(L"0");
         ttmath::ErrorCode err = parser.Parse(textnumber);
         if (err == 0) {
-            line->line = parser.stack[0].value.ToWString() + line->line;
+            line->line = parser.stack[0].value.ToWString() + L" " + line->line;
             line->isComandDone = true;
             line->completlySolved = false;
         }
@@ -436,19 +442,19 @@ void MatematicalSolver::executeMathComand(mline* line) {
     }
     else if (line->command == L"rand") {
         double i = (float)rand() / (RAND_MAX);
-        line->line = to_wstring(i) + line->line;
+        line->line = to_wstring(i) + L" " + line->line;
         line->isComandDone = true;
         line->completlySolved = false;
     }
     else if (line->command == L"randi") {
         int i = rand();
-        line->line = to_wstring(i) + line->line;
+        line->line = to_wstring(i) + L" " + line->line;
         line->isComandDone = true;
         line->completlySolved = false;
     }
     else if (line->command == L"randn") {
         float i = ((float)rand() / (RAND_MAX) - 0.5)*2;
-        line->line = to_wstring(i) + line->line;
+        line->line = to_wstring(i) + L" " + line->line;
         line->isComandDone = true;
         line->completlySolved = false;
     }

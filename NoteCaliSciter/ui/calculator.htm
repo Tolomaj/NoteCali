@@ -1,7 +1,16 @@
 ﻿<html custom-frame=solid-with-shadow window-icon="icon.ico" window-resizable>
 <head>
     <title>noteCali</title>
-
+    <script>
+        class TextArea extends Element {
+            insertTextEx(textBefore,textAfter) { //inserts before and after cursor text
+                const pos = Math.max(0, this.textarea.selectionStart);
+                this.textarea.insertText(textAfter)
+                this.textarea.selectRange(pos, pos);
+                this.textarea.insertText(textBefore)
+            }
+        }
+    </script>
     <style>
         @font-face {
             font-family: inria-sans;
@@ -26,6 +35,9 @@
             var(LineEndSze): 0px;
             var(dividerLinePos): 70%;
             var(dividerLineInvPos): 30%;
+            var(shortcutBorderClor): #13697c; /* implement rto settings*/
+            var(shortcutBackgroundClor): #d9d9d9; /* implement rto settings*/
+            var(shortcutTextColor): #5e5e5e;
         }
 
         body, html {
@@ -110,6 +122,7 @@
         }
 
         #mathInput {
+            prototype: TextArea;
             z-index: 2;
             text-decoration: none;
             pointer-events: none;
@@ -118,6 +131,7 @@
         #highlights {
             z-index: 1;
             white-space: pre-wrap;
+            opacity: 0;
         }
 
         mf { /*ADD RADIUS - NEFUNGUJE S INLINE A LE BEZ INLINE SE NEZALAMUJE A DĚLÁ BRODEL (MNOŽNÁ PRVNÍ A POSLEDNÍ PÍSMENO ZAOOKROUHLIT)*/
@@ -143,7 +157,7 @@
             font-size: var(LineEndSze); /* set to 0 if you dont want debug*/
             padding: 0;
             margin: 0;
-            border:0;
+            border: 0;
         }
 
         #dividerLine {
@@ -168,7 +182,7 @@
             top: 30px;
             right: 0px;
             overflow: hidden;
-           
+            
         }
 
         .mathOutputLine {
@@ -209,6 +223,7 @@
         }
 
         #notification {
+            z-index: 20px;
             font-size: 14px;
             position: absolute;
             bottom: 5px;
@@ -222,6 +237,98 @@
             box-shadow: 0px 0px 13px 7px rgba(0,0,0,0.1);
         }
 
+        @set simpleScroll {
+            .slider {
+                border: 1dip solid #848484;
+                border-radius: 5px;
+                background: #404040;
+            }
+
+                .slider:hover {
+                    border-left: 1px solid #848484;
+                }
+
+                .slider:active {
+                    background: #252525;
+                }
+
+            .base {
+                height: 8dip
+            }
+
+                .base:hover {
+                    height: 4dip;
+                }
+        }
+
+        #snipetHelp {
+            position: absolute;
+            width: calc(100% - 70px);
+            height: 30px;
+            bottom: -50px;
+            left: 10px;
+            border-radius: 10px;
+            border: solid 2px var(shortcutBorderClor);
+            background: var(shortcutBackgroundClor);
+            box-shadow: 0px 0px 6px 5px rgba(0,0,0,0.3);
+            overflow-x: auto;
+            horizontal-scrollbar: simpleScroll;
+            flow: horizontal;
+            display: inline;
+            z-index: 10;
+            transition: bottom linear 0.15s;
+        }
+
+
+           
+
+        #shHide {
+            z-index: 15;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(shortcutBackgroundClor);
+            display: inline-flex;
+            width: 25px;
+            height: 25px;
+            padding: 3px;
+            border-radius: 10px;
+            border: solid 2px var(shortcutBorderClor);
+            box-shadow: 0px 0px 6px 5px rgba(0,0,0,0.3);
+            behavior: clickable;
+        }
+
+            #shHide img {
+                width: 25px;
+                height: 25px;
+            }
+
+        #snipetHelp buttonf {
+            display: block;
+            width: 30px;
+            height: 30px;
+            behavior: clickable;
+            padding: 0;
+        }
+
+        .imgB {
+            z-index: 20;
+        }
+            .imgB img {
+                width: 30px;
+                height: 30px;
+                behavior: clickable;
+            }
+
+        .txtB {
+            z-index: 20;
+            margin: 4px 0;
+            font-size: 18px;
+            font-family: inria-sans;
+            color: var(shortcutTextColor);
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -243,7 +350,26 @@
         <div id="mathOutput">
         </div>
     </div>
+    <toolbar id="snipetHelp">
+        <buttonf class="txtB" snip="PI|">π</buttonf>
+        <buttonf class="txtB" snip="e|">e</buttonf>
+        <buttonf class="txtB" snip="sqrt(|)">√</buttonf>
+        <buttonf class="txtB" snip="log(|)">log</buttonf>
+        <buttonf class="txtB" snip="ln(|)">ln</buttonf>
+        <buttonf class="imgB" snip="root(|;)"><img src="src/xundy.png" /></buttonf>
+        <buttonf class="imgB" snip="|^"><img src="src/xbyy.png" /></buttonf>
+        <buttonf class="imgB" snip="|^2"><img src="src/pow2.png" /></buttonf>
+        <buttonf class="imgB" snip="root(|;3)"><img src="src/3rot.png" /></buttonf>
+        <buttonf class="imgB" snip="round(|)"><img src="src/cca.png" /></buttonf>
 
+
+        <buttonf class="imgB" snip="@|"><img src="src/jmptln.png" /></buttonf>
+        <buttonf class="txtB" snip=";sum|">∑</buttonf>
+
+    </toolbar>
+    <buttonnf id="shHide">
+        <img id="shHimg" src="src/pushUp.svg"/>
+    </buttonnf>
     <div id="notification"> ON WEB IS NEW VERSION 🥳 </div>
 
 </body>

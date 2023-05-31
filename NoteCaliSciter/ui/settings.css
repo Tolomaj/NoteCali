@@ -436,7 +436,8 @@ textarea:focus, input:focus {
     }
 
 
-.var {
+
+.func {
     background-color: #94a9b5;
     border-radius: 10px;
     flow: horizontal;
@@ -446,7 +447,7 @@ textarea:focus, input:focus {
     margin: 5px 1*;
 }
 
-    .var .name {
+    .func .name {
         background-color: #678ba0;
         border-radius: 12px;
         padding: 1* 5px;
@@ -454,7 +455,7 @@ textarea:focus, input:focus {
         text-align: center;
     }
 
-    .var .inputs {
+    .func .inputs {
         background-color: #678ba0;
         border-radius: 12px;
         padding: 1* 2px;
@@ -463,25 +464,16 @@ textarea:focus, input:focus {
         text-align: center;
     }
 
-    .var .value {
+    .func .value {
         margin: 1* 1*;
     }
 
-    .var .destroy {
+    .func .destroy {
         background-color: #678ba0;
         border-radius: 12px;
         padding: 2px 4px;
         width: 20px;
     }
-
-#varAddBTN , #varLoadBTN {
-    padding: 10px;
-    background-color: #678ba0;
-    width: 40px;
-    border-radius: 20px;
-    margin: 20px 1*;
-}
-
 
 
 
@@ -765,3 +757,97 @@ textarea:focus, input:focus {
     .updateButton.selected {
         background-color: #205280;
     }
+
+
+.var {
+    background-color: #94a9b5;
+    border-radius: 10px;
+    flow: horizontal;
+    width: calc(100% - 20px);
+    margin: 5px 1*;
+    font-size: 16px;
+    text-align: center;
+}
+
+    .var input {
+        color: white;
+        background-color: transparent;
+        font-size: 16px;
+        margin: 0;
+        border: none;
+        border-style: none;
+        padding: 0;
+        text-align: center;
+        outline: none;
+        background: none;
+    }
+
+        .var input > caption {
+            margin: 0;
+            border: none;
+            padding: 0;
+            outline: none;
+            background: none;
+        }
+        /* Variable Placeholder color */
+        .var input > caption:empty {  color: #595959; }
+        .var input:empty {  color: #595959;  }
+
+    .var .name {
+        background-color: #678ba0;
+        border-radius: 12px;
+        padding: 1* 5px;
+        width: 100px;
+    }
+
+    .var .value {
+        margin: 1* 1*;
+        border-radius: 12px;
+        width: calc(100% - 138px);
+    }
+
+    .var .destroy {
+        background-color: #678ba0;
+        border-radius: 12px;
+        padding: 2px 4px;
+        width: 20px;
+    }
+
+#varArea {
+    height: calc(100% - 100px);
+    overflow-y: auto;
+    vertical-scrollbar: simpleScroll;
+}
+
+#varBottomBar {
+    border-top: 1px solid #505f69;
+    bottom: 0px;
+    width: 100%;
+    height: 80px;
+    flow: horizontal-flow;
+    horizontal-align: center;
+}
+
+#varAddBTN, #varLoadBTN {
+    padding: 10px;
+    background-color: #678ba0;
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 15px 1*;
+    border: 2px solid #678ba0;
+}
+
+    #varAddBTN:hover, #varLoadBTN:hover {
+        border: 2px solid #27658a;
+    }
+
+
+    #varAddBTN:active, #varLoadBTN:active {
+        border: 2px solid #48b5a7;
+    }
+
+#varAddBTN img, #varLoadBTN img {
+    width: 40px;
+    height: 40px;
+}

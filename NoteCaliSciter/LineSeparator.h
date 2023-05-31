@@ -13,6 +13,7 @@ const wchar spaceSimbolsTable[VARIABLE_FORBIDENT_SIMBOLS_LENGHT] = { '[' , ']' ,
 class LineRegister {
     void registerLine(wstring* iline, bool isCompleted = true) {
         mline separatedLine;
+        separatedLine.originLine = *iline;
         separatedLine.isEnded = isCompleted;
         if ((iline->size() > 0 && iline->at(0) != L';') || iline->size() == 0) { // neobsahuje ; na prvním a není tudíš command
             if (settings.useLineModifiers) {
