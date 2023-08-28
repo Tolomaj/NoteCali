@@ -8,8 +8,24 @@
                 this.textarea.insertText(textAfter)
                 this.textarea.selectRange(pos, pos);
                 this.textarea.insertText(textBefore)
-            }
+            };
+            scrollSinc() {
+                var mathInput = document.getElementById("mathInput");
+                var mathOutput = document.getElementById("mathOutput");
+                var highlights = document.getElementById("highlights");
+                mathOutput.scrollTop = mathInput.scrollTop;
+                highlights.scrollTop = mathInput.scrollTop;
+            };
+            scrollSincV() {
+                var mathInput = document.getElementById("mathInput");
+                var mathOutput = document.getElementById("mathOutput");
+                var highlights = document.getElementById("highlights");
+                mathInput.scrollTop = mathOutput.scrollTop;
+                highlights.scrollTop = mathOutput.scrollTop;
+            };
         }
+
+
     </script>
     <style>
         @font-face {
@@ -23,7 +39,7 @@
         }
 
         html {
-            var(FontSize): 18; /*without px*/
+            var(FontSize): 20; /*without px*/
             var(FontPadding): 20; /*without px*/
             var(FontColor): #1F2937;
             var(SolutionFontColor): #0E2235;
@@ -177,12 +193,14 @@
             border: 0;
             position: absolute;
             font-family: 'Arial';
-            font-size: 18px;
+            font-size: var(FontSize)px;
             letter-spacing: 1px;
             top: 30px;
             right: 0px;
-            overflow: hidden;
-            
+            overflow-y: scroll;
+            overflow-x: hidden;
+            vertical-scrollbar: "v-scroll-indicator";
+            font-rendering-mode: snap-pixel;
         }
 
         .mathOutputLine {
@@ -203,8 +221,13 @@
             font-weight: bold;
         }
 
-        button .mathOutputLine {
+        button.mathOutputLine {
             height: var(FontSize)px;
+            margin: 1px 0;
+            position: static;
+            display: block;
+            z-index: 15;
+            overflow: hidden;
         }
 
         span.mathOutputLine {
@@ -343,7 +366,7 @@
 
     <div id="UserArea">
         <div id="inputContainer">
-            <textarea autofocus rows="4" cols="50" wrap="soft" id="mathInput" spellcheck="false"></textarea>
+            <textarea autofocus rows="150" cols="150" wrap="soft" id="mathInput" spellcheck="false"></textarea>
             <div id="highlights"></div>
         </div>
         <div id="dividerLine"></div>
@@ -351,7 +374,7 @@
         </div>
     </div>
     <toolbar id="snipetHelp">
-        <buttonf class="txtB" snip="PI|">π</buttonf>
+        <buttonf class="txtB" snip="pi|">π</buttonf>
         <buttonf class="txtB" snip="e|">e</buttonf>
         <buttonf class="txtB" snip="sqrt(|)">√</buttonf>
         <buttonf class="txtB" snip="log(|)">log</buttonf>

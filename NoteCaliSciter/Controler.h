@@ -136,9 +136,10 @@ int Controler::doCommandLine(mline * cmdLine) { // find and execute system coman
 };
 
 
-int Controler::procesChangedInput(std::wstring dta) {
+int Controler::procesChangedInput(std::wstring dta) { // změnil se text math input je nutné přepočítat výsledky
 	debugLOG("\n>> Starting Processing Text Input <<");
 	lineSeparator.procesInput(&dta);
+	lineSeparator.printLines();
 	bool refreshAfterCmd = false;
 	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
 		if (lineSeparator.lines.at(i).command != L"") { // když obsahuje nejaký příkaz zavolá doCommand aby ho popřípadě zpustil
@@ -153,6 +154,7 @@ int Controler::procesChangedInput(std::wstring dta) {
 		}
 	}
 	if (refreshAfterCmd) {
+		debugLOG(" changing text ");
 		calculatorWin->setText(compositeLines(&lineSeparator.lines));
 	}
 	

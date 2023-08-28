@@ -28,7 +28,12 @@ function addToNumInput(inputObject, modifier) {
         inputObject.value = inputObject.getAttribute("max")
     }
     inputObject.focus();
-    Window.this.SettingsWin.setNumInput(inputObject.id, inputObject.value);
+    if ((inputObject.id).substr((inputObject.id).length - 4) == "DINP") {
+        Window.this.SettingsWin.setDoubleInput(inputObject.id, inputObject.value);
+    } else {
+        Window.this.SettingsWin.setNumInput(inputObject.id, inputObject.value);
+    }
+    
     //pøidat callback to c++
 }
 

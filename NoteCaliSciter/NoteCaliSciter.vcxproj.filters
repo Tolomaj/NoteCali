@@ -38,9 +38,6 @@
     <ClInclude Include="calcualtionAlg.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Hlavičkové soubory</Filter>
-    </ClInclude>
     <ClInclude Include="library\ini.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
@@ -110,10 +107,10 @@
     <ClInclude Include="ObjectDefinitions.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
-    <ClInclude Include="resource1.h">
+    <ClInclude Include="netUpdater.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
-    <ClInclude Include="netUpdater.h">
+    <ClInclude Include="resource1.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
   </ItemGroup>

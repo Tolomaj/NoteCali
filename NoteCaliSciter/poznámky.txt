@@ -1,25 +1,37 @@
-
+<-------------------------------BUGY----------------------------------->
+opravit otevírání nastavení na druhé obrazovce
+linky solution jsou jinak vysoké jak text zadání ?
+kliknutí myši dá na konec øádku
 
 <------------------------nejdùležitìjší -------------------------------->
-nastavit otáèení se koleèka pøi naèítání. verze
 
-vyøešit problém s opìtovným naèítáním nastavení v moment co se naèítájí nastavení do nastavení
+sum jako promìná
 
-èistìní kódu
-
-nakreslení grafu
-
-pøidat zkratky
+pøidat DEL jako ctrl f
 
 pøidat nastavení pozice spuštìní
 
-opravit otevírání nastavení na druhé obrazovce
+vyøešit problém s opìtovným naèítáním nastavení v moment co se naèítájí nastavení do nastavení
 
-pøidat funkce napovídaèe / snippet
+èistìní kódu:
+	netupdater na obìkt
+	pøidat komentáøe k obìktovím funkcím
 
-pøidat do nastavení jestli snipet ukázat
+
+
+nakreslení grafu:
+	jak postupuje kód pøi øešení kalkulaèky
+ 
 
 pøepsat sem vìci z todo z kódu
+
+pgUp/pgDown posune na zaèátek/konec textu
+
+nastavení. združit snippet 2 tlaèítka do jednoho vybíraèe (skryto, zasouvací, vždy ukázáno)
+
+pøidat varování o neuložených zmìnách v promìých
+
+pøidat funkce co odhalí speciální konstanty -> sum, time , others
 
 <------------------------- pùl dùležité --------------->
 
@@ -61,6 +73,8 @@ record position to open position
  udìlat si graf programu pro zorientování
 
 <-------------------- ménì dùležité  -------------------------->
+
+nastavit otáèení se koleèka pøi naèítání. verze
 
 po zvolení barvy se ukazatel barvy v pickeru nenastaví na barvu momentálnì pickované barvy
 

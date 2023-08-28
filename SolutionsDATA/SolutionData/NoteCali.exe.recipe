@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>D:\projekty\allVisualStudio\NoteCaliSciter Controler\SolutionsDATA\SolutionRelease\NoteCali.exe</FullPath>
+      <FullPath>D:\projekty\allVisualStudio\NoteCaliSciter Controler\SolutionsDATA\SolutionDebug\NoteCali.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>

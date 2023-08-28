@@ -224,7 +224,7 @@ wstring SettingsOBJ::getSettingAsWstring(std::string name) {
 			return StrToWstr(*textValPointers[i]);
 		}
 	}
-	//debugLOG("Setting Not Found by name! Name: " + name);
+	debugLOG("Setting Not Found by name! Name: " + name);
 	return L"none";
 };
 
@@ -242,7 +242,7 @@ bool SettingsOBJ::setSetting(std::string name, std::string value) {
 		}
 	}
 	for (size_t i = 0; i < INT_VAR_NUM; i++) {
-		//debugLOG(systemIntVariableNames[i] + " : " + name);
+		debugLOG(systemIntVariableNames[i] + " : " + name);
 		if (systemIntVariableNames[i] == name) {
 			*systemIntValPointers[i] = std::stoi(value);
 			return true;
@@ -254,7 +254,7 @@ bool SettingsOBJ::setSetting(std::string name, std::string value) {
 			return true;
 		}
 	}
-	//debugLOG("Setting Not Found by name! Name: " + name + " ->ALL_TYPES");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->ALL_TYPES");
 	return false;
 }
 
@@ -267,7 +267,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name,bool value) {
 			return true;
 		}
 	}
-	//debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_TYPE");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->BOOL_TYPE");
 	return false;
 };
 
@@ -278,7 +278,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, double value) {
 			return true;
 		}
 	}
-	//debugLOG("Setting Not Found by name! Name: " + name + " ->DOUBLE_TYPE");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->DOUBLE_TYPE");
 	return false;
 
 };
@@ -290,7 +290,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, int value) {
 			return true;
 		}
 	}
-	//debugLOG("Setting Not Found by name! Name: " + name + " ->INT_TYPE");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->INT_TYPE");
 	return false;
 
 };
@@ -302,7 +302,7 @@ bool SettingsOBJ::setSingleSettingsbyName(std::string name, std::string value) {
 			return true;
 		}
 	}
-	//debugLOG("Setting Not Found by name! Name: " + name + " ->STRING_TYPE");
+	debugLOG("Setting Not Found by name! Name: " + name + " ->STRING_TYPE");
 	return false;
 };
 

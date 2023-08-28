@@ -61,6 +61,7 @@ private:
 public:
     SettingsWin(Controler* controler) : window(SW_POPUP, { 0, 0 , 600, 500 }) {
         this->controler = controler;
+        
     }
 
     SOM_PASSPORT_BEGIN(SettingsWin)
@@ -68,6 +69,7 @@ public:
             , SOM_FUNC(openFile)
             , SOM_FUNC(setSwitch)
             , SOM_FUNC(setNumInput)
+            , SOM_FUNC(setDoubleInput)
             , SOM_FUNC(reloadVariables)
             , SOM_FUNC(saveVariables)
             , SOM_FUNC(chckVer))
@@ -80,6 +82,8 @@ public:
     void setSwitch(sciter::string variable, sciter::string value);
 
     void setNumInput(sciter::string variable, int value);
+
+    void setDoubleInput(sciter::string variable, double value);
 
     void updateVersionBanner(wstring backgroundColor, wstring BorderColor, wstring text, bool nConect, bool nActual);
 
@@ -104,21 +108,27 @@ public:
         sciter::string elementId = target.get_attribute("id");
         string eID = sciterStrToStr(elementId);
 
+#if DEBUG
         string stro = "_";
-
         if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
         if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
-       
-        //bugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro + " - " + sciterStrToStr(elementId));
-
+#endif      
        
         switch (params.cmd) {
             case EDIT_VALUE_CHANGED:
                 debugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro + " - " + sciterStrToStr(elementId));
 
-                if (eID.length() > 3 && eID.substr(eID.length() - 3,3) == "INP") { // když se zmìní (jmeno)+"INP" tak mìní
+                if (eID.length() > 4 && eID.substr(eID.length() - 4, 4) == "DINP") { // když se zmìní (jmeno)+"DINP" tak mìní // DIMP double input
+                    debugLOG("seting stt DINP: " + to_string(target.get_value().get(0.0)));
+                    string name = sciterStrToStr(elementId); // vezme Id elementu. to je název settings + "DINP"
+                    settings.setSingleSettingsbyName(name.substr(0, name.size() - 4), target.get_value().get(0.0)); // odstraní z id "DIMP" a nastaví hodnotou
+                    controler->processSettingsChange();
+
+                }else if (eID.length() > 3 && eID.substr(eID.length() - 3,3) == "INP") { // když se zmìní (jmeno)+"INP" tak mìní
+                    debugLOG("seting stt INP: " + to_string(target.get_value().get(0)));
                     setNumInput(elementId, target.get_value().get(0));
                 }
+
                
                 
                 break;
@@ -177,12 +187,18 @@ void SettingsWin::setSwitch(sciter::string variable, sciter::string value) {
 void SettingsWin::setNumInput(sciter::string variable, int value) {
     string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "INP"
     debugLOG("intus: " + name.substr(0, name.size() - 3) + " -- " + to_string(value));
-    settings.setSingleSettingsbyName(name.substr(0, name.size() - 3), value); // odstraní z id "SW" a nastaví hodnotou
+    settings.setSingleSettingsbyName(name.substr(0, name.size() - 3), value); // odstraní z id "INP" a nastaví hodnotou
     controler->processSettingsChange();
     //return true; // handled
 }
 
-
+void SettingsWin::setDoubleInput(sciter::string variable, double value) {
+    string name = sciterStrToStr(variable); // vezme Id elementu. to je název settings + "DINP"
+    debugLOG("intus: " + name.substr(0, name.size() - 4) + " -- " + to_string(value));
+    settings.setSingleSettingsbyName(name.substr(0, name.size() - 4), value); // odstraní z id "DINP" a nastaví hodnotou
+    controler->processSettingsChange();
+    //return true; // handled
+}
 
 void SettingsWin::updateVersionBanner(wstring backgroundColor, wstring BorderColor, wstring text, bool nConect, bool nActual) {
     sciter::dom::element root = sciter::dom::element::root_element(get_hwnd()); //get root element
@@ -294,7 +310,7 @@ void SettingsWin::loadSettingsInWindow() {
     call_function("SetUpdateOPT", settings.loadVersionStatusOn);
     debugLOG("Loading 2/5");
     ((element)root.get_element_by_id("showAppNameSW")).set_value(sciter::value(settings.showAppName));
-    ((element)root.get_element_by_id("fontSizeINP")).set_value(sciter::value(settings.fontSize));
+    ((element)root.get_element_by_id("fontSizeDINP")).set_value(sciter::value(settings.fontSize));
     //((element)root.get_element_by_id("fontPaddingINP")).set_value(sciter::value(settings.fontPadding)); //not done 
     //((element)root.get_element_by_id("transparencityINP")).set_value(sciter::value(settings.transparencity)); //not done 
 

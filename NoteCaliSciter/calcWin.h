@@ -14,28 +14,28 @@ class CalculatrWin : public sciter::window {
 private:
     bool isSnipetOpen = false;
     bool windowIsTopMOST = false;
-    Controler *controler;   // odkaz na controler pro volání eventù
-    LineRegister* lineSeparator;
+    Controler* controler;   // odkaz na controler pro volání eventù
+    LineRegister* lineSeparator; // odkaz na obìkt který rozdeluje text an linky
 
     bool firstEvent = true; //  první naètení elementù
     sciter::dom::element highites; //odkaz na èasto používané elementy
     sciter::dom::element mathInput; //odkaz na èasto používané elementy
     sciter::dom::element mathOutput; //odkaz na èasto používané elementy
 
-    #define PREV_CHARS_NUM 3    //poèet preventovaných znaku v html
-    const wchar peventedC[PREV_CHARS_NUM] =       { L'<'   ,L'>'   ,L'&' };   //preventovane znaky
+#define PREV_CHARS_NUM 3    //poèet preventovaných znaku v html
+    const wchar peventedC[PREV_CHARS_NUM] = { L'<'   ,L'>'   ,L'&' };   //preventovane znaky
     const wstring peventedAlias[PREV_CHARS_NUM] = { L"&lt;",L"&gt;",L"&amp;" }; // alias pro preventovany znak
 
 
 public:
-    CalculatrWin(Controler * controler, LineRegister* lineSeparator) : window(SW_POPUP , { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {
+    CalculatrWin(Controler* controler, LineRegister* lineSeparator) : window(SW_POPUP, { (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 }) {
         this->controler = controler;
         this->lineSeparator = lineSeparator;
     }
 
     sciter::dom::element getElementById(std::string id);
-    
-    void updateStyles();   // updatne styl okna.
+
+    void updateStyles();   // pøekreslí styl okna.
 
     void handle_size(HELEMENT he);  // updatne jak vypadá okno schová jméno když je moc malé
 
@@ -50,7 +50,7 @@ public:
     void preventFuncChars(mline* line);   //upravi linie tak aby neobsahovani funkcni zanky pro html jejich pseudonymi
 
     void publish(std::vector<mline> lines); // publish solutions and highlights
-    
+
     void focus();
 
     void showNotification(wstring NotificationText, wstring bColor);
@@ -61,13 +61,54 @@ public:
         controler->procesChangedInput(sciterStrToWStr(mathInput.get_value().to_string()));
     }
 
+    void moveCursorDown(sciter::dom::element textAreaElem); // posune kurzor na niší øádek
+
+    void moveCursorUp(sciter::dom::element textAreaElem); // posune kurzor na višší øádek
+
+    void moveCursor(sciter::dom::element textAreaElem, int many);
+
     virtual bool on_key(HELEMENT he, HELEMENT target, UINT event_type, UINT code, UINT keyboardStates) { 
+        
+        debugLOG("kc " + to_string(code) + " *-* ks " + to_string(keyboardStates) + " tpe s " + to_string(event_type));
+
+        if(code == 259 /*backspace key code*/ && mathInput.get_value().to_string().length() <= 0) { return true; } // prevent backspace v prázdné text area // když je zmáèknut backsapce na prázdné text area program spande
+
+        if (code <= 265 && code >= 262) { // TODO pøidat do astavení nožná
+            handleScroll();
+            if(event_type == KEY_PRESED_DOWN-1){
+                if (code == 262) {
+                    moveCursor(mathInput, +1); // posnutí kurzoru o jedna do prava
+                }
+                if (code == 263) { // šipka do leva
+                    moveCursor(mathInput, -1); // posnutí kurzoru o jedna do leva
+                }
+                if (code == 264) {
+                    moveCursorDown(mathInput);
+                }
+                if (code == 265) {
+                    moveCursorUp(mathInput);
+                }
+
+            }
+            return true;// prevence šipek a nastavení vlastního chování 
+        }
+
+        if (event_type == KEY_PRESED_DOWN && code == 261) {
+            mathInput.set_text(L"");
+            mathOutput.set_text(L"");
+            highites.set_html((LPCBYTE)"", 0);
+            highites.update();
+            return true;// prevence šipek a nastavení vlastního chování 
+        }
+
         if (keyboardStates == RIGHT_ALT && code == 86) { return true; } // prevent rightAlt+v kvuli @ když je vloženo levím ctrl
 
         if (keyboardStates == CTRL && event_type == KEY_PRESED_DOWN){ // keyboardStates == 1 is ctrl
             if (code == 70) { // ctrl + f
                 mathInput.set_text(L"");
                 mathOutput.set_text(L"");
+                highites.set_html((LPCBYTE)"", 0);
+                highites.update();
             }
         }
 
@@ -81,6 +122,7 @@ public:
     
 
     virtual bool handle_event(HELEMENT, BEHAVIOR_EVENT_PARAMS& params) {
+        
         sciter::dom::element target = params.heTarget;
         sciter::string elementId = target.get_attribute("id");
 
@@ -99,12 +141,20 @@ public:
 
         if (params.cmd == EDIT_VALUE_CHANGED) {  // zmenilo se pole zadání vypocitat ho a publishnout
             debugLOG("EV - CALC - Text Value Changed");
-            controler->procesChangedInput(sciterStrToWStr(target.get_value().to_string())); return true; 
+            controler->procesChangedInput(sciterStrToWStr(target.get_value().to_string()));
+            handleScroll();
+            return true; 
         }
   
-        if (((params.cmd == 32928 || params.cmd == 160) && target.get_element_uid() == mathInput.get_element_uid()) || params.cmd == EDIT_VALUE_CHANGED) {
+        if (((params.cmd == 32928 || params.cmd == 160) && ( target.get_element_uid() == mathInput.get_element_uid() ))) {
             debugLOG("EV - CALC - Scroll.");
             handleScroll(); return true;  // øesení scrollovaní
+        }
+
+        if (((params.cmd == 32928 || params.cmd == 160) && target.get_element_uid() == mathOutput.get_element_uid())) {
+            debugLOG("EV - CALC - Scroll V.");
+            mathInput.call_method("scrollSincV");
+            return true;  // øesení scrollovaní
         }
         
         if (params.cmd == BUTTON_CLICK) {// set window top most
@@ -150,6 +200,103 @@ public:
 
  
 };
+
+
+void CalculatrWin::moveCursor(sciter::dom::element textAreaElem,int many) { // many -> o kolik se kurzor posune do prava
+    int pos = textAreaElem.eval(aux::utf2w("this.textarea.selectionStart")).get(0) + many;
+    if (pos < 0) {
+        pos = 0;
+    }
+    textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(pos) + "," + to_string(pos) + ")")); // nastaví kurzor na pøíslunou pozici
+};
+
+
+
+
+void CalculatrWin::moveCursorUp(sciter::dom::element textAreaElem) {
+    int pos = textAreaElem.eval(aux::utf2w("this.textarea.selectionStart")).get(0);
+    sciter::string txt = textAreaElem.get_value().to_string();
+
+    int len = 0, lineStart = 0, pastLineStart = 0;
+
+    for (int i = pos - 1; i > 0; i--) {
+        if (txt[i] == '\n') {
+            lineStart = i + 1;
+            break;
+        }
+    }
+
+    for (int i = lineStart - 2; i > 0; i--) {
+        if (txt[i] == '\n') {
+            pastLineStart = i + 1;
+            break;
+        }
+    }
+
+    int fromLineStart = pos - lineStart;
+    int nvPos = pastLineStart + fromLineStart;
+    int nextLineLen = lineStart - pastLineStart;
+
+    if (nvPos < 0 || lineStart - 1 <= 0) {
+        textAreaElem.eval(aux::utf2w("this.textarea.selectRange( 0 , 0)")); // nastaví kurzor na pøíslunou pozici
+        return;
+    }
+
+    if (fromLineStart > nextLineLen - 1) {
+        textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(lineStart - 1) + "," + to_string(lineStart - 1) + ")")); // nastaví kurzor na pøíslunou pozici
+    }
+    else {
+        //if(pastLineStart != lineStart-1){
+        textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(nvPos) + "," + to_string(nvPos) + ")")); // nastaví kurzor na pøíslunou pozici
+        //}
+    }
+
+
+
+}
+
+void CalculatrWin::moveCursorDown(sciter::dom::element textAreaElem) {
+    int pos = textAreaElem.eval(aux::utf2w("this.textarea.selectionStart")).get(0);
+    sciter::string txt = textAreaElem.get_value().to_string();
+
+    int lineStart = 0, nextLineStart = txt.length(), nextLineEnd = txt.length();
+
+    for (int i = pos - 1; i > 0; i--) {
+        if (txt[i] == '\n') {
+            lineStart = i + 1;
+            break;
+        }
+    }
+
+    for (int i = pos; i < txt.length(); i++) {
+        if (txt[i] == '\n') {
+            nextLineStart = i + 1;
+            break;
+        }
+    }
+
+    for (int i = nextLineStart; i < txt.length(); i++) {
+        if (txt[i] == '\n') {
+            nextLineEnd = i + 1;
+            break;
+        }
+    }
+
+    int fromLineStart = pos - lineStart;
+    int nvPos = nextLineStart + fromLineStart;
+
+    if (fromLineStart >= nextLineEnd - nextLineStart) {
+        if (nextLineEnd == txt.length()) {
+            textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(nextLineEnd) + "," + to_string(nextLineEnd) + ")")); // nastaví kurzor na pøíslunou pozici
+        } else {
+            textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(nextLineEnd - 1) + "," + to_string(nextLineEnd - 1) + ")"));
+        }
+    } else {
+        if (nextLineStart != nextLineEnd) {
+            textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(nvPos) + "," + to_string(nvPos) + ")"));
+        }
+    }
+}
 
 void CalculatrWin::togleSnippetHelp() {
     if (isSnipetOpen) {
@@ -255,9 +402,10 @@ POINT CalculatrWin::getScroll(sciter::dom::element* element) {
 }
 
 void CalculatrWin::handleScroll() {
-    POINT scroll = getScroll(&mathInput);
-    highites.set_scroll_pos(scroll);
-    mathOutput.set_scroll_pos(scroll);
+    mathInput.call_method("scrollSinc");
+    //POINT scroll = getScroll(&mathInput);
+    //highites.set_scroll_pos(scroll);
+    //mathOutput.set_scroll_pos(scroll);
 }
 
 void CalculatrWin::setText(std::wstring dta, bool focus) {
@@ -312,7 +460,6 @@ void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
            }
        }
    }
-
 
    eval(aux::chars(si.c_str(), si.length()));   //spustení js na UI stranì a nastavý styli
 

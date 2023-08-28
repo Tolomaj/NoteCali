@@ -6,14 +6,13 @@
 
 //add print error (opens window that show error hlasku )
 
-void debugERROR(std::wstring a) {
+void debugERROR(std::wstring a) { 
 	MessageBox(NULL, a.c_str(), L"Fatal Error", MB_ICONWARNING | MB_OK);
 }
 
 std::string sciterStrToStr(sciter::string s){
 	return std::string(s.begin(), s.end());
 }
-
 
 std::wstring sciterStrToWStr(sciter::string s){
 	return std::wstring(s.begin(), s.end());
@@ -106,15 +105,8 @@ void debugLOG(double num, bool onNewLine = true) {
 
 #else
 
-void debugLOG(std::string s, bool onNewLine = true) {}
-
-void debugLOG(sciter::string s, bool onNewLine = true) {}
-
-void debugLOG(int num, bool onNewLine = true) {}
-
-void debugLOG(float num, bool onNewLine = true) {}
-
-void debugLOG(double num, bool onNewLine = true) {}
+// když není zaplý debug režim tak se nic nevypisuje
+#define debugLOG(...)
 
 #endif
 
