@@ -2,7 +2,8 @@
 
 # Úvodem
 
-![NoteCaliBTH](https://github.com/Tolomaj/NoteCali/assets/59420562/ec611085-34be-4385-b9b1-5fdebab3fab5)
+![NoteCaliBTH](https://github.com/Tolomaj/NoteCali/assets/59420562/86f6d0a8-53f7-4f80-8fcf-d44d5821090f)
+
 
 
 Lepší aplikace Kalkulačky.\
