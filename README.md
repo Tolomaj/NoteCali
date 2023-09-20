@@ -6,9 +6,9 @@
 
 
 Lepší aplikace Kalkulačky.\
-Protože ta ve windows stojí za prd :)
+Protože ta ve windows stojí za prd :)\
 
-Nejnovější portable verzi i instaler lze najít na stránkách [NoteCali](https://notecali.zironet.cz/).
+Nejnovější portable verzi i instaler lze najít na stránkách [NoteCali](https://notecali.zironet.cz/).\
 Stejně tak návod jak nastavit spouštení pomocí funkčního tlačítka pc.
 
 ### Cíle kalkulačky jsou:
