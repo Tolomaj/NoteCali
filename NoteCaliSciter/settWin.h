@@ -111,10 +111,23 @@ public:
 #if DEBUG
         string stro = "_";
         if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
-        if (target.is_valid()) { stro = std::to_string(target.get_value().get(0)); } // debug only
 #endif      
-       
+        
         switch (params.cmd) {
+            case SELECT_VALUE_CHANGED:
+                debugLOG("Select Value Changed");
+                debugLOG("Button/Switch Click");
+
+                if (target.test("select#snipetSEL")) {
+                    //pokud je SELECTED_VALUE_CHANGED tak v params.he je uložený element který byl vybrán
+                    sciter::dom::element selected = params.he;
+                    settings.snipetMode = stoi(selected.get_attribute("value").c_str());
+                    controler->processSettingsChange();
+
+                    return true; // handled
+                }
+                break;
+
             case EDIT_VALUE_CHANGED:
                 debugLOG("something with:" + std::to_string(params.cmd) + " - " + WstrToStr(params.name) + " - " + std::to_string(params.reason) + " - " + stro + " - " + sciterStrToStr(elementId));
 
@@ -135,13 +148,6 @@ public:
 
                 break;
             case BUTTON_CLICK:
-                debugLOG("Button/Switch Click");
-               /* if (target.test("switch.inp")) {
-                    string name = sciterStrToStr(target.get_attribute("id")); // vezme Id elementu. to je název settings + "SW"
-                    settings.setSingleSettingsbyName(name.substr(0, name.size() - 2), (bool)target.get_value().get(0)); // odstraní z id "SW" a nastaví hodnotou
-                    controler->processSettingsChange();
-                    return true; // handled
-                }*/
 
                 if (target.test("button#recordWindowBTN")) { // nastav kategorii / auto dark light custom
                     RECT r = controler->getCalcPosition();
@@ -359,16 +365,15 @@ void SettingsWin::loadSettingsInWindow() {
     ((element)root.get_element_by_id("useLineModifiersSW")).set_value(sciter::value(settings.useLineModifiers));
     ((element)root.get_element_by_id("showErrTextSW")).set_value(sciter::value(settings.showErrText));
     ((element)root.get_element_by_id("useNoroundPointersSW")).set_value(sciter::value(settings.useNoroundPointers));
-
-    ((element)root.get_element_by_id("snipetAlwaisVisibleSW")).set_value(sciter::value(settings.snipetAlwaisVisible));
-    ((element)root.get_element_by_id("showSnipetSW")).set_value(sciter::value(settings.showSnipet));
     
+    ((element)root.get_element_by_id("snipetSEL")).set_value(sciter::value(settings.snipetMode));
+
     ((element)root.get_element_by_id("numberGroupingINP")).set_value(sciter::value(settings.numberGrouping));
     ((element)root.get_element_by_id("roundToDecINP")).set_value(sciter::value(settings.roundToDec));
     ((element)root.get_element_by_id("dividerLinePosINP")).set_value(sciter::value(settings.dividerLinePos));
 
     ((element)root.get_element_by_id("useSumVariableSW")).set_value(sciter::value(settings.useSumVariable));
-
+    ((element)root.get_element_by_id("useTimeFormatSW")).set_value(sciter::value(settings.useTimeFormat));
 
     debugLOG("Loading 4/5");
 

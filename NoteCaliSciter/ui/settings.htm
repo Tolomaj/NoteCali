@@ -206,6 +206,8 @@
                 <div class="feature"> <div class="name">&0010 </div>                <div class="value">Using biar numbers</div> </div>
                 <div class="feature"> <div class="name">#ab1</div>                  <div class="value">Using hexadecimal numbers</div> </div>
 
+                <div class="feature"> <div class="name">:</div>                     <div class="value">Everithing before : is multiplied by 60 and after : is added<br> Useful for time conversions<br> effect can be limited by () </div> </div>
+
                 <div class="feature"> <div class="name">%</div>                     <div class="value">Operation percent</div> </div>
                 <div class="feature"> <div class="name">^</div>                     <div class="value">Operation power</div> </div>
                 <div class="feature"> <div class="name">*</div>                     <div class="value">Operation multiply</div> </div>
@@ -278,17 +280,17 @@
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
                     <!-- not done ! <div class="option">
-                        <div class="oLable">Counting On Line End</div>
-                        <switch class="inp" id="countingOnLineEndSW" />
-                    </div>
-                    <div class="option">
-                        <div class="oLable">All lines Are Superines</div>
-                        <switch class="inp" id="isAllLinesSuperlinesSW" />
-                    </div>
-                    <div class="option">
-                        <div class="oLable">Show Line Numbers</div>
-                        <switch class="inp" id="showLineNumbersSW" />
-                    </div>-->
+        <div class="oLable">Counting On Line End</div>
+        <switch class="inp" id="countingOnLineEndSW" />
+    </div>
+    <div class="option">
+        <div class="oLable">All lines Are Superines</div>
+        <switch class="inp" id="isAllLinesSuperlinesSW" />
+    </div>
+    <div class="option">
+        <div class="oLable">Show Line Numbers</div>
+        <switch class="inp" id="showLineNumbersSW" />
+    </div>-->
 
                     <div class="option hasTip" tip="Default count of deciaml places.">
                         <div class="oLable">Round to</div>
@@ -308,33 +310,35 @@
                         </span>
                     </div>
 
-                    <div class="option hasTip" tip="shows button to open snipet list.">
-                        <div class="oLable">Show Snipet</div>
-                        <switch class="inp" id="showSnipetSW" disabled /> <!-- showAppName + SW -->
+                    <div class="option hasTip" tip="Setup snippet behavior">
+                        <div class="oLable">Snipet</div>
+                        <select id="snipetSEL">
+                            <option value="0">HIDEN</option>
+                            <option value="1">HIDING</option>
+                            <option value="2">SHOWN</option>
+                        </select>
                     </div>
 
-                    <div class="option hasTip" tip="Snipet Alwais Visisble.<br><span style='color:#c21111;'>This Affect snippets only if is show Snipet enabled.</span>">
-                        <div class="oLable">Snipet Alwais Visisble</div>
-                        <switch class="inp" id="snipetAlwaisVisibleSW" disabled /> <!-- showAppName + SW -->
+                    <div class="option hasTip" tip="enable use of operator : that converst by 60 <br> experimetnal feature works but is confuzing sometimes">
+                        <div class="oLable">Use Time Format</div>
+                        <switch class="inp" id="useTimeFormatSW" disabled />
                     </div>
 
                     <div class="option hasTip" tip="Use 1.23E+10 format of numbers">
-                        <!-- variable in c++ name-->
                         <div class="oLable">Use Sience Numbers</div>
                         <switch class="inp" id="useSientificSW" disabled />
                     </div>
 
                     <div class="option hasTip" tip="Use line arguments before ;<br>For example r3; this round number to 3 dec places.">
-                        <!-- variable in c++ name-->
                         <div class="oLable">Use lineModifiers</div>
                         <switch class="inp" id="useLineModifiersSW" disabled />
                     </div>
 
                     <!--  DONT WORK -->
                     <!-- <div class="option hasTip" tip="Allow you to click and by that copy solution.">
-                        <div class="oLable">Click To Copy</div>
-                        <switch class="inp" id="clickToCopySW" disabled/>
-                    </div> -->
+        <div class="oLable">Click To Copy</div>
+        <switch class="inp" id="clickToCopySW" disabled/>
+    </div> -->
 
 
                     <div class="option hasTip" tip="Uses radians for functions like sin()">
@@ -380,6 +384,7 @@
                         <div class="oLable">Use sum Variable</div>
                         <switch class="inp" id="useSumVariableSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
+
 
                 </div>
             </div>

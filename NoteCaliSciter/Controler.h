@@ -182,7 +182,7 @@ int Controler::doCommandLine(mline * cmdLine) { // find and execute system coman
 
 
 int Controler::procesChangedInput(std::wstring dta) { // změnil se text math input je nutné přepočítat výsledky
-	debugCLEAR();
+	//debugCLEAR();
 
 	debugCOLOR(YELLOW);
 	debugLOG(">> Starting Processing Text Input <<");

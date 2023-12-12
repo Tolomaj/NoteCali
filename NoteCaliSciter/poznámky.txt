@@ -9,29 +9,25 @@ vyøešit problém s opìtovným naèítáním nastavení v moment co se naèítájí nastaven
 	netupdater na obìkt
 	pøidat komentáøe k obìktovím funkcím
 
-
-
 nakreslení grafu: 
 	jak postupuje kód pøi øešení kalkulaèky
  
 
 pøepsat sem vìci z todo z kódu
 
-nastavení. združit snippet 2 tlaèítka do jednoho vybíraèe (skryto, zasouvací, vždy ukázáno)
-
 pøidat funkce co odhalí speciální konstanty -> time , others
 
-oprava & znaku v math ()
+oprava & znaku v mathHighlights
 
 <------------------------- pùl dùležité --------------->
+
+revize stylù tlaèítek a selectù
 
 pøidat nastavení barvy snipetu
 
 zresponzivnìt talèítka u number input!!
 
 pøidat výpis všeho pro debug
-
-pøidat barvy do debug hlášeni
 
 zeptat se na sciter foru jestli jde apperience vepsat do html
 
@@ -49,7 +45,6 @@ ukazat když dojde k zaokrouhlení
 
 error caling - pøidat errorové hlášení které by zpùsobilo pád programu // trochu dotové pro naèítájí souborù
 
- pøidat program : time souèet 00:55 , 00:20 -> 1:15
 
  vydat aplikaci na microsoft store << stojí 400 kè nejspíš
 

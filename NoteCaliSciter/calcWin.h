@@ -366,14 +366,24 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
 
         //V / pøidat pøedání nesolvnut=
         solutionString.append(L"<button id=\"molID" + std::to_wstring(i) + L"\" class=\"mathOutputLine\" val=\"" + lines.at(i).solution + L"\" style=\"padding: " + std::to_wstring(paddingBtwLines) + L"px 0; height:" + std::to_wstring(solutionLineHeight) + L"\" >");
-        solutionString.append(lines.at(i).solutionModifier + L" ");
-        if (lines.at(i).localVariableName != L"") {
-            solutionString.append(lines.at(i).localVariableName);
+      
+        
+        size_t rulePos = lines.at(i).lineModifier.find(L'h');
+        if (rulePos == string::npos) {
+
+            solutionString.append(lines.at(i).solutionModifier + L" ");
+            if (lines.at(i).localVariableName != L"") {
+                solutionString.append(lines.at(i).localVariableName);
+            }
+            if (lines.at(i).error.type <= 0 || settings.showErrText) { // dont print errors
+                solutionString.append(lines.at(i).solution); // composite non copiable part with copiable part of solution
+            }
         }
-        if (lines.at(i).error.type <= 0 || settings.showErrText) { // dont print errors
-            solutionString.append(lines.at(i).solution); // composite non copiable part with copiable part of solution
-        }
+
+
         solutionString.append( L"</button>"); // composite non copiable part with copiable part of solution
+
+
 
         prevousLineEndPosX = LineEndPosX;
     }
@@ -436,29 +446,29 @@ void CalculatrWin::updateStyles() { //možná i pro chování poèítání ?? / todo
    getElementById("highlights").set_style_attribute("opacity", L"1");
 #endif
 
-   if (settings.showSnipet) {
-       getElementById("snipetHelp").set_style_attribute("display", L"inline");
-       getElementById("shHide").set_style_attribute("display", L"inline-flex");
-   } else {
-       getElementById("snipetHelp").set_style_attribute("display", L"none");
-       getElementById("shHide").set_style_attribute("display", L"none");
-   }
 
-   if (settings.snipetAlwaisVisible){
-       getElementById("shHide").set_style_attribute("display", L"none");
-       getElementById("snipetHelp").set_style_attribute("width", L"calc(100% - 24px)");
-       if (isSnipetOpen == false) {
-           togleSnippetHelp();
-       }
-   } else {
-       if (settings.showSnipet) {
-           getElementById("shHide").set_style_attribute("display", L"inline-flex");
-           getElementById("snipetHelp").set_style_attribute("width", L"calc(100% - 70px)");
-           if (isSnipetOpen == true) {
-               togleSnippetHelp();
-           }
-       }
-   }
+    switch (settings.snipetMode){
+        case SNIPET_HIDE:
+            getElementById("snipetHelp").set_style_attribute("display", L"none");
+            getElementById("shHide").set_style_attribute("display", L"none");
+            break;
+        case SNIPET_HIDING:
+            getElementById("snipetHelp").set_style_attribute("display", L"inline");
+            getElementById("shHide").set_style_attribute("display", L"inline-flex");
+            getElementById("snipetHelp").set_style_attribute("width", L"calc(100% - 70px)");
+            if (isSnipetOpen == true) {
+                togleSnippetHelp();
+            }
+            break;
+        case SNIPET_SHOWN:
+            getElementById("snipetHelp").set_style_attribute("display", L"inline");
+            getElementById("shHide").set_style_attribute("display", L"none");
+            getElementById("snipetHelp").set_style_attribute("width", L"calc(100% - 24px)");
+            if (isSnipetOpen == false) {
+                togleSnippetHelp();
+            }
+            break;
+    }
 
    eval(aux::chars(si.c_str(), si.length()));   //spustení js na UI stranì a nastavý styli
 

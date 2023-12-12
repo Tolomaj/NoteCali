@@ -22,7 +22,7 @@ const wchar forbidentVariableSimbols[VARIABLE_FORBIDENT_SIMBOLS_LENGHT] = { '[' 
 #define POINTER_CHAR L"@"
 
 class MatematicalSolver {
-    typedef ttmath::Big<1, 3> MyBig;
+    typedef ttmath::Big<10, 10> MyBig;
     ttmath::Parser<MyBig> parser;
     ttmath::Objects varTable;
     ttmath::Objects systemVariableTable;
@@ -124,7 +124,6 @@ void MatematicalSolver::calculateSumForLinesAbove(int lineNum) {
 
         if (err == 0) {
             varTable.EditValue("sum", parser.stack[0].value.ToString());
-
             debugLOG("suma pro linku - " + to_string(lineNum) + " : " + parser.stack[0].value.ToString());
         } else {
             debugLOG("error sumarizace - " + to_string(lineNum) + " : ",false);
@@ -179,7 +178,6 @@ int MatematicalSolver::solve(vector<mline>* lines) {
             calculateSumForLinesAbove(i);
         }
 
-
         int eqPos = findEqualition(&lines->at(i).line);
         if (eqPos >= 0) { //is variable 
             solveVariableLine(&lines->at(i),eqPos);
@@ -198,7 +196,6 @@ int MatematicalSolver::solve(vector<mline>* lines) {
 
         debugLOG(L"výsledek linky - " + to_wstring(i) + L" : " + lines->at(i).solution + L"\n");
 
-
     }
     lineUsingMetrics = false;
     varTable = systemVariableTable;
@@ -207,10 +204,99 @@ int MatematicalSolver::solve(vector<mline>* lines) {
     return 0;
 }
 
-
 int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solutionNoRound,wstring * errorText) { // vyřeší linku která neobsahuje žádné custom věci // později budwe řešit proměné a funkce
     
-    
+    //převod XX:XX na sekundy
+    // vždy rozdělí na dvě části podle : a ty vypočítá nezávysle to se opakuje dokud nezbyde výsledek
+    if (settings.useTimeFormat) {
+        size_t ocur2 = line.find(L":");
+        while (ocur2 != wstring::npos) {
+
+            // najdeme levou část před : dokud nenarazí na neuzavřenou ( závorku
+            size_t numStart = ocur2;
+            size_t lenght = 0;
+            int pathcr = 0;
+            while (numStart - lenght != 0 && line[numStart - lenght - 1] != ':') {
+                if (line[numStart - lenght - 1] == ')') {
+                    pathcr++;
+                }
+                if (line[numStart - lenght - 1] == '(') {
+                    if (pathcr == 0) {
+                        break;
+                    }
+                    pathcr--;
+                }
+                lenght++;
+            }
+
+            //najdeme pravou část za : koduk nenarazí na neuzavřenou ) závorku
+            size_t secNumStart = ocur2;
+            size_t secLenght = 0;
+            pathcr = 0;
+            while (secNumStart + secLenght != line.length() && line[secNumStart + secLenght + 1] != ':') {
+                if (line[secNumStart + secLenght + 1] == '(') {
+                    pathcr++;
+                }
+                if (line[secNumStart + secLenght + 1] == ')') {
+                    if (pathcr == 0) {
+                        break;
+                    }
+                    pathcr--;
+                }
+
+                secLenght++;
+            }
+
+            // rosekání mezi : 
+            wstring fnum = line.substr(numStart - lenght, lenght);
+            wstring snum = line.substr(secNumStart + 1, secLenght);
+
+            // prevence abychom nečetli v stringu za koncem
+            wstring afterstring = L"";
+            if (secNumStart + secLenght + 1 <= line.length()) {
+                afterstring = line.substr(secNumStart + secLenght + 1, line.length() - secNumStart + secLenght);
+            }
+
+            // prevence abychom nečetli v stringu za koncem
+            wstring beforestring = L"";
+            if (numStart - lenght > 0) {
+                beforestring = line.substr(0, numStart - lenght);
+            }
+
+            //pokud nějaká část není definovaná potom je 0
+            if (fnum == L"") { fnum = L"0"; }
+            if (snum == L"") { snum = L"0"; }
+
+            // teď je linka rozdělená na:  beforestring ( fnum : snum )?: afterstring  
+
+            debugLOG(L"operator : sekaná linka ->" + beforestring + L";" + fnum + L";" + snum + L";" + afterstring);
+
+            wstring lineFormula = L"(" + fnum + L")*60+" + snum;
+
+            debugLOG(L"operator : sformulovaná linka->" + lineFormula);
+
+            wstring solution = L"";
+            wstring solutionNR = L"";
+            wstring err = L"";
+
+            solveLine(lineFormula, &solution, &solutionNR, &err);
+
+            //ttmath::ErrorCode err = parser.Parse(lineFormula);
+
+            if (err == L"") {
+                line = beforestring + parser.stack[0].value.ToWString() + afterstring;
+                //line.replace(numStart - lenght, lenght + secLenght + 1, parser.stack[0].value.ToWString());
+            }
+            else {
+                *errorText = L"Cant Convert Time";
+                return MATHERR_INVALID_SINTAX;
+            }
+
+            debugLOG(L"operator : poparsovaná linaka->" + line);
+            ocur2 = line.find(L":");
+        }
+    }
+
     if (settings.useMetrics || lineUsingMetrics) { // check to somethink
         size_t ocur = line.find(L" to ");
         while (ocur != wstring::npos){
@@ -218,7 +304,6 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solut
             line.replace(ocur+1, 4, L")/");
             ocur = line.find(L"to ");
         }
-        //line.replace(L"to",L"/");
     }
 
     // korekce neuzavřených závorek & ignorování veikosti písmen
@@ -276,7 +361,9 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solut
         }
     }
 
-    // vyřešit linku
+
+
+    // doeší linku (pokud po : zůstal jeden výsledek tak ten vyřeší též jen s ním nic neprovede)
     ttmath::ErrorCode err = parser.Parse(line); // actuali solve line
 
 
@@ -329,6 +416,7 @@ int MatematicalSolver::modifyMathRules(wstring * rules){
     if (rulePos != string::npos) {
         return END_LINE_SOLVING;
     }
+
     
 
 

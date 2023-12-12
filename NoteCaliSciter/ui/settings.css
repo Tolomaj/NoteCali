@@ -13,6 +13,59 @@ body {
     var(mainColor): #788e9c;
 }
 
+select {
+    height: 26px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid #2b6ca8;
+    background: #2b6ca8;
+    color: white;
+    border-radius: 8px;
+    flow: horizontal;
+    margin-left: 1*;
+    margin-right: 4px;
+    text-align:center;
+}
+
+    select:hover {
+        border: 2px solid #205280;
+    }
+
+    select:active {
+        background-color: #3e9df4;
+        border: 2px solid #3383cc;
+    }
+
+option:hover {
+    background: #6caeeb;
+}
+
+option {
+    padding:7px
+    color: white;
+    border-bottom: 2px solid #205280;
+}
+
+    option:last-child {
+        border: 0;
+    }
+
+
+popup {
+    margin-top: 2px;
+    border: 2px solid #205280;
+    background: #2b6ca8;
+    border-radius: 8px;
+}
+
+select > button {
+    color:white;
+}
+
+    select > button:hover {
+        border: 0px;
+    }
+
 body {
     margin: 0;
     overflow: hidden;
