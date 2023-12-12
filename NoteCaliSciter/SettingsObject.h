@@ -52,12 +52,14 @@
 #define USE_SIENCE_DEFAULT false
 #define GROUP_DEFAULT 0
 
+#define USE_DEFAULT_POSIITON_DEFAULT true
+
+#define USE_SUM_VARIABLE_DEFAULT true
 
 
 //exit codes//
 #define SETINGS_FILE_NOT_FOUND 2
 #define SETINGS_LOADED_SCUESFUL 0
-
 
 //exit codes END//
 
@@ -110,19 +112,25 @@ public:
 	bool showSnipet = SHOW_SNIPET_DEFAUTL;
 	bool snipetAlwaisVisible = SNIPETS_ALWAIS_VISIBLE;
 
+	bool useDefaultPosition = USE_DEFAULT_POSIITON_DEFAULT;
+	int defaultPosition[4];
+
+	bool useSumVariable = USE_SUM_VARIABLE_DEFAULT;
+
+
 private:
 
-	#define BOOL_VAR_NUM 20 // idk jak jinak to dìlat ve foru
-	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 , true                    , true               , true               , true                          , true                          ,true              , true                 ,true                  ,true                      ,true               ,true};
-	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  , &allowLineJump          , &useRadians        , &useMetrics        , &ignoreHightDiference         , &corectParenthesis            ,&useSientific     , &showErrText         ,&useLineModifiers     ,&useNoroundPointers       ,&showSnipet        ,&snipetAlwaisVisible };
-	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"        ,"useLineModifiers"    ,"useNoroundPointers"      ,"showSnipet"       ,"snipetAlwaisVisible"};
-	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT,USE_MODIFIERS_DEFAULT ,POITER_IS_NOROUND_DEFAULT ,SHOW_SNIPET_DEFAUTL,SNIPETS_ALWAIS_VISIBLE};
+	#define BOOL_VAR_NUM 22 // idk jak jinak to dìlat ve foru
+	bool systemBoolValue[BOOL_VAR_NUM] =		  { true                , true               , true               , true                       , true                  , true                  , false                     , true            	   , true				 , true                    , true               , true               , true                          , true                          ,true              , true                 ,true                  ,true                      ,true               ,true                  ,true                        ,true					   };
+	bool * boolValPointers[BOOL_VAR_NUM] =        { &showAppName        , &highliteERR       , &highliteVAR       , &highliteSUPER             , &clickToCopy          , &showLineEnd          , &showLineNumbers          , &isAllLinesSuperlines , &countingOnLineEnd  , &allowLineJump          , &useRadians        , &useMetrics        , &ignoreHightDiference         , &corectParenthesis            ,&useSientific     , &showErrText         ,&useLineModifiers     ,&useNoroundPointers       ,&showSnipet        ,&snipetAlwaisVisible  ,&useDefaultPosition         ,&useSumVariable		   };
+	std::string boolVariableNames[BOOL_VAR_NUM] = { "showAppName"       , "highliteERR"      , "highliteVAR"      , "highliteSUPER"            , "clickToCopy"         , "showLineEnd"         , "showLineNumbers"         , "isAllLinesSuperlines", "countingOnLineEnd" , "allowLineJump"         , "useRadians"       , "useMetrics"       , "ignoreHightDiference"        , "corectParenthesis"           ,"useSientific"    , "showErrText"        ,"useLineModifiers"    ,"useNoroundPointers"      ,"showSnipet"       ,"snipetAlwaisVisible" ,"useDefaultPosition"        ,"useSumVariable"		   };
+	bool boolValDefault[BOOL_VAR_NUM] =           {SHOW_APP_NAME_DEFAULT,HIGHLITE_ERR_DEFAULT,HIGHLITE_VAR_DEFAULT, HIGHLITE_SUPERLINE_DEFAULT , CLICK_TO_COPY_DEFAULT , SHOW_LINE_END_DEFAULT , SHOW_LINE_NUMBERS_DEFAULT , ALL_SUPERLINE_DEFAUTL , false               , ALLOW_LINE_JUMP_DEFAULT , USE_RADIANS_DEFAULT, USE_MATRICS_DEFAULT, IGNORE_HIGHT_DIFERENCE_DEFAULT, PARENTHESIS_CORECTION_DEFAULT ,USE_SIENCE_DEFAULT, SHOW_ERR_TEXT_DEFAULT,USE_MODIFIERS_DEFAULT ,POITER_IS_NOROUND_DEFAULT ,SHOW_SNIPET_DEFAUTL,SNIPETS_ALWAIS_VISIBLE,USE_DEFAULT_POSIITON_DEFAULT,USE_SUM_VARIABLE_DEFAULT };
 	
-#define INT_VAR_NUM 5 // idk jak jinak to dìlat ve foru
-	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            ,true                     ,true};
-	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping ,&dividerLinePos          ,&loadVersionStatusOn};
-	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping","dividerLinePos"         ,"loadVersionStatusOn"};
-	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , ROUND_DEC_NUM_DEFAULT, GROUP_DEFAULT   ,DIVIDER_LINE_POS_DEFAULT ,ON_SETTINGS_OPEN};
+#define INT_VAR_NUM 9 // idk jak jinak to dìlat ve foru
+	bool systemIntValue[INT_VAR_NUM] =                { true         , true		 	        , true            ,true                     ,true                 ,true               ,true               ,true               ,true               };
+	int* systemIntValPointers[INT_VAR_NUM] =          { &stylescheme , &roundToDec          , &numberGrouping ,&dividerLinePos          ,&loadVersionStatusOn ,&defaultPosition[0],&defaultPosition[1],&defaultPosition[2],&defaultPosition[3]};
+	std::string systemIntVariableNames[INT_VAR_NUM] = { "stylescheme", "roundToDec"         , "numberGrouping","dividerLinePos"         ,"loadVersionStatusOn","defaultPositionL" ,"defaultPositionT" ,"defaultPositionR" ,"defaultPositionB" };
+	int systemIntValDefault[INT_VAR_NUM] =            { AUTO         , ROUND_DEC_NUM_DEFAULT, GROUP_DEFAULT   ,DIVIDER_LINE_POS_DEFAULT ,ON_SETTINGS_OPEN     ,0                  ,0                  ,0                  ,0                  };
 
 
 
@@ -332,7 +340,7 @@ bool SettingsOBJ::resetSettingsFiles(int file  = 0) { // DATAFILE,STYLEFILE,BOAT
 
 	// add folder cretion
 
-	mkdir((getenv("APPDATA") + string("\\NoteCali")).c_str()); // try create folder / if folder exist nothimng hapends
+	_mkdir((getenv("APPDATA") + string("\\NoteCali")).c_str()); // try create folder / if folder exist nothimng hapends
 
 	std::string defaultLightTheme = "showLineNumbers = false\ntransparencity = 100.000000\nfontSize = 18.000000\nfontPadding = 2.000000\nbackgroudColor = #d9d9d9\ndividerLineColor = #10819A\nfontColor = #1F2937\nsolutionFontColor = #0E2235\nclickColor = #2F71AF\nhowerColor = #1C456B\n";
 	if (file == 0 || file == DATAFILE) {

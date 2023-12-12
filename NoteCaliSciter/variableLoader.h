@@ -63,5 +63,5 @@ int VariablesTable::saveRawComposite(string s){
 
 	appDataFile << s.c_str();
 	appDataFile.close();
-
+	return 0;
 }; //set file content to text // budoucí pouzití okno nastanei bude vracet raw text pole pri prenastaveni

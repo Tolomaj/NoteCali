@@ -12,6 +12,7 @@ for (let i = 0; i < pickers.length; i++) {  // add click event to color picker
         document.getElementById("pickerSelection").style.display = "block";
         nowPickingOption = e.target.getAttribute("id");
         nowPickingColorDestination = e.target;
+
     }, false);
 }
 

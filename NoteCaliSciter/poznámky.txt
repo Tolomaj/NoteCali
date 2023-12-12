@@ -1,15 +1,7 @@
 <-------------------------------BUGY----------------------------------->
-opravit otevírání nastavení na druhé obrazovce
 linky solution jsou jinak vysoké jak text zadání ?
-kliknutí myši dá na konec øádku
 
 <------------------------nejdùleitìjší -------------------------------->
-
-sum jako promìná
-
-pøidat DEL jako ctrl f
-
-pøidat nastavení pozice spuštìní
 
 vyøešit problém s opìtovnım naèítáním nastavení v moment co se naèítájí nastavení do nastavení
 
@@ -19,21 +11,21 @@ vyøešit problém s opìtovnım naèítáním nastavení v moment co se naèítájí nastaven
 
 
 
-nakreslení grafu:
+nakreslení grafu: 
 	jak postupuje kód pøi øešení kalkulaèky
  
 
 pøepsat sem vìci z todo z kódu
 
-pgUp/pgDown posune na zaèátek/konec textu
-
 nastavení. zdruit snippet 2 tlaèítka do jednoho vybíraèe (skryto, zasouvací, vdy ukázáno)
 
-pøidat varování o neuloenıch zmìnách v promìıch
+pøidat funkce co odhalí speciální konstanty -> time , others
 
-pøidat funkce co odhalí speciální konstanty -> sum, time , others
+oprava & znaku v math ()
 
 <------------------------- pùl dùleité --------------->
+
+pøidat nastavení barvy snipetu
 
 zresponzivnìt talèítka u number input!!
 
@@ -49,20 +41,13 @@ optimalizace kódu. zjišování update verze má duplicitní kód
 
 pøi kopírování moost zapnout kopírování bez jedotek a kopírování v základní jednotce
 
-add click script to end of line << click to go line
 
 pøidat 
 h;		<-- hide solution pro mezivıpoèty
 
-r4;sum <-- not work
-
-pøidání naaèítání a ukládání konstant z nastavovacího okna
-
 ukazat kdy dojde k zaokrouhlení
 
 error caling - pøidat errorové hlášení které by zpùsobilo pád programu // trochu dotové pro naèítájí souborù
-
-record position to open position
 
  pøidat program : time souèet 00:55 , 00:20 -> 1:15
 
@@ -77,8 +62,6 @@ record position to open position
 nastavit otáèení se koleèka pøi naèítání. verze
 
 po zvolení barvy se ukazatel barvy v pickeru nenastaví na barvu momentálnì pickované barvy
-
-vyøešit velikosti ikoni (aplikace - ikona velká) (táskbar - ikona malá)
 
 napsat autorovy ttmath a caligator
 

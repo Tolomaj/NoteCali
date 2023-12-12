@@ -67,30 +67,16 @@ public:
 
     void moveCursor(sciter::dom::element textAreaElem, int many);
 
+    void setCursor(sciter::dom::element textAreaElem, size_t where);
+
     virtual bool on_key(HELEMENT he, HELEMENT target, UINT event_type, UINT code, UINT keyboardStates) { 
         
         debugLOG("kc " + to_string(code) + " *-* ks " + to_string(keyboardStates) + " tpe s " + to_string(event_type));
 
         if(code == 259 /*backspace key code*/ && mathInput.get_value().to_string().length() <= 0) { return true; } // prevent backspace v prázdné text area // když je zmáèknut backsapce na prázdné text area program spande
 
-        if (code <= 265 && code >= 262) { // TODO pøidat do astavení nožná
+        if (code <= 267 && code >= 262) {
             handleScroll();
-            if(event_type == KEY_PRESED_DOWN-1){
-                if (code == 262) {
-                    moveCursor(mathInput, +1); // posnutí kurzoru o jedna do prava
-                }
-                if (code == 263) { // šipka do leva
-                    moveCursor(mathInput, -1); // posnutí kurzoru o jedna do leva
-                }
-                if (code == 264) {
-                    moveCursorDown(mathInput);
-                }
-                if (code == 265) {
-                    moveCursorUp(mathInput);
-                }
-
-            }
-            return true;// prevence šipek a nastavení vlastního chování 
         }
 
         if (event_type == KEY_PRESED_DOWN && code == 261) {
@@ -98,7 +84,19 @@ public:
             mathOutput.set_text(L"");
             highites.set_html((LPCBYTE)"", 0);
             highites.update();
-            return true;// prevence šipek a nastavení vlastního chování 
+            return true;
+        }
+           
+        // PAGE_UP handle
+        if (event_type == KEY_PRESED_DOWN && code == 266) {
+            setCursor(mathInput, 0);
+            return true;
+        }
+
+        // PAGE_DOWN handle
+        if (event_type == KEY_PRESED_DOWN && code == 267) {
+            setCursor(mathInput, INT_MAX);
+            return true;
         }
 
         if (keyboardStates == RIGHT_ALT && code == 86) { return true; } // prevent rightAlt+v kvuli @ když je vloženo levím ctrl
@@ -170,7 +168,7 @@ public:
             }
             if (snip != L"") {
 
-                int end = snip.find(L"|");
+                size_t end = snip.find(L"|");
                 //snip.substr(end, snip.length());
 
                 mathInput.call_method("insertTextEx", snip.substr(0, end), snip.substr(end+1, snip.length()));
@@ -210,7 +208,9 @@ void CalculatrWin::moveCursor(sciter::dom::element textAreaElem,int many) { // m
     textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(pos) + "," + to_string(pos) + ")")); // nastaví kurzor na pøíslunou pozici
 };
 
-
+void CalculatrWin::setCursor(sciter::dom::element textAreaElem, size_t where) { // many -> o kolik se kurzor posune do prava
+    textAreaElem.eval(aux::utf2w("this.textarea.selectRange(" + to_string(where) + "," + to_string(where) + ")")); // nastaví kurzor na pøíslunou pozici
+};
 
 
 void CalculatrWin::moveCursorUp(sciter::dom::element textAreaElem) {
@@ -259,7 +259,8 @@ void CalculatrWin::moveCursorDown(sciter::dom::element textAreaElem) {
     int pos = textAreaElem.eval(aux::utf2w("this.textarea.selectionStart")).get(0);
     sciter::string txt = textAreaElem.get_value().to_string();
 
-    int lineStart = 0, nextLineStart = txt.length(), nextLineEnd = txt.length();
+    int lineStart = 0;
+    size_t nextLineStart = txt.length(), nextLineEnd = txt.length();
 
     for (int i = pos - 1; i > 0; i--) {
         if (txt[i] == '\n') {
@@ -275,7 +276,7 @@ void CalculatrWin::moveCursorDown(sciter::dom::element textAreaElem) {
         }
     }
 
-    for (int i = nextLineStart; i < txt.length(); i++) {
+    for (size_t i = nextLineStart; i < txt.length(); i++) {
         if (txt[i] == '\n') {
             nextLineEnd = i + 1;
             break;
@@ -283,7 +284,7 @@ void CalculatrWin::moveCursorDown(sciter::dom::element textAreaElem) {
     }
 
     int fromLineStart = pos - lineStart;
-    int nvPos = nextLineStart + fromLineStart;
+    size_t nvPos = nextLineStart + fromLineStart;
 
     if (fromLineStart >= nextLineEnd - nextLineStart) {
         if (nextLineEnd == txt.length()) {
@@ -371,8 +372,6 @@ void CalculatrWin::publish(std::vector<mline> lines) { // publish solutions and 
         }
         if (lines.at(i).error.type <= 0 || settings.showErrText) { // dont print errors
             solutionString.append(lines.at(i).solution); // composite non copiable part with copiable part of solution
-            debugLOG("solution:");
-            debugLOG(lines.at(i).solution);
         }
         solutionString.append( L"</button>"); // composite non copiable part with copiable part of solution
 

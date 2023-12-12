@@ -28,9 +28,11 @@
 #define RELOAD_SETTINGS 1
 #define RELOAD_CALCULATOR 0
 
+
 class Controler; // idk haw to run .h and .cpp type of structure
 class CalculatrWin; // idk haw to run .h and .cpp type of structure
 class SettingsWin; // idk haw to run .h and .cpp type of structure
+class DialogWin;
 
 class Controler {
 	//SettingsOBJ settings;
@@ -59,6 +61,13 @@ public:
 
 	void reloadWIN(int win); //reload data from config files. is needed if is chaget Dark,Auto,Custom
 
+	void openDuck();
+
+	void showNotification(std::wstring text, std::wstring color);
+
+	RECT getCalcPosition();
+
+	void setCalcPosition(RECT position);
 
 };
 
@@ -67,10 +76,34 @@ public:
 #include "settWin.h"
 #include "calcWin.h"
 
+void Controler::setCalcPosition(RECT position) {
+	HWND win = calculatorWin->get_hwnd();
+	SetWindowPos(win, NULL, position.left, position.top,  position.right - position.left, position.bottom - position.top, SW_POPUP);
+}
+
+RECT Controler::getCalcPosition() {
+	RECT position;
+	HWND win = calculatorWin->get_hwnd();
+	GetWindowRect(win, &position);
+	return position;
+};
+
+void Controler::showNotification(std::wstring text, std::wstring color) {
+	calculatorWin->showNotification(text, color);
+}
+
 void Controler::reloadVariables() {
 	variableTable.loadVariables(); // load varables to table
 	mathSolver.loadVariablesFromTable(); // loaded into table
 	calculatorWin->reCalculateInput();
+}
+
+void Controler::openDuck() {
+	// start dialog (testing window)
+	
+	sciter::window * dialogWin = new sciter::window(SW_ALPHA, { 0, 0 ,200, 330 });
+	dialogWin->load(L"this://app/duck.htm");
+	dialogWin->expand();
 }
 
 int Controler::start() {
@@ -79,10 +112,21 @@ int Controler::start() {
 	variableTable.loadVariables();
 
 	sciter::archive::instance().open(aux::elements_of(resources));
+	
+	// crete calculator window
 	calculatorWin = new CalculatrWin(this, &lineSeparator);
 	calculatorWin->load(L"this://app/calculator.htm");
+
+	if (!settings.useDefaultPosition) {
+		setCalcPosition({ settings.defaultPosition[0],settings.defaultPosition[1],settings.defaultPosition[2],settings.defaultPosition[3] });
+	}
+
 	calculatorWin->expand();
 	calculatorWin->updateStyles();
+
+
+
+
 
 	mathSolver.begin();
 
@@ -102,7 +146,8 @@ int Controler::start() {
 int Controler::doCommandLine(mline * cmdLine) { // find and execute system comand from text  // if comand is not recognized is ignered becouse can modify line calculation process
 	cmdLine->isComandDone = true;
 
-	if (cmdLine->command == L"clear" ) { calculatorWin->setText(L""); return LINE_ENDING_CALCULATION_PROCESS; }
+	if (cmdLine->command == L"clear") { calculatorWin->setText(L""); return LINE_ENDING_CALCULATION_PROCESS; }
+	else if (cmdLine->command == L"duck") { cmdLine->command = L"";  openDuck(); return LINE_WITH_RESPONSE;}
 	else if (cmdLine->command == L"hello") { cmdLine->command = L"";  cmdLine->line = L"Hi!";  return LINE_WITH_RESPONSE; }
 #if DEBUG
 	else if (cmdLine->command == L"setset" && cmdLine->isEnded == true) {
@@ -137,9 +182,13 @@ int Controler::doCommandLine(mline * cmdLine) { // find and execute system coman
 
 
 int Controler::procesChangedInput(std::wstring dta) { // změnil se text math input je nutné přepočítat výsledky
-	debugLOG("\n>> Starting Processing Text Input <<");
+	debugCLEAR();
+
+	debugCOLOR(YELLOW);
+	debugLOG(">> Starting Processing Text Input <<");
+	debugCOLOR(DARKYELLOW);
+
 	lineSeparator.procesInput(&dta);
-	lineSeparator.printLines();
 	bool refreshAfterCmd = false;
 	for (size_t i = 0; i < lineSeparator.lines.size(); i++) {
 		if (lineSeparator.lines.at(i).command != L"") { // když obsahuje nejaký příkaz zavolá doCommand aby ho popřípadě zpustil
@@ -161,7 +210,9 @@ int Controler::procesChangedInput(std::wstring dta) { // změnil se text math in
 	mathSolver.solve(&lineSeparator.lines);
 
 	calculatorWin->publish(lineSeparator.lines);
+
 	debugLOG(">> Text input Procesed <<\n");
+	debugCOLOR(WHITE);
 	return 0;
 };
 

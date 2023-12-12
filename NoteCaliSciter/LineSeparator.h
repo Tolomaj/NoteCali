@@ -65,10 +65,11 @@ void LineRegister::registerLine(wstring* iline, bool isCompleted) {
 }
 
 void LineRegister::printLines() {
-    debugLOG("PrintingSeparatedLines:");
+    debugLOG(L"Separované linky:");
     for (size_t i = 0; i < lines.size(); i++) {
-        debugLOG(lines.at(i).command + L"," + lines.at(i).line + L";");
+        debugLOG(L"line(" + to_wstring(i) + L") = modifier:[" + lines.at(i).lineModifier + L"] comand:[" + lines.at(i).command + L"] line:[" + lines.at(i).line + L"]");
     };
+    debugLOG("");
 };
 
 void LineRegister::procesInput(wstring* str) { //used from stackowerflow https://stackoverflow.com/questions/13172158/c-split-string-by-line
@@ -78,7 +79,7 @@ void LineRegister::procesInput(wstring* str) { //used from stackowerflow https:/
     size_t prev = 0;
     wstring a = L"";
     while ((pos = str->find(L"\n", prev)) != string::npos) {
-        long posN = pos - prev - 1;
+        long long posN = pos - prev - 1;
         if (posN < 0) {
             mline l;
             l.isComandDone = true;

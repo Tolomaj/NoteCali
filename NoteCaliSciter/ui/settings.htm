@@ -9,6 +9,8 @@
     <script src="variables.js"></script>
 
     <script>
+        Window.this.minSize = [330, 370];
+
         function sizeChanged(width, height) {
             console.log(width, height);
             if (width < 500) {
@@ -36,7 +38,7 @@
                         <div class="colorPrewBackground"></div>
                         <div id="colorPrew"></div>
                     </div>
-                    <input type="text" id="colorTInput"></input>
+                    <input type="text" id="colorTInput">
                     <input type="hslider" id="transparencitySlider" max="100" value="100" step="1" />
                 </div>
                 <div id="lss">
@@ -134,6 +136,11 @@
                         <div class="oLable">Show app name</div>
                         <switch class="inp" id="showAppNameSW" disabled /> <!-- showAppName + SW -->
                     </div>
+                    <div class="option hasTip" tip="Record actual position of window. Next time window opens it poends at this position.">
+                        <div class="oLable">Window Position</div>
+                        <button class="inp" id="recordRstBTN" style="margin-right:3px"><img width="15px" height="15px" src="src/reset.png"/></button> <!-- recordWindow + BTN -->
+                        <button class="inp" id="recordWindowBTN" style="margin-left:0">RECORD</button> <!-- recordWindow + BTN -->
+                    </div>
 
                     <div class="option customPa hasTip" tip="Set background color.">
                         <div class="oLable">Background Color</div>
@@ -192,94 +199,97 @@
             </div>
 
             <div class="tabArea" id="interfaceTab">
-                <div class="feature"> <div class="name">€[lineNumber]</div> <div class="value">Pointer to line</div> </div>
-                <div class="feature"> <div class="name">5m + 6mm to cm</div> <div class="value">Unit conversion example</div> </div>
-                <div class="feature"> <div class="name">;sum</div>        <div class="value">Sum all the numbers above</div> </div>
-                <div class="feature"> <div class="name">&0010 </div>      <div class="value">Using biar numbers</div> </div>
-                <div class="feature"> <div class="name">#ab1</div>        <div class="value">Using hexadecimal numbers</div> </div>
-                <div class="feature"> <div class="name">%</div>           <div class="value">Operation percent</div> </div>
-                <div class="feature"> <div class="name">^</div>           <div class="value">Operation power</div> </div>
-                <div class="feature"> <div class="name">*</div>           <div class="value">Operation multiply</div> </div>
-                <div class="feature"> <div class="name">/</div>           <div class="value">Operation div</div> </div>
-                <div class="feature"> <div class="name">+</div>           <div class="value">Operation add</div> </div>
-                <div class="feature"> <div class="name">-</div>           <div class="value">Operation sub</div> </div>
-                <div class="feature"> <div class="name"><</div>           <div class="value">Operation lower</div> </div>
-                <div class="feature"> <div class="name">></div>           <div class="value">Operation greater</div> </div>
-                <div class="feature"> <div class="name"><=</div>          <div class="value">Operation lower or equal</div> </div>
-                <div class="feature"> <div class="name">>=</div>          <div class="value">Operation greater or equal</div> </div>
-                <div class="feature"> <div class="name">==</div>          <div class="value">Operation equal</div> </div>
-                <div class="feature"> <div class="name">!=</div>          <div class="value">Operation not equal</div> </div>
-                <div class="feature"> <div class="name">&&</div>          <div class="value">Operation and</div> </div>
-                <div class="feature"> <div class="name">||</div>          <div class="value">Operation or</div> </div>
-                <div class="feature"> <div class="name">sin(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">cos(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">tan(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">cot(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">degtodeg(x)</div>  <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">degtorad(x)</div>  <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">degtorad(x)</div>  <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">radtodeg(x)</div>  <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">asin(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">acos(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">atan(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">acot(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">sinh(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">cosh(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">tanh(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">coth(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">asinh(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">acosh(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">atanh(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">acoth(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">ln(x)</div>        <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">log(x,base)</div>  <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">exp(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">abs(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">sgn(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">round(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">int(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">ceil(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">floor(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">frac(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">factorial(x)</div> <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">gamma(x)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">sqrt(x)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">root(x;index)</div><div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">mod(x;y)</div>     <div class="value">Function Modulo</div> </div>
-                <div class="feature"> <div class="name">if(cond;t;f)</div> <div class="value">If condition 1:t 0:f</div> </div>
-                <div class="feature"> <div class="name">or(x;y)</div>      <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">and(x;y)</div>     <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">not(x)</div>       <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">bitor(x;y)</div>   <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">bitand(x;y)</div>  <div class="value">Function</div> </div>
-                <div class="feature"> <div class="name">bitxor(x;y)</div>  <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">€[lineNumber]</div>         <div class="value">Pointer to line</div> </div>
+                <div class="feature"> <div class="name">5m + 6mm to cm</div>        <div class="value">Unit conversion example</div> </div>
+                <div class="feature"> <div class="name">;sum</div>                  <div class="value">Sum all the numbers above<br>🤓 (use sum variable insted)</div> </div>
+                <div class="feature"> <div class="name">;rstsum/;sumbreak</div>     <div class="value">Sum stops suming on this line</div> </div>
+                <div class="feature"> <div class="name">&0010 </div>                <div class="value">Using biar numbers</div> </div>
+                <div class="feature"> <div class="name">#ab1</div>                  <div class="value">Using hexadecimal numbers</div> </div>
 
-                <div class="feature"> <div class="name">;clear</div>    <div class="value">Clear text in calculator</div> </div>
-                <div class="feature"> <div class="name">;rand</div>     <div class="value">Random number 0 to 1</div> </div>
-                <div class="feature"> <div class="name">;randi</div>     <div class="value">Random integer </div> </div>
-                <div class="feature"> <div class="name">;randn</div>     <div class="value">Random number -1 - 1 </div> </div>
+                <div class="feature"> <div class="name">%</div>                     <div class="value">Operation percent</div> </div>
+                <div class="feature"> <div class="name">^</div>                     <div class="value">Operation power</div> </div>
+                <div class="feature"> <div class="name">*</div>                     <div class="value">Operation multiply</div> </div>
+                <div class="feature"> <div class="name">/</div>                     <div class="value">Operation div</div> </div>
+                <div class="feature"> <div class="name">+</div>                     <div class="value">Operation add</div> </div>
+                <div class="feature"> <div class="name">-</div>                     <div class="value">Operation sub</div> </div>
+                <div class="feature"> <div class="name"><</div>                     <div class="value">Operation lower</div> </div>
+                <div class="feature"> <div class="name">></div>                     <div class="value">Operation greater</div> </div>
+                <div class="feature"> <div class="name"><=</div>                    <div class="value">Operation lower or equal</div> </div>
+                <div class="feature"> <div class="name">>=</div>                    <div class="value">Operation greater or equal</div> </div>
+                <div class="feature"> <div class="name">==</div>                    <div class="value">Operation equal</div> </div>
+                <div class="feature"> <div class="name">!=</div>                    <div class="value">Operation not equal</div> </div>
+                <div class="feature"> <div class="name">&&</div>                    <div class="value">Operation and</div> </div>
+                <div class="feature"> <div class="name">||</div>                    <div class="value">Operation or</div> </div>
+                <div class="feature"> <div class="name">sin(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">cos(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">tan(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">cot(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">degtodeg(x)</div>           <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">degtorad(x)</div>           <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">degtorad(x)</div>           <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">radtodeg(x)</div>           <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">asin(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acos(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">atan(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acot(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">sinh(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">cosh(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">tanh(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">coth(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">asinh(x)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acosh(x)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">atanh(x)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">acoth(x)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">ln(x)</div>                 <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">log(x,base)</div>           <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">exp(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">abs(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">sgn(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">round(x)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">int(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">ceil(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">floor(x)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">frac(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">factorial(x)</div>          <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">gamma(x)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">sqrt(x)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">root(x;index)</div>         <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">mod(x;y)</div>              <div class="value">Function Modulo</div> </div>
+                <div class="feature"> <div class="name">if(cond;t;f)</div>          <div class="value">If condition 1:t 0:f</div> </div>
+                <div class="feature"> <div class="name">or(x;y)</div>               <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">and(x;y)</div>              <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">not(x)</div>                <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitor(x;y)</div>            <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitand(x;y)</div>           <div class="value">Function</div> </div>
+                <div class="feature"> <div class="name">bitxor(x;y)</div>           <div class="value">Function</div> </div>
 
-                <div class="feature"> <div class="name">r[x];</div>     <div class="value">before line change rouonding settings for line</div> </div>
-                <div class="feature"> <div class="name">b[x];</div>     <div class="value">before line change number base settings for line</div> </div>
-                <div class="feature"> <div class="name">c;</div>        <div class="value">before line prevent line from solving</div> </div>
+                <div class="feature"> <div class="name">;clear</div>                <div class="value">Clear text in calculator</div> </div>
+                <div class="feature"> <div class="name">;rand</div>                 <div class="value">Random number 0 to 1</div> </div>
+                <div class="feature"> <div class="name">;randi</div>                <div class="value">Random integer </div> </div>
+                <div class="feature"> <div class="name">;randn</div>                <div class="value">Random number -1 - 1 </div> </div>
 
-                <div class="feature"> <div class="name">CTRL + F</div>  <div class="value">Flush all text from calculator</div> </div>
+                <div class="feature"> <div class="name">r[x];</div>                 <div class="value">before line change rouonding settings for line</div> </div>
+                <div class="feature"> <div class="name">b[x];</div>                 <div class="value">before line change number base settings for line</div> </div>
+                <div class="feature"> <div class="name">c;</div>                    <div class="value">before line prevent line from solving</div> </div>
+
+                <div class="feature"> <div class="name">CTRL + F</div>              <div class="value">Flush all text from calculator</div> </div>
 
             </div>
             <div class="tabArea" id="systemTab">
                 <div id="settingsArea">
                     <!-- not done ! <div class="option">
-        <div class="oLable">Counting On Line End</div>
-        <switch class="inp" id="countingOnLineEndSW" />
-    </div>
-    <div class="option">
-        <div class="oLable">All lines Are Superines</div>
-        <switch class="inp" id="isAllLinesSuperlinesSW" />
-    </div>
-    <div class="option">
-        <div class="oLable">Show Line Numbers</div>
-        <switch class="inp" id="showLineNumbersSW" />
-    </div>-->
+                        <div class="oLable">Counting On Line End</div>
+                        <switch class="inp" id="countingOnLineEndSW" />
+                    </div>
+                    <div class="option">
+                        <div class="oLable">All lines Are Superines</div>
+                        <switch class="inp" id="isAllLinesSuperlinesSW" />
+                    </div>
+                    <div class="option">
+                        <div class="oLable">Show Line Numbers</div>
+                        <switch class="inp" id="showLineNumbersSW" />
+                    </div>-->
+
                     <div class="option hasTip" tip="Default count of deciaml places.">
                         <div class="oLable">Round to</div>
                         <span class="inp numInput">
@@ -322,9 +332,9 @@
 
                     <!--  DONT WORK -->
                     <!-- <div class="option hasTip" tip="Allow you to click and by that copy solution.">
-        <div class="oLable">Click To Copy</div>
-        <switch class="inp" id="clickToCopySW" disabled/>
-    </div> -->
+                        <div class="oLable">Click To Copy</div>
+                        <switch class="inp" id="clickToCopySW" disabled/>
+                    </div> -->
 
 
                     <div class="option hasTip" tip="Uses radians for functions like sin()">
@@ -365,6 +375,12 @@
                         <switch class="inp" id="useNoroundPointersSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
 
+                    <div class="option hasTip" tip="For each line is created variable sum that sums all lines above.">
+                        <!-- variable in c++ name-->
+                        <div class="oLable">Use sum Variable</div>
+                        <switch class="inp" id="useSumVariableSW" disabled /> <!-- add to variable list  -> setings-->
+                    </div>
+
                 </div>
             </div>
 
@@ -378,7 +394,6 @@
 
 
 
-                    <!-- sem se načtou proměné používané v kalkulačce -->
                     <!-- sem se načtou proměné používané v kalkulačce -->
                     <!-- sem se načtou proměné používané v kalkulačce -->
 
@@ -395,38 +410,38 @@
                         <div class="name">sqrt</div>
                         <div class="inputs">1</div>
                         <div class="value">SYSTEM-RELATED</div>
-                        <img class="destroy" src="src/trash.svg"></img>
+                        <img class="destroy" src="src/trash.svg">
                     </div>
                     <div class="func">
                         <div class="name">minToH</div>
                         <div class="inputs">2</div>
                         <div class="value">round(A/60) + B </div>
-                        <img class="destroy" src="src/trash.svg"></img>
+                        <img class="destroy" src="src/trash.svg">
                     </div>
                     <div class="func">
                         <div class="name">minToH</div>
                         <div class="inputs">1</div>
                         <div class="value">round(A/60) </div>
-                        <img class="destroy" src="src/trash.svg"></img>
+                        <img class="destroy" src="src/trash.svg">
                     </div>
                 </div>
-                <img id="nnotwrk" src="src/add-variable.svg"></img>
-                <img id="nntvork" src="src/save.svg"></img>
+                <img id="nnotwrk" src="src/add-variable.svg">
+                <img id="nntvork" src="src/save.svg">
             </div>
         </div>
 
         <!-- TODO -->
         <div class="tabArea" id="feedbackTab">
-            <input type="text" id="TopicName" class="inputElement" placeholder="*Topic Name"></input>
+            <input type="text" id="TopicName" class="inputElement" placeholder="*Topic Name">
             <textarea type="text" id="TopicContent" class="inputElement" placeholder="*Topic.."></textarea>
-            <input type="text" id="Email" class="inputElement" value="@" placeholder="Email"></input>
+            <input type="text" id="Email" class="inputElement" value="@" placeholder="Email">
             <div id="TopicImage">+ Add Image</div>
             <div id="TopicSendButton">Send</div>
         </div>
 
         <div class="tabArea scrolableArea" id="infoTab">
 
-            <div id="versionChangelog" style="margin-top:15px"">
+            <div id="versionChangelog" style="margin-top:15px">
                 <div id="versionTitle">
                     <div class="version">Big Thanks to you 💕</div>
                 </div>
@@ -434,7 +449,8 @@
                     My name vas Ondřej Gross and big thanks to you user for downloading this app. <br>
                     I hope you are happy about NoteCali. <br>
                     Iam trying my best to keep NoteCali updated and in best shape. <br>
-                    If you find some bug or want to appraise my vork il be happy for small email about your thoughts. <br>
+                    If you find some bug or want to appraise my work il be happy for small email about your thoughts. <br>
+                    Please in email subject use word NOTECALI or NoteCali or notecali, Thanks. <br> 
                     <a target="@system" href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com. </a><br>
                     <br>
                     Thanks again for giving  NoteCali a chance<br>
@@ -475,9 +491,9 @@
                     <a target="@system" href="https://www.ttmath.org/">ttmath.org</a>
                     <br>
                     <br>
-                    Last Library used in NoteCali is CURL.</br>
-                    CURL works because contributors,</br>
-                    big thangs to them for this library 💕.</br>
+                    Last Library used in NoteCali is CURL.<br>
+                    CURL works because contributors,<br>
+                    big thangs to them for this library 💕.<br>
                     Project can be found on site:.<br>
                     <a target="@system" href="https://curl.se/">curl.se</a>
                 </div>
@@ -490,7 +506,7 @@
             <div id="uptudateBanner">
                 <img src="src/update.svg" />
                 <div class="msg" id="actualizationMesage">APP version</div>
-                <div class="version">v0.4</div>
+                <div class="version">v0.5</div>
             </div>
 
             <div id="versionLog" style="padding: 5px 0px; width: calc(100% - 60px); margin-bottom:5px;">
@@ -518,6 +534,30 @@
                 <br>
                 Please send feedback to email adress ial be happy for that.<br>
                 <a target="@system" href="mailto:vydrysekg@gmail.com?subject=NOTE_CALI_FEADBACK"> vydrysekg@gmail.com </a><br>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.5</div>
+                    <div class="type">? RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    Debug dianostic overall<br>
+                    Duck support 🦆<br>
+                </div>
+            </div>
+
+            <div id="versionChangelog">
+                <div id="versionTitle">
+                    <div class="version">v0.41</div>
+                    <div class="type">DEV RELEASE</div>
+                </div>
+                <div id="versionLog">
+                    Added record position button in settings<br>
+                    Max size changed<br>
+                    sum variable added<br>
+                    BugFix: Lining select issues.<br>
+                </div>
             </div>
 
             <div id="versionChangelog">
@@ -589,6 +629,6 @@
                     Basic implementation of ttmath.<br>
                 </div>
             </div>
-
+        </div>
 </body>
 </html>

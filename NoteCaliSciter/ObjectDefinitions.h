@@ -14,6 +14,7 @@ struct MathError {
 
 struct mline { // mabey add solution preponder
 	bool isEnded = true;	
+	bool isSumBrake = false;
 	bool isComandDone = false;	// comand on this line is done
 	bool completlySolved = false;	// if is there any solution and is proceed
 	// isComandDome || completlySolved || (error.type > 0) means it is peoceed << mabey error is typed as comment

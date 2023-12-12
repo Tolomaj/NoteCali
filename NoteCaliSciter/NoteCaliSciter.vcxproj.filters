@@ -113,6 +113,9 @@
     <ClInclude Include="resource1.h">
       <Filter>Hlavičkové soubory</Filter>
     </ClInclude>
+    <ClInclude Include="duckWin.h">
+      <Filter>Hlavičkové soubory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ui\calculator.htm" />
@@ -148,6 +151,7 @@
     <None Include="ui\src\update.svg" />
     <None Include="ui\src\variable.svg" />
     <None Include="ui\variables.js" />
+    <None Include="ui\duck.htm" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\src\inria-sans.otf" />

@@ -4,6 +4,25 @@
 
 #pragma once
 
+
+#define BLACK 0
+#define DARKBLUE FOREGROUND_BLUE
+#define DARKGREEN FOREGROUND_GREEN
+#define DARKCYAN FOREGROUND_GREEN | FOREGROUND_BLUE
+#define DARKRED FOREGROUND_RED
+#define DARKMAGENTA FOREGROUND_RED | FOREGROUND_BLUE
+#define DARKYELLOW FOREGROUND_RED | FOREGROUND_GREEN
+#define DARKGRAY FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+#define GRAY FOREGROUND_INTENSITY
+#define BLUE FOREGROUND_INTENSITY | FOREGROUND_BLUE
+#define GREEN FOREGROUND_INTENSITY | FOREGROUND_GREEN
+#define CYAN FOREGROUND_INTENSITY | FOREGROUND_GREEN | FOREGROUND_BLUE
+#define RED FOREGROUND_INTENSITY | FOREGROUND_RED
+#define MAGENTA FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE
+#define YELLOW FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN
+#define WHITE FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+
+
 //add print error (opens window that show error hlasku )
 
 void debugERROR(std::wstring a) { 
@@ -56,6 +75,14 @@ std::string ConvertToString(DWORD value) {
 
 #if DEBUG 
 
+void debugCLEAR() {
+	system("cls");
+}
+
+void debugCOLOR(WORD color) {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
 void debugLOG(std::string s, bool onNewLine = true) {
 	if (onNewLine) { s = "\n" + s; } 
 	std::wstring stemp = std::wstring(s.begin(), s.end());
@@ -107,7 +134,8 @@ void debugLOG(double num, bool onNewLine = true) {
 
 // když není zaplý debug režim tak se nic nevypisuje
 #define debugLOG(...)
-
+#define debugCOLOR(...)
+#define debugCLEAR()
 #endif
 
 

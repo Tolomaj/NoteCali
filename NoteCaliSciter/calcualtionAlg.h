@@ -38,7 +38,7 @@ class MatematicalSolver {
 
     int findEqualition(wstring* line);// vrátí true když opsahuje samostatné = ,index je hejo pozice
 
-    int solveLine(wstring line, wstring* solution, wstring* solutionNoRound,wstring* errorText); // vyřeší linku která neobsahuje žádné custom věci // později budwe řešit proměné a funkce
+    int solveLine(wstring line, wstring* solution, wstring* solutionNoRound, wstring* errorText); // vyřeší linku která neobsahuje žádné custom věci // později budwe řešit proměné a funkce
 
     bool isValidVariableName(wstring name);
 
@@ -52,9 +52,11 @@ class MatematicalSolver {
 
     void addMetricsToTable();
 
-    int modifyMathRules(wstring * s);
+    int modifyMathRules(wstring* s);
 
     bool setDefaultMathRules();
+
+    void calculateSumForLinesAbove( int lineNum);
 
 public:
     
@@ -86,9 +88,55 @@ void MatematicalSolver::begin() {
     //parser.SetFunctions(&functionTable);
 }
 
-int MatematicalSolver::solve(vector<mline>* lines) { // TODO
+void MatematicalSolver::calculateSumForLinesAbove(int lineNum) {
+
+    wstring lineFormula = L"";
+
+    //vytvoří formulu všeho nad
+    int momental = lineNum - 1;
+    while (momental >= 0) {
+
+        // sčítéme linky jen po sumbreak comand
+        if (procesedLines->at(momental).isSumBrake == true) {
+            break;
+        }
+
+        //pokud linka nemá číslo k řešení není možná jí sčítat takže přeskakujeme
+        if (procesedLines->at(momental).solutionNoRound == L"") {
+            momental--;
+            continue;
+        }
+
+        // pro první číslo znaménko vynecháváme
+        if (momental != lineNum) {
+            lineFormula = lineFormula + L"+";
+        }
+
+        lineFormula = lineFormula + procesedLines->at(momental).solutionNoRound;
+
+
+        momental--;
+    }
+
+
+    if (lineFormula != L"") {
+        ttmath::ErrorCode err = parser.Parse(lineFormula);
+
+        if (err == 0) {
+            varTable.EditValue("sum", parser.stack[0].value.ToString());
+
+            debugLOG("suma pro linku - " + to_string(lineNum) + " : " + parser.stack[0].value.ToString());
+        } else {
+            debugLOG("error sumarizace - " + to_string(lineNum) + " : ",false);
+            debugLOG(lineFormula);
+        }
+
+    }
+};
+
+int MatematicalSolver::solve(vector<mline>* lines) { 
     procesedLines = lines;
-    //debugLOG("\nStarting line Calculations \n\n\n");
+    //nastavení pravidel pro řešení linek
     setDefaultMathRules();
 
     if (settings.useMetrics) {
@@ -97,34 +145,42 @@ int MatematicalSolver::solve(vector<mline>* lines) { // TODO
 
     parser.SetDegRadGrad(settings.useRadians);
 
-    /*  zrychlení
-    for (size_t i = 0; i < std::min(lines->size(), lastLines.size()); i++){ // porovná linky
-        if (isSameLine(&lines->at(i), &lastLines.at(i)) && !hasAnyVariable(&lines->at(i))) {
-            lines->at(i).completlySolved = true;
-            lines->at(i).solution = lastLines.at(i).solution;
-        }
-    }
-    */
+    //pokud se používá sum tak přidáme proměnou
+    if (settings.useSumVariable) {
+        varTable.Add("sum", "0");
+    };
+
+    debugLOG("<------ SOLVING LINES ------>");
 
     for (size_t i = 0; i < lines->size(); i++) {
-        if (settings.useLineModifiers && modifyMathRules(&lines->at(i).lineModifier) == END_LINE_SOLVING) {
-            continue;
+
+        // linka obsahuje příkaz co ukončí řešení momentální linky
+        if (settings.useLineModifiers && modifyMathRules(&lines->at(i).lineModifier) == END_LINE_SOLVING) { 
+            continue; 
         };
 
-        int eqPos = findEqualition(&lines->at(i).line);
+        // linka je už vyřešená nebo příkaz
+        if (lines->at(i).completlySolved || lines->at(i).isComandDone) { 
+            continue; 
+        }  
 
-        if (lines->at(i).completlySolved || lines->at(i).isComandDone) { continue; }  // line is already solved or comand on line is done
-
-
-        if (lines->at(i).command != L"") { //is comand
+        //linka obsahuje matematický příkaz
+        if (lines->at(i).command != L"") { 
             executeMathComand(&lines->at(i));
-            //debugLOG("executing math function"); // do functions
         }
-        
-        if (lines->at(i).completlySolved ) { continue; }  // if comand solve line then is no need to do math
+        // pokud matematický příkaz vyřešil linku
+        if (lines->at(i).completlySolved ) { 
+            continue; 
+        }
 
-        debugLOG(lines->at(i).line);
 
+        // pokud je zaplé používání sum proměnné tak se vypočítá
+        if (settings.useSumVariable) {
+            calculateSumForLinesAbove(i);
+        }
+
+
+        int eqPos = findEqualition(&lines->at(i).line);
         if (eqPos >= 0) { //is variable 
             solveVariableLine(&lines->at(i),eqPos);
         } else { // is not variable
@@ -135,15 +191,18 @@ int MatematicalSolver::solve(vector<mline>* lines) { // TODO
                 lines->at(i).completlySolved = true;
             }
         };
+
         if (lines->at(i).lineModifier != L"") {
             setDefaultMathRules();
         }
 
-        //MathError tmp = solveBasicLine(&line); // dbg solve simple line
+        debugLOG(L"výsledek linky - " + to_wstring(i) + L" : " + lines->at(i).solution + L"\n");
+
+
     }
     lineUsingMetrics = false;
     varTable = systemVariableTable;
-    //debugLOG("Calculation ended.");
+    debugLOG("<---- SOLVING LINES DONE ---->");
    
     return 0;
 }
@@ -153,7 +212,7 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solut
     
     
     if (settings.useMetrics || lineUsingMetrics) { // check to somethink
-        int ocur = line.find(L" to ");
+        size_t ocur = line.find(L" to ");
         while (ocur != wstring::npos){
             line = L"(" + line;
             line.replace(ocur+1, 4, L")/");
@@ -162,7 +221,7 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solut
         //line.replace(L"to",L"/");
     }
 
-
+    // korekce neuzavřených závorek & ignorování veikosti písmen
     if (settings.ignoreHightDiference || settings.corectParenthesis) {
         size_t parCountOP = 0,parCountCL = 0;
         for (size_t i = 0; i < line.length(); i++){
@@ -187,10 +246,10 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solut
         }
     }
 
-
+    // pokud jsou zaplé ljumps anhradí skok výsledkem
     if (settings.allowLineJump) {
-        int lastSeenEq = line.find(POINTER_CHAR);
-        while (lastSeenEq != string::npos) {    // replace &x with line solution
+        size_t lastSeenEq = line.find(POINTER_CHAR);
+        while (lastSeenEq != string::npos) {  
             for (int i = lastSeenEq; i < line.length(); i++) {
                 bool isOnEnd = i == line.length() - 1;
                 if (isOnEnd || !iswdigit(line.at(i + 1))) {
@@ -217,13 +276,11 @@ int MatematicalSolver::solveLine(wstring line, wstring* solution, wstring* solut
         }
     }
 
- 
-
-
-    // do line modificators
-
-
+    // vyřešit linku
     ttmath::ErrorCode err = parser.Parse(line); // actuali solve line
+
+
+    // nastavit řešení
     if (err == 0) {
         *solution = parser.stack[0].value.ToWString(ConvertionRole);
         *solutionNoRound = parser.stack[0].value.ToWString();
@@ -247,8 +304,7 @@ wstring getNumFrom(wstring * s,int index) {
 }
 
 int MatematicalSolver::modifyMathRules(wstring * rules){
-    int rulePos = rules->find_last_of(L'r');
-    debugLOG(rulePos);
+    size_t rulePos = rules->find_last_of(L'r');
     if (rulePos != string::npos) {
         try {
             ConvertionRole.round = std::stoi(getNumFrom(rules, rulePos + 1));
@@ -324,8 +380,7 @@ void MatematicalSolver::addMetricsToTable() { // zkontrolovat převod (:
 
 
 void MatematicalSolver::removeBeforeAfterSpaces(wstring* line) {
-    debugLOG(*line);
-    int start = 0;
+    size_t start = 0;
     for (size_t i = 0; i < line->length(); i++) {
         if (line->at(i) != L' ') {
             start = i;
@@ -353,6 +408,10 @@ bool MatematicalSolver::solveVariableLine(mline* line, int eqPos) {
         }
     }
 
+    if (settings.useSumVariable && beforeEQ == L"sum") {
+        creteErrorLineSolution(line, L"Redefintion of system Sum variable", MATHERR_INVALID_VARIABLE_NAME);
+        return false;
+    }
     
 
     removeBeforeAfterSpaces(&beforeEQ);
@@ -387,6 +446,7 @@ bool MatematicalSolver::solveVariableLine(mline* line, int eqPos) {
             varTable.Add(beforeEQ, solutionVtext);
         };
     }
+    return true;
 }
 
 
@@ -394,10 +454,16 @@ bool MatematicalSolver::solveVariableLine(mline* line, int eqPos) {
 void MatematicalSolver::executeMathComand(mline* line) {
 
 
-    if (line->command == L"sum") {
+    if (line->command == L"sumbrake" || line->command == L"rstsum") {
+        line->solution = L"🚮";
+        line->isComandDone = true;
+        line->completlySolved = true;
+        line->isSumBrake = true;
+    }else if (line->command == L"sum") {
         wstring textnumber = L"";
         for (size_t i = 0; i < procesedLines->size(); i++) {
             if (&procesedLines->at(i) == line) { break; } // sum only lines abo;
+            if (procesedLines->at(i).isSumBrake == true) { textnumber = L""; }
             if (procesedLines->at(i).completlySolved && procesedLines->at(i).localVariableName == L"") {
                 textnumber.append(procesedLines->at(i).solution + L" + ");
             }
@@ -422,6 +488,7 @@ void MatematicalSolver::executeMathComand(mline* line) {
         wstring textnumber = L"";
         for (size_t i = 0; i < procesedLines->size(); i++) {
             if (&procesedLines->at(i) == line) { break; } // sum only lines abo;
+            if (procesedLines->at(i).command == L"rstsum") { textnumber = L""; }
             if (procesedLines->at(i).completlySolved) {
                 textnumber.append(procesedLines->at(i).solution + L" + ");
             }

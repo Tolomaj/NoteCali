@@ -143,6 +143,31 @@ public:
                     return true; // handled
                 }*/
 
+                if (target.test("button#recordWindowBTN")) { // nastav kategorii / auto dark light custom
+                    RECT r = controler->getCalcPosition();
+                    settings.setSingleSettingsbyName("useDefaultPosition",false);
+
+                    settings.setSingleSettingsbyName("defaultPositionL",(int)r.left   );
+                    settings.setSingleSettingsbyName("defaultPositionR",(int)r.right  );
+                    settings.setSingleSettingsbyName("defaultPositionB",(int)r.bottom );
+                    settings.setSingleSettingsbyName("defaultPositionT",(int)r.top    );
+                    controler->processSettingsChange();
+
+                    controler->showNotification(L"Window Position Recorded.", L"#10819A");
+                    return true; // handled
+                }
+
+                if (target.test("button#recordRstBTN")) { // nastav kategorii / auto dark light custom
+                    settings.setSingleSettingsbyName("useDefaultPosition", true);
+
+                    // reset calc posiiton
+                    controler->setCalcPosition({ (MONITOR_WIDTH - CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT - CALC_WIN_HEIGHT) / 2 , (MONITOR_WIDTH + CALC_WIN_WIDTH) / 2, (MONITOR_HEIGHT + CALC_WIN_HEIGHT) / 2 });
+                    controler->processSettingsChange();
+
+                    controler->showNotification(L"Window Position Reseted.", L"#10819A");
+                    return true; // handled
+                }
+
                 if (target.test("button.categoryButton")) { // nastav kategorii / auto dark light custom
                     settings.stylescheme = _wtoi(target.get_attribute("value").c_str());      // nastavi categorii  
                     controler->processSettingsChange(RELOAD_FROM_FILE, SAVE_SYTEM_ONLY_FILE); // naète nastavení pro kategorii
@@ -341,6 +366,10 @@ void SettingsWin::loadSettingsInWindow() {
     ((element)root.get_element_by_id("numberGroupingINP")).set_value(sciter::value(settings.numberGrouping));
     ((element)root.get_element_by_id("roundToDecINP")).set_value(sciter::value(settings.roundToDec));
     ((element)root.get_element_by_id("dividerLinePosINP")).set_value(sciter::value(settings.dividerLinePos));
+
+    ((element)root.get_element_by_id("useSumVariableSW")).set_value(sciter::value(settings.useSumVariable));
+
+
     debugLOG("Loading 4/5");
 
     string arg;

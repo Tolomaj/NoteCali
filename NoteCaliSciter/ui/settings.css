@@ -159,7 +159,45 @@ body[size=narrow] #tabWithToolTip {
 }
 
 
+button.inp {
+    height: 26px;
+    width: auto;
+    flow: horizontal;
+    border-radius: 8px;
+    background: #2b6ca8;
+    border: 2px solid #2b6ca8;
+    color: white;
+    font-size: 14px;
+    font-family: inria-sans;
+    margin-left: 1*;
+    margin-right:4px;
+    padding: 0 2px;
+}
 
+    button.inp:hover {
+        border: 2px solid #205280;
+    }
+
+    button.inp:active {
+        background-color: #3e9df4;
+        border: 2px solid #3383cc;
+    }
+
+/*
+    #btnBottom button {
+        width: 50px;
+        height: 20px;
+        margin: 0 1*;
+        border-radius: 6px;
+        padding: 0px 5px;
+        background-color: #d9d9d9;
+        border: 2px solid #adacac;
+    }
+
+        #btnBottom button:hover {
+            border: 2px solid #9ac2e3;
+        }
+*/
 
 
 switch {
@@ -202,7 +240,7 @@ switch {
 .oLable {
     margin: 1* 0 1* 0;
     font-size: 15px;
-    padding: 0px 8px;
+    padding: 0 0 0 7px;
 }
 
     .oLable.oLong {
@@ -558,7 +596,7 @@ textarea:focus, input:focus {
     height: 15px;
     width: 300px;
     border-radius: 6px;
-    background: linear-gradient(0deg, rgba(255, 0, 0, 1) 0%, rgba(255, 255, 0, 1) 17%, rgba(0, 255, 0, 1) 33%,rgba(0, 255, 255, 1) 50%,rgba(0, 0, 255, 1) 67%,,rgba(255, 0, 255, 1) 83%,rgba(255, 0, 0, 1) 100%);
+    background: linear-gradient(0deg, rgba(255, 0, 0, 1) 0%, rgba(255, 255, 0, 1) 17%, rgba(0, 255, 0, 1) 33%,rgba(0, 255, 255, 1) 50%,rgba(0, 0, 255, 1) 67%,rgba(255, 0, 255, 1) 83%,rgba(255, 0, 0, 1) 100%);
 }
 
     #hueSlider > button {

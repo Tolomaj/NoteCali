@@ -49,8 +49,9 @@ document.getElementById("varAddBTN").onclick = function () {
     vararea.focus(); // to placeholders procedded corectly.
     attachDestroys();
 }
+
+
 document.getElementById("varLoadBTN").onclick = function () {
-    //filterValid();
     const variables = document.querySelectorAll('.var:not(.system)');//.getElementsByClassName("var");
     var variableList = "";
     for (let i = 0; i < variables.length; i++) {
