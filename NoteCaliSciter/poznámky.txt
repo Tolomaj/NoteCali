@@ -21,6 +21,8 @@ oprava & znaku v mathHighlights
 
 <------------------------- pùl dùleité --------------->
 
+pøidat line before promìnou
+
 revize stylù tlaèítek a selectù
 
 pøidat nastavení barvy snipetu

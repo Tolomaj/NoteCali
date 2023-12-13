@@ -206,7 +206,7 @@
                 <div class="feature"> <div class="name">&0010 </div>                <div class="value">Using biar numbers</div> </div>
                 <div class="feature"> <div class="name">#ab1</div>                  <div class="value">Using hexadecimal numbers</div> </div>
 
-                <div class="feature"> <div class="name">:</div>                     <div class="value">Everithing before : is multiplied by 60 and after : is added<br> Useful for time conversions<br> effect can be limited by () </div> </div>
+                <div class="feature"> <div class="name">:</div>                     <div class="value">Everithing before : is multiplied by 60 and after : is added <br>Useful for time conversions <br>Effect can be limited by ()</div></div>
 
                 <div class="feature"> <div class="name">%</div>                     <div class="value">Operation percent</div> </div>
                 <div class="feature"> <div class="name">^</div>                     <div class="value">Operation power</div> </div>
@@ -268,11 +268,12 @@
                 <div class="feature"> <div class="name">;clear</div>                <div class="value">Clear text in calculator</div> </div>
                 <div class="feature"> <div class="name">;rand</div>                 <div class="value">Random number 0 to 1</div> </div>
                 <div class="feature"> <div class="name">;randi</div>                <div class="value">Random integer </div> </div>
-                <div class="feature"> <div class="name">;randn</div>                <div class="value">Random number -1 - 1 </div> </div>
+                <div class="feature"> <div class="name">;randn</div>                <div class="value">Random number -1 to 1 </div> </div>
 
                 <div class="feature"> <div class="name">r[x];</div>                 <div class="value">before line change rouonding settings for line</div> </div>
                 <div class="feature"> <div class="name">b[x];</div>                 <div class="value">before line change number base settings for line</div> </div>
                 <div class="feature"> <div class="name">c;</div>                    <div class="value">before line prevent line from solving</div> </div>
+                <div class="feature"> <div class="name">h;</div>                    <div class="value">before line hide solution</div> </div>
 
                 <div class="feature"> <div class="name">CTRL + F</div>              <div class="value">Flush all text from calculator</div> </div>
 
@@ -356,7 +357,7 @@
                         <div class="oLable">Show Error Text</div>
                         <switch class="inp" id="showErrTextSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
-                    <div class="option hasTip" tip="Allow using &0 comand <br> <span style='color:#516e78;'> &0 is pointer to first line<span>">
+                    <div class="option hasTip" tip="Allow using @0 comand <br> <span style='color:#516e78;'> @0 is pointer to first line<span>">
                         <!-- variable in c++ name-->
                         <div class="oLable">Line Jumps</div>
                         <switch class="inp" id="allowLineJumpSW" disabled /> <!-- add to variable list  -> setings-->
@@ -373,7 +374,7 @@
                         <switch class="inp" id="corectParenthesisSW" disabled /> <!-- add to variable list  -> setings-->
                     </div>
 
-                    <div class="option hasTip" tip="Round rules is not applied variables and € pointers.">
+                    <div class="option hasTip" tip="Round rules is not applied variables and @ pointers.">
                         <!-- variable in c++ name-->
                         <div class="oLable">Dont Round Pointers</div>
                         <switch class="inp" id="useNoroundPointersSW" disabled /> <!-- add to variable list  -> setings-->
@@ -544,11 +545,13 @@
             <div id="versionChangelog">
                 <div id="versionTitle">
                     <div class="version">v0.5</div>
-                    <div class="type">? RELEASE</div>
+                    <div class="type">FULL RELEASE</div>
                 </div>
                 <div id="versionLog">
                     Debug dianostic overall<br>
+                    Added time format<br>
                     Duck support 🦆<br>
+                    Little changes in settings<br>
                 </div>
             </div>
 
