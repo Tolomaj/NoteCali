@@ -1,6 +1,6 @@
 <h1 align="center">NoteCali</h1>
 
-## ! Pro linux vytvářím kompatibilní kalkulačku na bázi Qt ![NoteCali2](https://github.com/Tolomaj/NoteCali-v2) je na začátku vývoje proto některé fičury nejsou uplně inplementovny. Je však funkční.
+> :warning: Pro linux vytvářím kompatibilní kalkulačku na bázi Qt ![NoteCali2](https://github.com/Tolomaj/NoteCali-v2) je na začátku vývoje proto některé fičury nejsou uplně inplementovny. Je však funkční.
 
 # Úvodem
 
